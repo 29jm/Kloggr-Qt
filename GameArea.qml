@@ -84,6 +84,5 @@ Item {
 				anchors.bottom: pauseBtn.top
 			}
 		}
-
 	]
 }
