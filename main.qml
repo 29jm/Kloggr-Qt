@@ -1,5 +1,5 @@
-import QtQuick 2.0
-import QtQuick.Window 2.2
+import QtQuick 2.3
+import QtQuick.Window 2.0
 
 Window {
 	visible: true
@@ -32,12 +32,7 @@ Window {
 				PropertyChanges { target: mainmenu; visible: false }
 				PropertyChanges { target: gamearea; visible: true }
 				PropertyChanges { target: timer; running: true }
-			},
-			State {
-				name: "Paused"
-
 			}
-
 		]
 
 		Timer {

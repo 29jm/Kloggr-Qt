@@ -3,7 +3,6 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 
 Button {
-	text: "Pause"
 	style: ButtonStyle {
 		background: Rectangle {
 			implicitWidth: 55

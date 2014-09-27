@@ -7,6 +7,6 @@
         <file>option.png</file>
         <file>MainMenu.qml</file>
         <file>GameArea.qml</file>
-        <file>PauseButton.qml</file>
+        <file>GameButton.qml</file>
     </qresource>
 </RCC>
