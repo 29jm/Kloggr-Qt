@@ -32,7 +32,11 @@ Window {
 				timer.start()
 			}
 
-			onMainMenuClicked: parent.state = ""
+			onMainMenuClicked: {
+				console.log("mainmenu clicked");
+				parent.state = ""
+				state = ""
+			}
 		}
 
 		states: [

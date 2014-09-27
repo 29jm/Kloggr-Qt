@@ -39,6 +39,8 @@ Item {
 		anchors.leftMargin: 5
 		anchors.rightMargin: 5
 		anchors.bottomMargin: 5
+
+		onClicked: mainMenuClicked()
 	}
 
 	GameButton {
