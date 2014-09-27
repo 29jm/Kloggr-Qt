@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>PlayButton.qml</file>
+        <file>play.png</file>
+        <file>ImageButton.qml</file>
+        <file>option.png</file>
+        <file>MainMenu.qml</file>
+        <file>GameArea.qml</file>
+        <file>PauseButton.qml</file>
+    </qresource>
+</RCC>
