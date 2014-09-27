@@ -22,7 +22,16 @@ Window {
 			visible: false
 			anchors.fill: parent
 
-			onPauseClicked: timer.stop()
+			onPauseClicked: {
+				console.log("timer stopped")
+				timer.stop()
+			}
+
+			onPlayClicked: {
+				console.log("timer resumed")
+				timer.start()
+			}
+
 			onMainMenuClicked: parent.state = ""
 		}
 

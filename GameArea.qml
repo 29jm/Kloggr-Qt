@@ -55,7 +55,10 @@ Item {
 		onClicked: {
 			parent.state = (parent.state == "" ? "Paused" : "")
 			if (parent.state == "Paused") {
-				pausedClicked()
+				pauseClicked()
+			}
+			else {
+				playClicked()
 			}
 		}
 	}
