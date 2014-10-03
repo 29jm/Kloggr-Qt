@@ -10,7 +10,7 @@ Item {
 	signal playClicked
 
 	// Replace with the C++ class
-	Kloggr {
+	Canvas {
 		id: kloggr
 		anchors.left: parent.left
 		anchors.right: parent.right
