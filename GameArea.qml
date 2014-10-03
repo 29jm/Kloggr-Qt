@@ -2,13 +2,16 @@ import QtQuick 2.0
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 
+// Don't forget to import you dumbfuck
+
 Item {
 	signal pauseClicked
 	signal mainMenuClicked
 	signal playClicked
 
-	Canvas {
-		id: canvas
+	// Replace with the C++ class
+	Kloggr {
+		id: kloggr
 		anchors.left: parent.left
 		anchors.right: parent.right
 		anchors.top: parent.top
@@ -69,7 +72,7 @@ Item {
 		State {
 			name: "Paused"
 			PropertyChanges { target: pauseBtn; text: "Play" }
-			AnchorChanges { target: canvas; anchors.bottom: restartBtn.top }
+			AnchorChanges { target: kloggr; anchors.bottom: restartBtn.top }
 			// Restart button
 			PropertyChanges { target: restartBtn; visible: true }
 			AnchorChanges {
