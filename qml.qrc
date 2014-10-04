@@ -8,12 +8,6 @@
         <file>MainMenu.qml</file>
         <file>GameArea.qml</file>
         <file>GameButton.qml</file>
-        <file>js/main.js</file>
-        <file>Kloggr.qml</file>
         <file>main.cpp</file>
-        <file>assets/deadPlayer.svg</file>
-        <file>assets/lazer.png</file>
-        <file>assets/player.svg</file>
-        <file>assets/target.svg</file>
     </qresource>
 </RCC>

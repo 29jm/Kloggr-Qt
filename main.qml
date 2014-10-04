@@ -1,8 +1,6 @@
 import QtQuick 2.3
 import QtQuick.Window 2.0
 
-import "js/main.js" as Main
-
 Window {
 	visible: true
 	id: window
