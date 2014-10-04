@@ -1,10 +1,11 @@
 TEMPLATE = app
 
-QT += qml quick
+QT += qml quick widgets
 
 CONFIG += console
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    Kloggr.cpp
 
 RESOURCES += qml.qrc
 
@@ -13,3 +14,6 @@ QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
+
+HEADERS += \
+    Kloggr.hpp

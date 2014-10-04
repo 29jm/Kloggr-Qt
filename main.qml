@@ -50,7 +50,7 @@ Window {
 
 		Timer {
 			id: timer
-			interval: 3 // hopefully in millisecond
+			interval: 3
 			running: false
 			repeat: true
 			onTriggered: {
