@@ -11,5 +11,8 @@
         <file>main.cpp</file>
         <file>js/kloggr.js</file>
         <file>Kloggr.qml</file>
+        <file>assets/deadPlayer.png</file>
+        <file>assets/player.png</file>
+        <file>assets/target.png</file>
     </qresource>
 </RCC>
