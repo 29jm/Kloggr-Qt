@@ -6,7 +6,12 @@ Rectangle {
 	property var kloggr: undefined
 	focus: true
 
+	signal dead
+	signal timerChanged()
+	signal scoreChanged()
+
 	function play() {
+		kloggr.state = Game.Kloggr.State.Playing;
 		update_timer.start();
 	}
 
@@ -14,19 +19,33 @@ Rectangle {
 		update_timer.stop();
 	}
 
+	function restart() {
+		kloggr.restart();
+	}
+
 	function handleEvents(event) {
 		switch (event.name) {
 		case Game.Kloggr.Events.StateChanged:
+			updateState();
 			break;
 		case Game.Kloggr.Events.NewHighscore:
 			break;
 		case Game.Kloggr.Events.ScoreChanged:
+		   scoreChanged(event.value); // TODO: missing handler
 			break;
 		case Game.Kloggr.Events.TargetReached:
 			kloggr.respawnAll();
 			break;
 		case Game.Kloggr.Events.TimeChanged:
+			timerChanged(event.value); // TODO: missing handler
 			break;
+		}
+	}
+
+	function updateState() {
+		switch (kloggr.state) {
+		case Game.Kloggr.State.Dead:
+			dead();
 		}
 	}
 
@@ -57,9 +76,11 @@ Rectangle {
 		running: false
 		repeat: true
 		onTriggered: {
-			kloggr.handleKeys();
-			kloggr.update(1/60); // in seconds
-			kloggr.collisionDetection();
+			if (kloggr.state == Game.Kloggr.State.Playing) {
+				kloggr.handleKeys();
+				kloggr.update(1/60); // in seconds
+				kloggr.collisionDetection();
+			}
 
 			var events = kloggr.getEvents();
 			for (var i = 0; i < events.length; i++) {
