@@ -2,15 +2,16 @@ import QtQuick 2.0
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 
-import Kloggr 1.0
-
 Item {
 	signal pauseClicked
 	signal mainMenuClicked
 	signal playClicked
 
 	Kloggr {
-		id: kloggr
+		anchors.top: parent.top
+		anchors.left: parent.left
+		anchors.right: parent.right
+		anchors.bottom: pauseBtn.top
 	}
 
 	GameButton {

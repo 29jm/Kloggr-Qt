@@ -4,8 +4,7 @@ QT += qml quick widgets
 
 CONFIG += console
 
-SOURCES += main.cpp \
-    Kloggr.cpp
+SOURCES += main.cpp
 
 RESOURCES += qml.qrc
 
@@ -15,5 +14,4 @@ QML_IMPORT_PATH =
 # Default rules for deployment.
 include(deployment.pri)
 
-HEADERS += \
-    Kloggr.hpp
+HEADERS +=

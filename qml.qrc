@@ -9,5 +9,7 @@
         <file>GameArea.qml</file>
         <file>GameButton.qml</file>
         <file>main.cpp</file>
+        <file>js/kloggr.js</file>
+        <file>Kloggr.qml</file>
     </qresource>
 </RCC>
