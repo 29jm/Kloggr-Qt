@@ -14,5 +14,6 @@
         <file>assets/deadPlayer.png</file>
         <file>assets/player.png</file>
         <file>assets/target.png</file>
+        <file>assets/lazer.png</file>
     </qresource>
 </RCC>

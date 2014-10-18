@@ -431,7 +431,7 @@ Kloggr.prototype.restart = function() {
 	this.touchmoves = [0, 0];
 	this.score = 0;
 	this.counter = 0;
-	this.enemy_density = 0.02;
+	this.enemy_density = 0.005;
 
 	// Spawn gameobjects
 	this.respawnAll(true);
@@ -447,19 +447,19 @@ Kloggr.prototype.setKeyState = function(key, state) {
 };
 
 Kloggr.prototype.handleKeys = function() {
-	if (37 in this.keys_pressed) {
+	if (Qt.Key_Left in this.keys_pressed) {
 		this.player.speed_x -= this.player.accel;
 	}
 
-	if (39 in this.keys_pressed) {
+	if (Qt.Key_Right in this.keys_pressed) {
 		this.player.speed_x += this.player.accel;
 	}
 
-	if (38 in this.keys_pressed) {
+	if (Qt.Key_Up in this.keys_pressed) {
 		this.player.speed_y -= this.player.accel;
 	}
 
-	if (40 in this.keys_pressed) {
+	if (Qt.Key_Down in this.keys_pressed) {
 		this.player.speed_y += this.player.accel;
 	}
 };
@@ -514,7 +514,7 @@ Kloggr.prototype.collisionDetection = function() {
 
 	if (Square.prototype.intersect.call(this.player, this.target)) {
 		this.score += 1;
-		this.enemy_density += 0.5;
+		this.enemy_density += 0.001;
 
 		// Kloggr.score has its own setter that calls
 		// Kloggr.newEvents, so no need for it here

@@ -32,6 +32,9 @@ Window {
 				if (visible) {
 					gamearea.kloggr.play();
 				}
+				else {
+					gamearea.kloggr.pause();
+				}
 			}
 		}
 
