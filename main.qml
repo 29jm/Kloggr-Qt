@@ -22,20 +22,16 @@ Window {
 			visible: false
 			anchors.fill: parent
 
-			onPauseClicked: {
-				console.log("timer stopped")
-				timer.stop()
-			}
-
-			onPlayClicked: {
-				console.log("timer resumed")
-				timer.start()
-			}
-
 			onMainMenuClicked: {
 				console.log("mainmenu clicked");
 				parent.state = ""
 				state = ""
+			}
+
+			onVisibleChanged: {
+				if (visible) {
+					gamearea.kloggr.play();
+				}
 			}
 		}
 
@@ -44,18 +40,7 @@ Window {
 				name: "Playing"
 				PropertyChanges { target: mainmenu; visible: false }
 				PropertyChanges { target: gamearea; visible: true }
-				PropertyChanges { target: timer; running: true }
 			}
 		]
-
-		Timer {
-			id: timer
-			interval: 3
-			running: false
-			repeat: true
-			onTriggered: {
-				// gamearea.update()
-			}
-		}
 	}
 }

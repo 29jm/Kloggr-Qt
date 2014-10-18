@@ -3,6 +3,8 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 
 Item {
+	property alias kloggr: kloggrArea
+
 	signal pauseClicked
 	signal mainMenuClicked
 	signal playClicked
@@ -60,6 +62,9 @@ Item {
 			}
 		}
 	}
+
+	onPlayClicked: kloggrArea.play();
+	onPauseClicked: kloggrArea.pause();
 
 	states: [
 		State {

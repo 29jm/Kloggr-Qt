@@ -406,8 +406,6 @@ function Kloggr(width, height) {
 
 	this.restart();
 	this.state = Kloggr.State.MainMenu;
-
-	console.log(this.width+";"+this.height);
 }
 
 Kloggr.State = {
