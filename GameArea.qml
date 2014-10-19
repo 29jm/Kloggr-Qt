@@ -16,6 +16,7 @@ Item {
 		anchors.left: parent.left
 		anchors.right: parent.right
 		anchors.bottom: pauseBtn.top
+		anchors.bottomMargin: 5
 	}
 
 	GameButton {
@@ -24,9 +25,7 @@ Item {
 		visible: false
 
 		anchors.left: pauseBtn.right // Begins invisible on the right
-		anchors.leftMargin: 5
-		anchors.rightMargin: 5
-		anchors.bottomMargin: 5
+		anchors.margins: 5
 
 		onClicked: kloggr.restart();
 	}
@@ -37,9 +36,7 @@ Item {
 		visible: false
 
 		anchors.left: restartBtn.right
-		anchors.leftMargin: 5
-		anchors.rightMargin: 5
-		anchors.bottomMargin: 5
+		anchors.margins: 5
 
 		onClicked: {
 			kloggr.restart();
@@ -54,9 +51,7 @@ Item {
 		anchors.left: parent.left
 		anchors.right: parent.right
 		anchors.bottom: parent.bottom
-		anchors.leftMargin: 5
-		anchors.rightMargin: 5
-		anchors.bottomMargin: 5
+		anchors.margins: 5
 
 		onClicked: {
 			parent.state = (parent.state == "" ? "Paused" : "")
