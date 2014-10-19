@@ -17,6 +17,8 @@ Item {
 		anchors.right: parent.right
 		anchors.bottom: pauseBtn.top
 		anchors.bottomMargin: 5
+
+		onDead: parent.state = "Dead"
 	}
 
 	GameButton {
@@ -27,7 +29,10 @@ Item {
 		anchors.left: pauseBtn.right // Begins invisible on the right
 		anchors.margins: 5
 
-		onClicked: kloggr.restart();
+		onClicked: {
+			kloggr.restart();
+			parent.state = "Playing"
+		}
 	}
 
 	GameButton {
@@ -80,7 +85,7 @@ Item {
 				anchors.top: undefined
 				anchors.bottom: pauseBtn.top
 			}
-			// Exit button
+
 			PropertyChanges { target: exitBtn; visible: true }
 			AnchorChanges {
 				target: exitBtn
@@ -89,6 +94,27 @@ Item {
 				anchors.top: undefined
 				anchors.bottom: pauseBtn.top
 			}
+		},
+		State {
+			name: "Dead"
+			PropertyChanges { target: restartBtn; visible: true }
+			PropertyChanges { target: exitBtn; visible: true }
+			AnchorChanges {
+				target: exitBtn
+				anchors.left: parent.left
+				anchors.right: parent.horizontalCenter
+				anchors.verticalCenter: parent.verticalCenter
+			}
+
+			AnchorChanges {
+				target: restartBtn
+				anchors.left: parent.horizontalCenter
+				anchors.right: parent.right
+				anchors.verticalCenter: parent.verticalCenter
+			}
+
+			PropertyChanges { target: pauseBtn; visible: false}
 		}
+
 	]
 }

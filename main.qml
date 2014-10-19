@@ -4,7 +4,8 @@ import QtQuick.Window 2.0
 Window {
 	visible: true
 	id: window
-	width: 420; height: 590
+	minimumWidth: 420
+	minimumHeight: 590
 
 	Rectangle {
 		id: page
