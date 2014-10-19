@@ -3,14 +3,15 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 
 Item {
-	property alias kloggr: kloggrArea
+	property alias kloggr: kloggr
 
 	signal pauseClicked
 	signal mainMenuClicked
 	signal playClicked
 
 	Kloggr {
-		id: kloggrArea
+		id: kloggr
+
 		anchors.top: parent.top
 		anchors.left: parent.left
 		anchors.right: parent.right
@@ -27,7 +28,7 @@ Item {
 		anchors.rightMargin: 5
 		anchors.bottomMargin: 5
 
-		onClicked: kloggrArea.restart();
+		onClicked: kloggr.restart();
 	}
 
 	GameButton {
@@ -40,7 +41,10 @@ Item {
 		anchors.rightMargin: 5
 		anchors.bottomMargin: 5
 
-		onClicked: mainMenuClicked()
+		onClicked: {
+			kloggr.restart();
+			mainMenuClicked()
+		}
 	}
 
 	GameButton {
@@ -65,8 +69,8 @@ Item {
 		}
 	}
 
-	onPlayClicked: kloggrArea.play();
-	onPauseClicked: kloggrArea.pause();
+	onPlayClicked: kloggr.play();
+	onPauseClicked: kloggr.pause();
 
 	states: [
 		State {
