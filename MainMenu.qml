@@ -5,16 +5,36 @@ Rectangle {
 
     signal playClicked
     signal settingsClicked
+    Item {
+        width: logo.width
+        height: logo.height
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.leftMargin: 10
+        anchors.rightMargin: 10
+
+        Image {
+            id: logo
+            source: "assets/logo.png"
+            fillMode: Image.PreserveAspectFit
+            smooth: true
+            width: parent.width
+        }
+    }
 
     Rectangle {
         id: playBtn
+        width: parent.width/4; height: width
+        radius: width*0.5
+        color: "#f1c40f"
+
         anchors.horizontalCenter: mainmenu.horizontalCenter
         anchors.verticalCenter: mainmenu.verticalCenter
-        width: parent.width/4; height: width
-        color: mainmenu.color
 
         MouseArea {
-            id: btnArea
+            id: playArea
             hoverEnabled: true
             anchors.fill: parent
 
@@ -22,16 +42,17 @@ Rectangle {
         }
 
         Image {
-            id: img
+            id: playImg
             fillMode: Image.PreserveAspectFit
+            smooth: true
             width: parent.width
             height: parent.height
-            source: "play.png"
+            source: "assets/play.png"
         }
         states: State {
-            name: "rotated"; when: btnArea.containsMouse == true
+            name: "rotated"; when: playArea.containsMouse == true
             PropertyChanges {
-                target: img; rotation: 360
+                target: playImg; rotation: 360
             }
         }
 
@@ -42,34 +63,85 @@ Rectangle {
         }
     }
 
-    ImageButton {
+    Rectangle {
         id: optionBtn
-        image.source: "option.png"
+        width: parent.width/6; height: width
+        radius: width*0.5
         color: mainmenu.color
 
         anchors.left: mainmenu.left
         anchors.leftMargin: mainmenu.width/3-this.width
         anchors.bottom: mainmenu.bottom
-        anchors.bottomMargin: mainmenu.height/3-this.width
+        anchors.bottomMargin: mainmenu.height/4-this.width
 
-        width: 100
-        height: 100
+        MouseArea {
+            id: settingsArea
+            hoverEnabled: true
+            anchors.fill: parent
 
-        onButtonClicked: settingsClicked()
+            onClicked: settingsClicked()
+        }
+
+        Image {
+            id: settingsImg
+            fillMode: Image.PreserveAspectFit
+            smooth: true
+            width: parent.width
+            height: parent.height
+            source: "assets/settings.png"
+        }
+        states: State {
+            name: "rotated"; when: settingsArea.containsMouse == true
+            PropertyChanges {
+                target: settingsImg; rotation: 120
+            }
+        }
+
+        transitions: Transition {
+            from: ""; to: "rotated"
+            reversible: true
+            NumberAnimation { property: "rotation"; duration: 500; easing.type: Easing.InOutQuad }
+        }
     }
-    ImageButton {
+
+    Rectangle {
         id: infoBtn
-        image.source: "option.png"
+        width: parent.width/6; height: width
+        radius: width*0.5
         color: mainmenu.color
 
         anchors.right: mainmenu.right
         anchors.rightMargin: mainmenu.width/3-this.width
         anchors.bottom: mainmenu.bottom
-        anchors.bottomMargin: mainmenu.height/3-this.width
+        anchors.bottomMargin: mainmenu.height/4-this.width
 
-        width: 100
-        height: 100
+        MouseArea {
+            id: infoArea
+            hoverEnabled: true
+            anchors.fill: parent
 
-        onButtonClicked: settingsClicked()
+            onClicked: settingsClicked()
+        }
+
+        Image {
+            id: infoImg
+            fillMode: Image.PreserveAspectFit
+            smooth: true
+            width: parent.width
+            height: parent.height
+            source: "assets/info.png"
+        }
+        states: State {
+            name: "rotated"; when: infoArea.containsMouse == true
+            PropertyChanges {
+                target: infoImg; rotation: 360
+            }
+        }
+
+        transitions: Transition {
+            from: ""; to: "rotated"
+            reversible: true
+            NumberAnimation { property: "rotation"; duration: 500; easing.type: Easing.InOutQuad }
+        }
     }
 }

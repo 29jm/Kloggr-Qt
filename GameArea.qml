@@ -16,7 +16,8 @@ Item {
 		anchors.left: parent.left
 		anchors.right: parent.right
 		anchors.bottom: pauseBtn.top
-		anchors.bottomMargin: 5
+
+        color: "#34495e"
 
 		onDead: parent.state = "Dead"
 	}
@@ -99,21 +100,21 @@ Item {
 			name: "Dead"
 			PropertyChanges { target: restartBtn; visible: true }
 			PropertyChanges { target: exitBtn; visible: true }
-			AnchorChanges {
-				target: exitBtn
-				anchors.left: parent.left
-				anchors.right: parent.horizontalCenter
-				anchors.verticalCenter: parent.verticalCenter
+            AnchorChanges {
+                target: exitBtn
+                anchors.left: parent.left
+                anchors.right: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            AnchorChanges {
+                target: restartBtn
+                anchors.left: parent.horizontalCenter
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
 			}
 
-			AnchorChanges {
-				target: restartBtn
-				anchors.left: parent.horizontalCenter
-				anchors.right: parent.right
-				anchors.verticalCenter: parent.verticalCenter
-			}
-
-			PropertyChanges { target: pauseBtn; visible: false}
+            PropertyChanges { target: pauseBtn; visible: false}
 		}
 
 	]

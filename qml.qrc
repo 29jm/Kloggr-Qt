@@ -1,10 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>PlayButton.qml</file>
-        <file>play.png</file>
         <file>ImageButton.qml</file>
-        <file>option.png</file>
         <file>MainMenu.qml</file>
         <file>GameArea.qml</file>
         <file>GameButton.qml</file>
@@ -15,5 +12,9 @@
         <file>assets/player.png</file>
         <file>assets/target.png</file>
         <file>assets/lazer.png</file>
+        <file>assets/info.png</file>
+        <file>assets/play.png</file>
+        <file>assets/settings.png</file>
+        <file>assets/logo.png</file>
     </qresource>
 </RCC>
