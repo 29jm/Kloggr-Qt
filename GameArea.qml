@@ -31,7 +31,7 @@ Rectangle {
 
 		onClicked: {
 			kloggr.restart();
-			parent.state = "Playing"
+			parent.state = ""
 		}
 	}
 

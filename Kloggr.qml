@@ -12,15 +12,16 @@ Item {
 
 	function play() {
 		kloggr.state = Game.Kloggr.State.Playing;
-		update_timer.start();
+		timer.start();
 	}
 
 	function pause() {
-		update_timer.stop();
+		timer.stop();
 	}
 
 	function restart() {
 		kloggr.restart();
+		timer.start();
 	}
 
 	function handleEvents(event) {
@@ -74,7 +75,7 @@ Item {
 	}
 
 	Timer {
-		id: update_timer
+		id: timer
 
 		interval: 1000/60 // in millisecond
 		running: false
