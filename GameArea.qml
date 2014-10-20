@@ -1,9 +1,10 @@
-import QtQuick 2.0
+import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 
-Item {
+Rectangle {
 	property alias kloggr: kloggr
+	color: "#34495e"
 
 	signal pauseClicked
 	signal mainMenuClicked
@@ -11,13 +12,12 @@ Item {
 
 	Kloggr {
 		id: kloggr
+		color: "#34495e"
 
 		anchors.top: parent.top
 		anchors.left: parent.left
 		anchors.right: parent.right
 		anchors.bottom: pauseBtn.top
-
-		color: "#34495e"
 
 		onDead: parent.state = "Dead"
 	}
