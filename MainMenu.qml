@@ -6,24 +6,21 @@ Rectangle {
 	signal playClicked
 	signal settingsClicked
 
-    //logo
-    Image {
+	Image {
 		id: logo
 		source: "assets/logo.png"
 		fillMode: Image.PreserveAspectFit
 		smooth: true
-        width: parent.width/1.5
+		width: parent.width/1.5
 
-        anchors.horizontalCenter: parent.horizontalCenter
+		anchors.horizontalCenter: parent.horizontalCenter
 		anchors.top: parent.top
-        anchors.topMargin: 30
-
+		anchors.topMargin: 30
 	}
 
-    //play button
 	Rectangle {
 		id: playBtn
-        width: parent.height/4; height: width
+		width: parent.height/4; height: width
 		radius: width*0.5
 		color: "#f1c40f"
 
@@ -46,6 +43,7 @@ Rectangle {
 			height: parent.height
 			source: "assets/play.png"
 		}
+
 		states: State {
 			name: "rotated"; when: playArea.containsMouse == true
 			PropertyChanges {
@@ -60,10 +58,10 @@ Rectangle {
 		}
 	}
 
-    //settings button
+	// settings button
 	Rectangle {
 		id: optionBtn
-        width: playBtn.width/2; height: width
+		width: playBtn.width/2; height: width
 		radius: width*0.5
 		color: parent.color
 
@@ -88,6 +86,7 @@ Rectangle {
 			height: parent.height
 			source: "assets/settings.png"
 		}
+
 		states: State {
 			name: "rotated"; when: settingsArea.containsMouse == true
 			PropertyChanges {
@@ -102,10 +101,10 @@ Rectangle {
 		}
 	}
 
-    //info button
+	//info button
 	Rectangle {
 		id: infoBtn
-        width: playBtn.width/2; height: width
+		width: playBtn.width/2; height: width
 		radius: width*0.5
 		color: parent.color
 
