@@ -6,24 +6,24 @@ Rectangle {
 	signal playClicked
 	signal settingsClicked
 
-	Image {
+    //logo
+    Image {
 		id: logo
 		source: "assets/logo.png"
 		fillMode: Image.PreserveAspectFit
 		smooth: true
-		width: parent.width
+        width: parent.width/1.5
 
+        anchors.horizontalCenter: parent.horizontalCenter
 		anchors.top: parent.top
-		anchors.left: parent.left
-		anchors.right: parent.right
-		anchors.leftMargin: 10
-		anchors.rightMargin: 10
+        anchors.topMargin: 30
 
 	}
 
+    //play button
 	Rectangle {
 		id: playBtn
-		width: parent.width/4; height: width
+        width: parent.height/4; height: width
 		radius: width*0.5
 		color: "#f1c40f"
 
@@ -60,9 +60,10 @@ Rectangle {
 		}
 	}
 
+    //settings button
 	Rectangle {
 		id: optionBtn
-		width: parent.width/6; height: width
+        width: playBtn.width/2; height: width
 		radius: width*0.5
 		color: parent.color
 
@@ -101,9 +102,10 @@ Rectangle {
 		}
 	}
 
+    //info button
 	Rectangle {
 		id: infoBtn
-		width: parent.width/6; height: width
+        width: playBtn.width/2; height: width
 		radius: width*0.5
 		color: parent.color
 
