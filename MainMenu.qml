@@ -5,9 +5,13 @@ Rectangle {
 
 	signal playClicked
 	signal settingsClicked
-	Item {
-		width: logo.width
-		height: logo.height
+
+	Image {
+		id: logo
+		source: "assets/logo.png"
+		fillMode: Image.PreserveAspectFit
+		smooth: true
+		width: parent.width
 
 		anchors.top: parent.top
 		anchors.left: parent.left
@@ -15,13 +19,6 @@ Rectangle {
 		anchors.leftMargin: 10
 		anchors.rightMargin: 10
 
-		Image {
-			id: logo
-			source: "assets/logo.png"
-			fillMode: Image.PreserveAspectFit
-			smooth: true
-			width: parent.width
-		}
 	}
 
 	Rectangle {
