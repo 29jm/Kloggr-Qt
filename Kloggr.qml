@@ -2,7 +2,7 @@ import QtQuick 2.3
 
 import "js/kloggr.js" as Game
 
-Rectangle {
+Item {
 	property var kloggr: undefined
 	focus: true
 

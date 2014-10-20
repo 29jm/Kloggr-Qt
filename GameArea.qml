@@ -12,7 +12,6 @@ Rectangle {
 
 	Kloggr {
 		id: kloggr
-		color: "#34495e"
 
 		anchors.top: parent.top
 		anchors.left: parent.left
