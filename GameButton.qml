@@ -7,7 +7,7 @@ Button {
 		background: Rectangle {
 			implicitWidth: 55
 			implicitHeight: 25
-            color: "#bdc3c7"
+			color: "#bdc3c7"
 		}
 	}
 }
