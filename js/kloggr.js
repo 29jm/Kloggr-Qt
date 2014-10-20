@@ -18,29 +18,29 @@ function Square(w, h, texture) {
 }
 
 Object.defineProperty(Square.prototype, "x", {
-						  get: function() { return this.m_x; },
-						  set: function(val) { this.m_x = val; this.object.x = val; }
-					  });
+	get: function() { return this.m_x; },
+	set: function(val) { this.m_x = val; this.object.x = val; }
+});
 
 Object.defineProperty(Square.prototype, "y", {
-						  get: function() { return this.m_y; },
-						  set: function(val) { this.m_y = val; this.object.y = val; }
-					  });
+	get: function() { return this.m_y; },
+	set: function(val) { this.m_y = val; this.object.y = val; }
+});
 
 Object.defineProperty(Square.prototype, "width", {
-						  get: function() { return this.m_width; },
-						  set: function(val) { this.m_width = val; this.object.width = val; }
-					  });
+	get: function() { return this.m_width; },
+	set: function(val) { this.m_width = val; this.object.width = val; }
+});
 
 Object.defineProperty(Square.prototype, "height", {
-						  get: function() { return this.m_height; },
-						  set: function(val) { this.m_height = val; this.object.height = val; }
-					  });
+	get: function() { return this.m_height; },
+	set: function(val) { this.m_height = val; this.object.height = val; }
+});
 
 Object.defineProperty(Square.prototype, "visible", {
-						  get: function() { return this.m_visible; },
-						  set: function(val) { this.m_visible = val; this.object.visible = val; }
-					  });
+	get: function() { return this.m_visible; },
+	set: function(val) { this.m_visible = val; this.object.visible = val; }
+});
 
 Square.prototype.newQmlObject = function(w, h, texture) {
 	if (/#[0-9a-zA-Z]{6}/.test(texture)) {
@@ -522,27 +522,21 @@ Kloggr.prototype.handleKeys = function() {
 	}
 };
 
-Kloggr.prototype.handleTouchStart = function(event) {
-	var touchobj = event.changedTouches[0];
-	this.touchmoves[0] = touchobj.pageX;
-	this.touchmoves[1] = touchobj.pageY;
-
-	event.preventDefault();
+Kloggr.prototype.handleTouchStart = function(mouse) {
+	this.touchmoves[0] = mouse.x;
+	this.touchmoves[1] = mouse.y;
 };
 
-Kloggr.prototype.handleTouchMove = function(event) {
-	var touchobj = event.changedTouches[0];
-	var dpr = window.devicePixelRatio;
-	var move_x = touchobj.pageX*dpr - this.touchmoves[0]*dpr;
-	var move_y = touchobj.pageY*dpr - this.touchmoves[1]*dpr;
+Kloggr.prototype.handleTouchMove = function(mouse) {
+	var move_x = mouse.x - this.touchmoves[0];
+	var move_y = mouse.y - this.touchmoves[1];
 
 	// Should be done during update(), but hey, lack of funding
 	this.player.speed_x += move_x;
 	this.player.speed_y += move_y;
 
-	this.touchmoves[0] = touchobj.pageX;
-	this.touchmoves[1] = touchobj.pageY;
-	event.preventDefault();
+	this.touchmoves[0] = mouse.x;
+	this.touchmoves[1] = mouse.y;
 };
 
 // Move objects

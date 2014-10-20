@@ -20,8 +20,8 @@ Item {
 	}
 
 	function restart() {
-		kloggr.restart();
 		timer.start();
+		kloggr.restart();
 	}
 
 	function handleEvents(event) {
@@ -61,9 +61,22 @@ Item {
 	}
 
 	MouseArea {
+		property bool inTouch: false
+		hoverEnabled: true
 		anchors.fill: parent
-		onClicked: {
-			console.log("clicked");
+		onPressed: {
+			inTouch = true;
+			kloggr.handleTouchStart(mouse);
+		}
+
+		onPositionChanged: {
+			if (inTouch) {
+				kloggr.handleTouchMove(mouse);
+			}
+		}
+
+		onReleased: {
+			inTouch = false;
 		}
 	}
 
