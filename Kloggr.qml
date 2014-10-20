@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.3
 
 import "js/kloggr.js" as Game
 
@@ -66,10 +66,11 @@ Rectangle {
 		}
 	}
 
-	Component.onCompleted: {
-		Game.kloggr = this;
-		kloggr = new Game.Kloggr(420, 590);
-		console.log(parent.width+";"+parent.height);
+	onVisibleChanged: {
+		if (visible && kloggr === undefined) {
+			Game.kloggr = this;
+			kloggr = new Game.Kloggr(width, height);
+		}
 	}
 
 	Timer {
