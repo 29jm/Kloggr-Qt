@@ -27,8 +27,8 @@ Rectangle {
 		radius: width*0.5
 		color: "#f1c40f"
 
-		anchors.horizontalCenter: mainmenu.horizontalCenter
-		anchors.verticalCenter: mainmenu.verticalCenter
+		anchors.horizontalCenter: parent.horizontalCenter
+		anchors.verticalCenter: parent.verticalCenter
 
 		MouseArea {
 			id: playArea
@@ -64,12 +64,12 @@ Rectangle {
 		id: optionBtn
 		width: parent.width/6; height: width
 		radius: width*0.5
-		color: mainmenu.color
+		color: parent.color
 
-		anchors.left: mainmenu.left
-		anchors.leftMargin: mainmenu.width/3-this.width
-		anchors.bottom: mainmenu.bottom
-		anchors.bottomMargin: mainmenu.height/4-this.width
+		anchors.left: parent.left
+		anchors.leftMargin: parent.width/3-this.width
+		anchors.bottom: parent.bottom
+		anchors.bottomMargin: parent.height/4-this.width
 
 		MouseArea {
 			id: settingsArea
@@ -105,12 +105,12 @@ Rectangle {
 		id: infoBtn
 		width: parent.width/6; height: width
 		radius: width*0.5
-		color: mainmenu.color
+		color: parent.color
 
-		anchors.right: mainmenu.right
-		anchors.rightMargin: mainmenu.width/3-this.width
-		anchors.bottom: mainmenu.bottom
-		anchors.bottomMargin: mainmenu.height/4-this.width
+		anchors.right: parent.right
+		anchors.rightMargin: parent.width/3-this.width
+		anchors.bottom: parent.bottom
+		anchors.bottomMargin: parent.height/4-this.width
 
 		MouseArea {
 			id: infoArea
