@@ -5,6 +5,7 @@ Rectangle {
 
 	signal playClicked
 	signal settingsClicked
+	signal infosClicked
 
 	Image {
 		id: logo

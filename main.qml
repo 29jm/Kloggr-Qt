@@ -16,6 +16,8 @@ Window {
 			anchors.fill: parent
 
 			onPlayClicked: parent.state = "Playing"
+			onSettingsClicked: parent.state = "Settings"
+			onInfosClicked: parent.state = "Infos"
 		}
 
 		GameArea {
@@ -24,18 +26,8 @@ Window {
 			anchors.fill: parent
 
 			onMainMenuClicked: {
-				console.log("mainmenu clicked");
-				parent.state = ""
-				state = ""
-			}
-
-			onVisibleChanged: {
-				if (visible) {
-					gamearea.kloggr.play();
-				}
-				else {
-					gamearea.kloggr.pause();
-				}
+				// Set the MainMenu as visible
+				parent.state = "";
 			}
 		}
 
@@ -44,6 +36,13 @@ Window {
 				name: "Playing"
 				PropertyChanges { target: mainmenu; visible: false }
 				PropertyChanges { target: gamearea; visible: true }
+				PropertyChanges { target: gamearea; state: "" }
+			},
+			State {
+				name: "Settings"
+			},
+			State {
+				name: "Infos"
 			}
 		]
 	}

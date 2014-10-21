@@ -11,17 +11,22 @@ Item {
 	signal scoreChanged()
 
 	function play() {
-		kloggr.state = Game.Kloggr.State.Playing;
+		if (kloggr.state != Game.Kloggr.State.Playing) {
+			console.log("play() called but game must be restarted");
+		}
+
 		timer.start();
 	}
 
 	function pause() {
+		console.log("pause()");
 		timer.stop();
 	}
 
 	function restart() {
-		timer.start();
+		console.log("restart()");
 		kloggr.restart();
+		timer.start();
 	}
 
 	function handleEvents(event) {
@@ -66,11 +71,13 @@ Item {
 		anchors.fill: parent
 		onPressed: {
 			inTouch = true;
+			mouse.accepted = true;
 			kloggr.handleTouchStart(mouse);
 		}
 
 		onPositionChanged: {
 			if (inTouch) {
+				mouse.accepted = true;
 				kloggr.handleTouchMove(mouse);
 			}
 		}
@@ -84,6 +91,14 @@ Item {
 		if (visible && kloggr === undefined) {
 			Game.kloggr = this;
 			kloggr = new Game.Kloggr(width, height);
+		}
+		else if (visible && kloggr.state == Game.Kloggr.Playing) {
+			// Resume after re-switching
+			play();
+		}
+		else if (!visible) {
+			// Pause when switching apps
+			pause();
 		}
 	}
 

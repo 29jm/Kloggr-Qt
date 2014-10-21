@@ -405,7 +405,7 @@ function Kloggr(width, height) {
 	this.height = height;
 
 	this.restart();
-	this.state = Kloggr.State.MainMenu;
+	this.state = Kloggr.State.Playing;
 }
 
 Kloggr.State = {

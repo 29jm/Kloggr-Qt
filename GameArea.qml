@@ -6,9 +6,11 @@ Rectangle {
 	property alias kloggr: kloggr
 	color: "#34495e"
 
-	signal pauseClicked
 	signal mainMenuClicked
-	signal playClicked
+
+	function play() {
+		kloggr.play();
+	}
 
 	Kloggr {
 		id: kloggr
@@ -61,16 +63,19 @@ Rectangle {
 		onClicked: {
 			parent.state = (parent.state == "" ? "Paused" : "")
 			if (parent.state == "Paused") {
-				pauseClicked()
+				kloggr.pause();
 			}
 			else {
-				playClicked()
+				kloggr.play();
 			}
 		}
 	}
 
-	onPlayClicked: kloggr.play();
-	onPauseClicked: kloggr.pause();
+	onVisibleChanged: {
+		if (visible) {
+			kloggr.play();
+		}
+	}
 
 	states: [
 		State {
