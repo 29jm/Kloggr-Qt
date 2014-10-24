@@ -4,22 +4,22 @@ import "js/kloggr.js" as Game
 
 Item {
 	property var kloggr: undefined
+
 	focus: true
 
 	signal dead
 	signal timerChanged()
-	signal scoreChanged()
+    signal scoreChanged()
 
 	function play() {
 		if (kloggr.state != Game.Kloggr.State.Playing) {
 			console.log("play() called but game must be restarted");
-		}
-
+        }
 		timer.start();
 	}
 
 	function pause() {
-		console.log("pause()");
+        console.log("pause()");
 		timer.stop();
 	}
 
@@ -27,6 +27,10 @@ Item {
 		console.log("restart()");
 		kloggr.restart();
 		timer.start();
+	}
+
+	function getScore() {
+		return kloggr.score
 	}
 
 	function handleEvents(event) {
