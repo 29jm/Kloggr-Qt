@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>ImageButton.qml</file>
         <file>MainMenu.qml</file>
         <file>GameArea.qml</file>
         <file>GameButton.qml</file>
@@ -16,5 +15,9 @@
         <file>assets/play.png</file>
         <file>assets/settings.png</file>
         <file>assets/logo.png</file>
+        <file>assets/pause.png</file>
+        <file>assets/gamePlay.png</file>
+        <file>assets/exit.png</file>
+        <file>assets/replay.png</file>
     </qresource>
 </RCC>
