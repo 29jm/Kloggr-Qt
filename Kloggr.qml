@@ -9,17 +9,17 @@ Item {
 
 	signal dead
 	signal timerChanged()
-    signal scoreChanged()
+	signal scoreChanged()
 
 	function play() {
 		if (kloggr.state != Game.Kloggr.State.Playing) {
 			console.log("play() called but game must be restarted");
-        }
+		}
 		timer.start();
 	}
 
 	function pause() {
-        console.log("pause()");
+		console.log("pause()");
 		timer.stop();
 	}
 
@@ -30,7 +30,7 @@ Item {
 	}
 
 	function getScore() {
-		return kloggr.score
+		return kloggr.score;
 	}
 
 	function handleEvents(event) {

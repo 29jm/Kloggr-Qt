@@ -2,8 +2,8 @@ import QtQuick 2.3
 import QtQuick.Window 2.0
 
 Window {
-	visible: true
 	id: window
+	visible: true
 	minimumWidth: 420
 	minimumHeight: 590
 
