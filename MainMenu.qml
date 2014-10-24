@@ -1,23 +1,22 @@
 import QtQuick 2.3
 
 Rectangle {
-	color: "#3498db"
+	color: "#1abc9c"
 
 	signal playClicked
 	signal settingsClicked
 	signal infosClicked
 
-	Image {
-		id: logo
-		source: "assets/logo.png"
-		fillMode: Image.PreserveAspectFit
-		smooth: true
-		width: parent.width/1.5
+    Text {
+        text: "Kloggr"
+        font.pointSize: 65
+        font.family: "Open Sans"
+        color: "white"
 
-		anchors.horizontalCenter: parent.horizontalCenter
-		anchors.top: parent.top
-		anchors.topMargin: 30
-	}
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 30
+    }
 
 	Rectangle {
 		id: playBtn

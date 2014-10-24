@@ -1,75 +1,136 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+
 
 Rectangle {
-	property alias kloggr: kloggr
+    id: gameArea
 	color: "#34495e"
+
+    property alias kloggr: kloggr
 
 	signal mainMenuClicked
 
-	function play() {
-		kloggr.play();
-	}
+    Kloggr {
+        id: kloggr
 
-	Kloggr {
-		id: kloggr
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
 
-		anchors.top: parent.top
-		anchors.left: parent.left
-		anchors.right: parent.right
-		anchors.bottom: pauseBtn.top
+        onDead: parent.state = "Dead"
+    }
 
-		onDead: parent.state = "Dead"
-	}
-
-	GameButton {
+    Rectangle {
 		id: restartBtn
-		text: "Restart"
+        height: parent.height/8
+        width: parent.height/8
+        radius: width*0.5
+        color: "#1abc9c"
 		visible: false
 
-		anchors.left: pauseBtn.right // Begins invisible on the right
-		anchors.margins: 5
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: parent.left
+        anchors.leftMargin: parent.width/4
 
-		onClicked: {
-			kloggr.restart();
-			parent.state = ""
-		}
+        Image {
+            anchors.fill: parent
+            id: restartImg
+            fillMode: Image.PreserveAspectFit
+            smooth: true
+            anchors.centerIn: parent
+            source: "assets/replay.png"
+        }
+
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                kloggr.restart();
+                gameArea.state = ""
+            }
+        }
 	}
 
-	GameButton {
-		id: exitBtn
-		text: "Exit"
+    Rectangle {
+        id: exitBtn
+        height: parent.height/8
+        width: parent.height/8
+        color: "#1abc9c"
+        radius: width*0.5
 		visible: false
 
-		anchors.left: restartBtn.right
-		anchors.margins: 5
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.right: parent.right
+        anchors.rightMargin: parent.width/4
 
-		onClicked: {
-			kloggr.restart();
-			mainMenuClicked()
-		}
+        Image {
+            anchors.fill: parent
+            id: exitImg
+            fillMode: Image.PreserveAspectFit
+            smooth: true
+            anchors.centerIn: parent
+            source: "assets/exit.png"
+        }
+
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                kloggr.restart();
+                mainMenuClicked()
+            }
+        }
 	}
 
-	GameButton {
-		id: pauseBtn
-		text: "Pause"
+    Rectangle {
+        id: pauseBtn
+        height: 40
+        width: 40
+        color: "#1abc9c"
+        opacity: 0.8
 
-		anchors.left: parent.left
-		anchors.right: parent.right
-		anchors.bottom: parent.bottom
-		anchors.margins: 5
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
 
-		onClicked: {
-			parent.state = (parent.state == "" ? "Paused" : "")
-			if (parent.state == "Paused") {
-				kloggr.pause();
-			}
-			else {
-				kloggr.play();
-			}
+
+        Image {
+            id: pauseImg
+            fillMode: Image.PreserveAspectFit
+            smooth: true
+            anchors.centerIn: parent
+            source: "assets/pause.png"
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                gameArea.state = (gameArea.state == "" ? "Paused" : "")
+                if (parent.state == "Paused") {
+                    kloggr.pause();
+                }
+                else {
+                    kloggr.play();
+                }
+            }
+        }
+    }
+
+    Rectangle {
+        id: score
+        width: parent.height/4
+        height: width
+        color: "#1abc9c"
+        radius: width/2
+        visible: false
+
+        anchors.centerIn: parent
+		Text {
+			color: "white"
+			text: kloggr.getScore();
+			anchors.centerIn: parent
+			font.pixelSize: 50
+			smooth: true
 		}
-	}
+    }
 
 	onVisibleChanged: {
 		if (visible) {
@@ -80,45 +141,22 @@ Rectangle {
 	states: [
 		State {
 			name: "Paused"
-			PropertyChanges { target: pauseBtn; text: "Play" }
-			// Restart button
-			PropertyChanges { target: restartBtn; visible: true }
-			AnchorChanges {
-				target: restartBtn
-				anchors.left: parent.left;
-				anchors.right: parent.horizontalCenter
-				anchors.top: undefined
-				anchors.bottom: pauseBtn.top
-			}
-
-			PropertyChanges { target: exitBtn; visible: true }
-			AnchorChanges {
-				target: exitBtn
-				anchors.left: restartBtn.right
-				anchors.right: parent.right
-				anchors.top: undefined
-				anchors.bottom: pauseBtn.top
-			}
+            //Display restartBtn
+            PropertyChanges {target: restartBtn; visible: true}
+            //Display exitBtn
+            PropertyChanges {target: exitBtn; visible: true}
 		},
 		State {
 			name: "Dead"
-			PropertyChanges { target: restartBtn; visible: true }
-			PropertyChanges { target: exitBtn; visible: true }
-			AnchorChanges {
-				target: exitBtn
-				anchors.left: parent.left
-				anchors.right: parent.horizontalCenter
-				anchors.verticalCenter: parent.verticalCenter
-			}
-
-			AnchorChanges {
-				target: restartBtn
-				anchors.left: parent.horizontalCenter
-				anchors.right: parent.right
-				anchors.verticalCenter: parent.verticalCenter
-			}
-
-			PropertyChanges { target: pauseBtn; visible: false}
+            //Display and move restart button onDead
+            PropertyChanges {target: restartBtn; visible: true;}
+            AnchorChanges {target: restartBtn; anchors.top: score.bottom; anchors.verticalCenter: undefined}
+            //Display and move exit button onDead
+            PropertyChanges {target: exitBtn; visible: true;}
+            AnchorChanges {target: exitBtn; anchors.top: score.bottom; anchors.verticalCenter: undefined}
+            //Display Score and hide pause button
+            PropertyChanges { target: score; visible: true;}
+            PropertyChanges { target: pauseBtn; visible: false}
 		}
 
 	]
