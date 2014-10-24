@@ -48,16 +48,16 @@ Square.prototype.newQmlObject = function(w, h, texture) {
 				Rectangle {\
 					width:"+w+";\
 					height:"+h+";\
-					color:\""+texture+"\";\
+                    color:\""+texture+"\";\
 				}";
 	}
 	else {
 		return "import QtQuick 2.3;\
-				Image {\
+                Image {\
 					source:\""+texture+"\";\
 					width:"+w+";\
-					height:"+h+";\
-				}";
+                    height:"+h+";\
+                }";
 	}
 };
 
@@ -124,8 +124,8 @@ Enemy.prototype = Object.create(Square.prototype);
  *	Drawn using color-filled rectangles
  */
 function BasicEnemy() {
-	Square.call(this, 15, 15, '#27AE60');
-	this.to_update = false;
+    Square.call(this, 15, 15, '#ffffff');
+    this.to_update = false;
 }
 
 BasicEnemy.prototype = Object.create(Enemy.prototype);
@@ -162,14 +162,14 @@ BasicEnemy.prototype.update = function(delta_t) {
  *	Drawn using a texture, can move, etc...
  */
 function Player() {
-	Square.call(this, 40, 40, '../assets/player.png');
+    Square.call(this, 40, 40, '../assets/player.png');
 
 	this.speed_x = 0;
 	this.speed_y = 0;
 	this.max_speed = 300;
 	this.slowing_speed = 0.7;
 	this.accel = 7;
-	this.dead = false;
+    this.dead = false;
 }
 
 Player.prototype = Object.create(Square.prototype);
@@ -219,7 +219,7 @@ Player.prototype.onCollide = function(gameobject) {
  *	Able to move, decelerate, change of behavior...
  */
 function Target() {
-	Square.call(this, 40, 40, '../assets/target.png');
+    Square.call(this, 20, 20, '#2ecc71');
 
 	this.State = {
 		Fix:"Fix",
@@ -233,7 +233,7 @@ function Target() {
 	this.slowing_speed = 0.7;
 
 	this.state = this.State.Fix;
-	this.accumulator = 0;
+    this.accumulator = 0;
 }
 
 Target.prototype = Object.create(Square.prototype);
