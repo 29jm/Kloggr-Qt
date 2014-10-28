@@ -17,7 +17,7 @@ Window {
 
 			onPlayClicked: parent.state = "Playing"
 			onSettingsClicked: parent.state = "Settings"
-			onInfosClicked: parent.state = "Infos"
+			onInfoClicked: parent.state = "Info"
 		}
 
 		GameArea {
