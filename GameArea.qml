@@ -21,64 +21,41 @@ Rectangle {
 		onDead: parent.state = "Dead"
 	}
 
-	Rectangle {
+	Buttons {
 		id: restartBtn
-		height: parent.height/8
-		width: parent.height/8
-		radius: width*0.5
-		color: "#1abc9c"
+		imgSource: "assets/replay.png"
+		imgId: "restartImg"
+		degree: -360
+		rectWidth: parent.height/8
+		imgWidth: 60
 		visible: false
 
 		anchors.verticalCenter: parent.verticalCenter
 		anchors.left: parent.left
 		anchors.leftMargin: parent.width/4
 
-		Image {
-			anchors.fill: parent
-			id: restartImg
-			fillMode: Image.PreserveAspectFit
-			smooth: true
-			anchors.centerIn: parent
-			source: "assets/replay.png"
-		}
-
-		MouseArea{
-			anchors.fill: parent
-			onClicked: {
-				kloggr.restart();
-				gameArea.state = ""
-			}
+		onBtnClicked: {
+			kloggr.restart();
+			gameArea.state = ""
 		}
 	}
 
-	Rectangle {
+	Buttons {
 		id: exitBtn
-		height: parent.height/8
-		width: parent.height/8
-		color: "#1abc9c"
-		radius: width*0.5
+		imgSource: "assets/exit.png"
+		imgId: "exitImg"
+		degree: 180
+		rectWidth: parent.height/8
+		imgWidth: 60
 		visible: false
 
 		anchors.verticalCenter: parent.verticalCenter
 		anchors.right: parent.right
 		anchors.rightMargin: parent.width/4
 
-		Image {
-			id: exitImg
-			source: "assets/exit.png"
-			fillMode: Image.PreserveAspectFit
-			smooth: true
-
-			anchors.fill: parent
-			anchors.centerIn: parent
-		}
-
-		MouseArea{
-			anchors.fill: parent
-			onClicked: {
-				kloggr.restart();
-				mainMenuClicked()
-			}
+		onBtnClicked: {
+			kloggr.restart();
+			mainMenuClicked()
 		}
 	}
 
@@ -131,6 +108,10 @@ Rectangle {
 			}
 		}
 
+		FontLoader {
+			id: roboto;
+			source: "assets/roboto/Roboto-Light.ttf"
+		}
 		Text {
 			id: score
 			color: "white"
@@ -138,6 +119,7 @@ Rectangle {
 			anchors.centerIn: parent
 			font.pixelSize: 50
 			smooth: true
+			font.family: roboto.name
 		}
 	}
 
@@ -154,6 +136,8 @@ Rectangle {
 			PropertyChanges {target: restartBtn; visible: true}
 			//Display exitBtn
 			PropertyChanges {target: exitBtn; visible: true}
+			//change pauseBtn img
+			PropertyChanges {target: pauseImg; source: "assets/gamePlay.png"}
 		},
 		State {
 			name: "Dead"
