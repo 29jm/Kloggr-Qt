@@ -48,16 +48,16 @@ Square.prototype.newQmlObject = function(w, h, texture) {
 				Rectangle {\
 					width:"+w+";\
 					height:"+h+";\
-                    color:\""+texture+"\";\
+					color:\""+texture+"\";\
 				}";
 	}
 	else {
 		return "import QtQuick 2.3;\
-                Image {\
+				Image {\
 					source:\""+texture+"\";\
 					width:"+w+";\
-                    height:"+h+";\
-                }";
+					height:"+h+";\
+				}";
 	}
 };
 
@@ -124,8 +124,8 @@ Enemy.prototype = Object.create(Square.prototype);
  *	Drawn using color-filled rectangles
  */
 function BasicEnemy() {
-    Square.call(this, 15, 15, '#ffffff');
-    this.to_update = false;
+	Square.call(this, 15, 15, '#ffffff');
+	this.to_update = false;
 }
 
 BasicEnemy.prototype = Object.create(Enemy.prototype);
@@ -162,14 +162,14 @@ BasicEnemy.prototype.update = function(delta_t) {
  *	Drawn using a texture, can move, etc...
  */
 function Player() {
-    Square.call(this, 40, 40, '../assets/player.png');
+	Square.call(this, 40, 40, '../assets/player.png');
 
 	this.speed_x = 0;
 	this.speed_y = 0;
 	this.max_speed = 300;
 	this.slowing_speed = 0.7;
 	this.accel = 7;
-    this.dead = false;
+	this.dead = false;
 }
 
 Player.prototype = Object.create(Square.prototype);
@@ -219,7 +219,7 @@ Player.prototype.onCollide = function(gameobject) {
  *	Able to move, decelerate, change of behavior...
  */
 function Target() {
-    Square.call(this, 20, 20, '#2ecc71');
+	Square.call(this, 20, 20, '#2ecc71');
 
 	this.State = {
 		Fix:"Fix",
@@ -233,7 +233,7 @@ function Target() {
 	this.slowing_speed = 0.7;
 
 	this.state = this.State.Fix;
-    this.accumulator = 0;
+	this.accumulator = 0;
 }
 
 Target.prototype = Object.create(Square.prototype);
@@ -324,7 +324,7 @@ Target.prototype.updateState = function(score) {
  * Its behavior is controlled through the State enumeration.
  */
 function Lazer() {
-	Square.call(this, 15, 120, "../assets/lazer.png");
+	Square.call(this, 15, kloggr.height, "../assets/lazer.png");
 
 	this.State = {
 		Inactive:"Inactive",
@@ -352,21 +352,22 @@ Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 		}
 	}
 
-	if (!player || !target) {
-		console.log("Lazer was spawned before player or target. FIX");
+	var found = false;
+	while (!found) {
 		Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
-		return;
-	}
+		this.y = 0;
+		var good = true;
+		for (var i = 0; i < gameobjects.length; i++) {
+			if (this.intersects(gameobjects[i])) {
+				good = false;
+				break;
+			}
+		}
 
-	if (Math.abs(player.x-target.y) < this.texture.width) {
-		console.log("Not enough room for Lazer, going full retard");
-		Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
-		return;
+		if (good) {
+			found = true;
+		}
 	}
-
-	this.height = max_y;
-	this.x = Math.abs(player.x+target.y-this.texture.width)/2;
-	this.y = 0;
 };
 
 Lazer.prototype.update = function(delta_t) {
@@ -379,12 +380,12 @@ Lazer.prototype.update = function(delta_t) {
 		this.accumulator = 0;
 		if (this.state == this.State.On) {
 			this.state = this.State.Off;
-			this.draw = function(context) {};
+			this.visible = false;
 			this.collidable = false;
 		}
 		else {
 			this.state = this.State.On;
-			this.draw = Square.prototype.drawImage;
+			this.visible = true;
 			this.collidable = true;
 		}
 	}
