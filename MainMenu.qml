@@ -7,11 +7,6 @@ Rectangle {
 	signal settingsClicked
 	signal infoClicked
 
-	FontLoader {
-		id: roboto;
-		source: "assets/roboto/Roboto-Light.ttf"
-	}
-
 	Image {
 		id: logo
 		fillMode: Image.PreserveAspectFit

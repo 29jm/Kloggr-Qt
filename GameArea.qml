@@ -62,7 +62,7 @@ Rectangle {
 		id: pauseBtn
 		height: 40
 		width: 40
-		color: "#1abc9c"
+		color: "#00bcd4"
 		opacity: 0.8
 
 		anchors.left: parent.left
@@ -94,7 +94,7 @@ Rectangle {
 		id: score_container
 		width: parent.height/4
 		height: width
-		color: "#1abc9c"
+		color: "#00bcd4"
 		radius: width/2
 		visible: false
 
