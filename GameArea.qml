@@ -24,7 +24,8 @@ Rectangle {
 		id: restartBtn
 		source: "assets/replay.png"
 		angle: -360
-		width: parent.height/8
+		btnWidth: parent.height/8
+		imgWidth: 50
 		visible: false
 
 		anchors.verticalCenter: parent.verticalCenter
@@ -42,7 +43,8 @@ Rectangle {
 		id: exitBtn
 		source: "assets/exit.png"
 		angle: 180
-		width: parent.height/8
+		btnWidth: parent.height/8
+		imgWidth: 50
 		visible: false
 
 		anchors.verticalCenter: parent.verticalCenter
@@ -106,7 +108,7 @@ Rectangle {
 
 		FontLoader {
 			id: roboto;
-			source: "assets/roboto/Roboto-Light.ttf"
+			source: "assets/ttf"
 		}
 
 		Text {
