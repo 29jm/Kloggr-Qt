@@ -18,5 +18,6 @@
         <file>assets/replay.png</file>
         <file>RoundButton.qml</file>
         <file>assets/play.png</file>
+        <file>assets/ttf</file>
     </qresource>
 </RCC>

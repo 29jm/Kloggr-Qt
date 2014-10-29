@@ -57,7 +57,7 @@ Square.prototype.newQmlObject = function(w, h, texture) {
 					source:\""+texture+"\";\
 					width:"+w+";\
                     height:"+h+";\
-                }";
+				}";
 	}
 };
 
@@ -124,7 +124,7 @@ Enemy.prototype = Object.create(Square.prototype);
  *	Drawn using color-filled rectangles
  */
 function BasicEnemy() {
-    Square.call(this, 15, 15, '#ffffff');
+	Square.call(this, 15, 15, '#e51c23');
     this.to_update = false;
 }
 

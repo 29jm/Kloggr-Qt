@@ -1,23 +1,21 @@
 import QtQuick 2.3
 
 Rectangle {
+	id: btn
 	signal clicked
 
 	property alias source: img.source
+	property alias imgWidth: img.width
+	property alias btnWidth: btn.width
 	property int angle: 360
 
-	width: img.width
 	height: width
 	radius: width/2
 	color: "white"
 
-	onWidthChanged: img.width = width;
-	onHeightChanged: img.height = height;
-
 	Image {
 		id: img
-		width: parent.width
-		height: parent.height
+		height: width
 		smooth: true
 		fillMode: Image.PreserveAspectFit
 		anchors.centerIn: parent

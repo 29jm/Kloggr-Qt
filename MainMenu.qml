@@ -29,7 +29,8 @@ Rectangle {
 		id: playBtn
 		source: "assets/play.png"
 		angle: 360
-		width: parent.height/4
+		btnWidth: parent.height/4
+		imgWidth: btnWidth
 		color: "#f1c40f"
 
 		anchors.horizontalCenter: parent.horizontalCenter
@@ -43,7 +44,8 @@ Rectangle {
 		id: settingsBtn
 		source: "assets/settings.png"
 		angle: 120
-		width: parent.height/8
+		btnWidth: parent.height/8
+		imgWidth: 50
 
 		anchors.left: parent.left
 		anchors.leftMargin: parent.width/3-this.width
@@ -58,7 +60,8 @@ Rectangle {
 		source: "assets/info.png"
 		id: infoBtn
 		angle: 360
-		width: parent.height/8
+		btnWidth: parent.height/8
+		imgWidth: 50
 
 		anchors.right: parent.right
 		anchors.rightMargin: parent.width/3-this.width
