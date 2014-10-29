@@ -21,13 +21,14 @@ Rectangle {
 		onDead: parent.state = "Dead"
 	}
 
+	//restart button
 	Buttons {
 		id: restartBtn
 		imgSource: "assets/replay.png"
 		imgId: "restartImg"
 		degree: -360
 		rectWidth: parent.height/8
-		imgWidth: 60
+		imgWidth: 50
 		visible: false
 
 		anchors.verticalCenter: parent.verticalCenter
@@ -40,13 +41,14 @@ Rectangle {
 		}
 	}
 
+	//exit button
 	Buttons {
 		id: exitBtn
 		imgSource: "assets/exit.png"
 		imgId: "exitImg"
 		degree: 180
 		rectWidth: parent.height/8
-		imgWidth: 60
+		imgWidth: 50
 		visible: false
 
 		anchors.verticalCenter: parent.verticalCenter
@@ -59,6 +61,7 @@ Rectangle {
 		}
 	}
 
+	//pause button
 	Rectangle {
 		id: pauseBtn
 		height: 40

@@ -12,16 +12,19 @@ Rectangle {
 		source: "assets/roboto/Roboto-Light.ttf"
 	}
 
-    Text {
-        text: "Kloggr"
-        font.pointSize: 65
-		font.family: roboto.name
-        color: "white"
+	Image {
+		id: logo
+		fillMode: Image.PreserveAspectFit
+		smooth: true
+		source: "assets/logo.png"
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 30
-    }
+		anchors.horizontalCenter: parent.horizontalCenter
+		anchors.top: parent.top
+		anchors.topMargin: 20
+		anchors.left: parent.left
+		anchors.right: parent.right
+
+	}
 
 	//play button
 	Buttons {
@@ -44,7 +47,7 @@ Rectangle {
 		imgId: "settingsImg"
 		degree: 120
 		rectWidth: parent.height/8
-		imgWidth: 60
+		imgWidth: 50
 
 		anchors.left: parent.left
 		anchors.leftMargin: parent.width/3-this.width
@@ -60,7 +63,7 @@ Rectangle {
 		imgId: "infoImg"
 		degree: 360
 		rectWidth: parent.height/8
-		imgWidth: 60
+		imgWidth: 50
 
 		anchors.right: parent.right
 		anchors.rightMargin: parent.width/3-this.width
