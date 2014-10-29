@@ -16,7 +16,7 @@
         <file>assets/gamePlay.png</file>
         <file>assets/exit.png</file>
         <file>assets/replay.png</file>
-        <file>Buttons.qml</file>
+        <file>RoundButton.qml</file>
         <file>assets/play.png</file>
     </qresource>
 </RCC>

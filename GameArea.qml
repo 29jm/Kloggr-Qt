@@ -3,7 +3,6 @@ import QtQuick.Controls 1.2
 
 
 Rectangle {
-	id: gameArea
 	color: "#34495e"
 
 	property alias kloggr: kloggr
@@ -21,41 +20,36 @@ Rectangle {
 		onDead: parent.state = "Dead"
 	}
 
-	//restart button
-	Buttons {
+	RoundButton {
 		id: restartBtn
-		imgSource: "assets/replay.png"
-		imgId: "restartImg"
-		degree: -360
-		rectWidth: parent.height/8
-		imgWidth: 50
+		source: "assets/replay.png"
+		angle: -360
+		width: parent.height/8
 		visible: false
 
 		anchors.verticalCenter: parent.verticalCenter
 		anchors.left: parent.left
 		anchors.leftMargin: parent.width/4
 
-		onBtnClicked: {
+		onClicked: {
 			kloggr.restart();
-			gameArea.state = ""
+			parent.state = ""
 		}
 	}
 
 	//exit button
-	Buttons {
+	RoundButton {
 		id: exitBtn
-		imgSource: "assets/exit.png"
-		imgId: "exitImg"
-		degree: 180
-		rectWidth: parent.height/8
-		imgWidth: 50
+		source: "assets/exit.png"
+		angle: 180
+		width: parent.height/8
 		visible: false
 
 		anchors.verticalCenter: parent.verticalCenter
 		anchors.right: parent.right
 		anchors.rightMargin: parent.width/4
 
-		onBtnClicked: {
+		onClicked: {
 			kloggr.restart();
 			mainMenuClicked()
 		}
@@ -72,7 +66,6 @@ Rectangle {
 		anchors.left: parent.left
 		anchors.bottom: parent.bottom
 
-
 		Image {
 			id: pauseImg
 			fillMode: Image.PreserveAspectFit
@@ -84,8 +77,8 @@ Rectangle {
 		MouseArea {
 			anchors.fill: parent
 			onClicked: {
-				gameArea.state = (gameArea.state == "" ? "Paused" : "")
-				if (parent.state == "Paused") {
+				parent.parent.state = (parent.parent.state == "" ? "Paused" : "");
+				if (parent.parent.state == "Paused") {
 					kloggr.pause();
 				}
 				else {
@@ -115,6 +108,7 @@ Rectangle {
 			id: roboto;
 			source: "assets/roboto/Roboto-Light.ttf"
 		}
+
 		Text {
 			id: score
 			color: "white"
@@ -154,6 +148,5 @@ Rectangle {
 			PropertyChanges { target: score_container; visible: true; }
 			PropertyChanges { target: pauseBtn; visible: false }
 		}
-
 	]
 }
