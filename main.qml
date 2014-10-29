@@ -21,7 +21,7 @@ Window {
 		}
 
 		GameArea {
-			id: gamearea
+			id: gameArea
 			visible: false
 			anchors.fill: parent
 
@@ -35,8 +35,8 @@ Window {
 			State {
 				name: "Playing"
 				PropertyChanges { target: mainmenu; visible: false }
-				PropertyChanges { target: gamearea; visible: true }
-				PropertyChanges { target: gamearea; state: "" }
+				PropertyChanges { target: gameArea; visible: true }
+				PropertyChanges { target: gameArea; state: "" }
 			},
 			State {
 				name: "Settings"

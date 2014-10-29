@@ -15,6 +15,7 @@ Item {
 		if (kloggr.state != Game.Kloggr.State.Playing) {
 			console.log("play() called but game must be restarted");
 		}
+		console.log("play()");
 		timer.start();
 	}
 

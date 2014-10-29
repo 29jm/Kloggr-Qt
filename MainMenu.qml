@@ -18,58 +18,53 @@ Rectangle {
 		smooth: true
 		source: "assets/logo.png"
 
-		anchors.horizontalCenter: parent.horizontalCenter
 		anchors.top: parent.top
 		anchors.topMargin: 20
 		anchors.left: parent.left
 		anchors.right: parent.right
-
 	}
 
 	//play button
-	Buttons {
-		imgSource: "assets/play.png"
-		imgId: "playImg"
-		degree: 360
-		rectWidth: parent.height/4
-		imgWidth: parent.height/4
+	RoundButton {
+		id: playBtn
+		source: "assets/play.png"
+		angle: 360
+		width: parent.height/4
 		color: "#f1c40f"
 
 		anchors.horizontalCenter: parent.horizontalCenter
 		anchors.verticalCenter: parent.verticalCenter
 
-		onBtnClicked: playClicked()
+		onClicked: playClicked()
 	}
 
 	// settings button
-	Buttons {
-		imgSource: "assets/settings.png"
-		imgId: "settingsImg"
-		degree: 120
-		rectWidth: parent.height/8
-		imgWidth: 50
+	RoundButton {
+		id: settingsBtn
+		source: "assets/settings.png"
+		angle: 120
+		width: parent.height/8
 
 		anchors.left: parent.left
 		anchors.leftMargin: parent.width/3-this.width
 		anchors.bottom: parent.bottom
 		anchors.bottomMargin: parent.height/4-this.width
 
-		onBtnClicked: settingsClicked()
+		onClicked: settingsClicked()
 	}
 
 	//info button
-	Buttons {
-		imgSource: "assets/info.png"
-		imgId: "infoImg"
-		degree: 360
-		rectWidth: parent.height/8
-		imgWidth: 50
+	RoundButton {
+		source: "assets/info.png"
+		id: infoBtn
+		angle: 360
+		width: parent.height/8
 
 		anchors.right: parent.right
 		anchors.rightMargin: parent.width/3-this.width
 		anchors.bottom: parent.bottom
 		anchors.bottomMargin: parent.height/4-this.width
 
-		onBtnClicked: infoClicked()
+		onClicked: infoClicked()
 	}
 }

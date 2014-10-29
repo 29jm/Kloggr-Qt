@@ -1,49 +1,50 @@
 import QtQuick 2.3
 
 Rectangle {
-	id: buttonRect
+	signal clicked
 
-	signal btnClicked()
+	property alias source: img.source
+	property int angle: 360
 
-	property string imgSource
-	property string imgId
-	property int degree
-	property int rectWidth
-	property int imgWidth
-
-
-	width: rectWidth
+	width: img.width
 	height: width
 	radius: width/2
 	color: "white"
 
+	onWidthChanged: img.width = width;
+	onHeightChanged: img.height = height;
+
 	Image {
-		id: imgId
-		width: imgWidth
-		height: width
+		id: img
+		width: parent.width
+		height: parent.height
 		smooth: true
-		source: buttonRect.imgSource
 		fillMode: Image.PreserveAspectFit
 		anchors.centerIn: parent
 	}
+
 	MouseArea {
 		id: hoverArea
 		anchors.fill: parent
 		hoverEnabled: true
-		onClicked: btnClicked()
+		onClicked: parent.clicked()
 	}
 
 	states: State {
 		name: "rotated"; when: hoverArea.containsMouse == true
 		PropertyChanges {
-			target: imgId
-			rotation: degree
+			target: img
+			rotation: angle
 		}
 	}
 
 	transitions: Transition {
 		from: ""; to: "rotated"
 		reversible: true
-		NumberAnimation { property: "rotation"; duration: 500; easing.type: Easing.InOutQuad }
+		NumberAnimation {
+			property: "rotation"
+			duration: 500
+			easing.type: Easing.InOutQuad
+		}
 	}
 }
