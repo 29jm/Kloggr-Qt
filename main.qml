@@ -31,10 +31,21 @@ Window {
 			}
 		}
 
+		Info {
+			id: infoPage
+			visible: false
+			anchors.fill: parent
+
+			onMainMenuClicked: {
+				// Set the MainMenu as visible
+				parent.state = "";
+			}
+		}
+
 		states: [
 			State {
 				name: "Playing"
-				PropertyChanges { target: mainmenu; visible: false }
+				PropertyChanges { target: mainmenu; visible: false}
 				PropertyChanges { target: gameArea; visible: true }
 				PropertyChanges { target: gameArea; state: "" }
 			},
@@ -42,7 +53,10 @@ Window {
 				name: "Settings"
 			},
 			State {
-				name: "Infos"
+				name: "Info"
+				PropertyChanges { target: mainmenu; visible: false }
+				PropertyChanges { target: gameArea; visible: false }
+				PropertyChanges { target: infoPage; visible: true }
 			}
 		]
 	}

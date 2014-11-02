@@ -19,5 +19,11 @@
         <file>RoundButton.qml</file>
         <file>assets/play.png</file>
         <file>assets/ttf</file>
+        <file>Info.qml</file>
+        <file>assets/devs.png</file>
+        <file>assets/twitter.png</file>
+        <file>assets/gplus.png</file>
+        <file>assets/github.png</file>
+        <file>assets/facebook.png</file>
     </qresource>
 </RCC>

@@ -358,7 +358,7 @@ Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 		this.y = 0;
 		var good = true;
 		for (var i = 0; i < gameobjects.length; i++) {
-			if (this.intersects(gameobjects[i])) {
+			if (this.intersect(gameobjects[i])) {
 				good = false;
 				break;
 			}
