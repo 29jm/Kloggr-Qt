@@ -1,9 +1,11 @@
 import QtQuick 2.3
+import QtQuick.Window 2.0
 
 import "js/kloggr.js" as Game
 
 Item {
 	property var kloggr: undefined
+	property var pixelDensity: Screen.pixelDensity
 
 	focus: true
 

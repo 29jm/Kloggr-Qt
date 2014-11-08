@@ -48,16 +48,16 @@ Square.prototype.newQmlObject = function(w, h, texture) {
 				Rectangle {\
 					width:"+w+";\
 					height:"+h+";\
-                    color:\""+texture+"\";\
+					color:\""+texture+"\";\
 				}";
 	}
 	else {
 		return "import QtQuick 2.3;\
-                Image {\
+				Image {\
 					source:\""+texture+"\";\
 					width:"+w+";\
-                    height:"+h+";\
-                }";
+					height:"+h+";\
+				}";
 	}
 };
 
@@ -124,8 +124,8 @@ Enemy.prototype = Object.create(Square.prototype);
  *	Drawn using color-filled rectangles
  */
 function BasicEnemy() {
-    Square.call(this, 15, 15, '#ffffff');
-    this.to_update = false;
+	Square.call(this, 15, 15, '#ffffff');
+	this.to_update = false;
 }
 
 BasicEnemy.prototype = Object.create(Enemy.prototype);
@@ -162,14 +162,14 @@ BasicEnemy.prototype.update = function(delta_t) {
  *	Drawn using a texture, can move, etc...
  */
 function Player() {
-    Square.call(this, 40, 40, '../assets/player.png');
+	Square.call(this, 40, 40, '../assets/player.png');
 
 	this.speed_x = 0;
 	this.speed_y = 0;
 	this.max_speed = 300;
 	this.slowing_speed = 0.7;
 	this.accel = 7;
-    this.dead = false;
+	this.dead = false;
 }
 
 Player.prototype = Object.create(Square.prototype);
@@ -219,7 +219,7 @@ Player.prototype.onCollide = function(gameobject) {
  *	Able to move, decelerate, change of behavior...
  */
 function Target() {
-    Square.call(this, 20, 20, '#2ecc71');
+	Square.call(this, 20, 20, '#2ecc71');
 
 	this.State = {
 		Fix:"Fix",
@@ -233,7 +233,7 @@ function Target() {
 	this.slowing_speed = 0.7;
 
 	this.state = this.State.Fix;
-    this.accumulator = 0;
+	this.accumulator = 0;
 }
 
 Target.prototype = Object.create(Square.prototype);
@@ -340,8 +340,11 @@ Lazer.prototype = Object.create(Enemy.prototype);
 
 // The lazer spawns between the payer and the target
 Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
+	this.height = max_y;
+
 	var player;
 	var target;
+
 	var len = gameobjects.length;
 	for (var i = 0; i < len; i++) {
 		if (gameobjects[i] instanceof Player) {
@@ -352,21 +355,18 @@ Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 		}
 	}
 
-	if (!player || !target) {
-		console.log("Lazer was spawned before player or target. FIX");
+	var found = false;
+	while (!found) {
 		Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
-		return;
-	}
+		this.y = 0;
 
-	if (Math.abs(player.x-target.y) < this.texture.width) {
-		console.log("Not enough room for Lazer, going full retard");
-		Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
-		return;
+		if (this.intersect(player) || this.intersect(target)) {
+			continue;
+		}
+		else {
+			break;
+		}
 	}
-
-	this.height = max_y;
-	this.x = Math.abs(player.x+target.y-this.texture.width)/2;
-	this.y = 0;
 };
 
 Lazer.prototype.update = function(delta_t) {
@@ -379,12 +379,12 @@ Lazer.prototype.update = function(delta_t) {
 		this.accumulator = 0;
 		if (this.state == this.State.On) {
 			this.state = this.State.Off;
-			this.draw = function(context) {};
+			this.visible = false;
 			this.collidable = false;
 		}
 		else {
 			this.state = this.State.On;
-			this.draw = Square.prototype.drawImage;
+			this.visible = true;
 			this.collidable = true;
 		}
 	}
@@ -431,7 +431,7 @@ Kloggr.prototype.restart = function() {
 	this.touchmoves = [0, 0];
 	this.score = 0;
 	this.counter = 0;
-	this.enemy_density = 0.005;
+	this.enemy_density = 3;
 
 	// Spawn gameobjects
 	this.respawnAll(true);
@@ -566,7 +566,7 @@ Kloggr.prototype.collisionDetection = function() {
 
 	if (Square.prototype.intersect.call(this.player, this.target)) {
 		this.score += 1;
-		this.enemy_density += 0.001;
+		this.enemy_density += 0.5;
 
 		// Kloggr.score has its own setter that calls
 		// Kloggr.newEvents, so no need for it here
@@ -614,8 +614,11 @@ Kloggr.prototype.getEvents = function() {
 
 // Return the the number of enemies to create
 Kloggr.prototype.numberOfEnemies = function() {
+	var screen_w = (this.width/kloggr.pixelDensity)/10;
+	var screen_h = (this.height/kloggr.pixelDensity)/10;
+
 	var enemy_ratio = this.enemy_density/100;
-	var screen_area = this.width*this.height;
+	var screen_area = screen_w*screen_h;
 
 	return Math.round(enemy_ratio*screen_area);
 };
