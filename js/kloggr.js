@@ -355,8 +355,7 @@ Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 		}
 	}
 
-	var found = false;
-	while (!found) {
+	while (true) {
 		Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
 		this.y = 0;
 
@@ -600,8 +599,8 @@ Kloggr.prototype.draw = function(context) {
  */
 Kloggr.prototype.newEvent = function(evt, val) {
 	this.events.push({
-		name:evt,
-		value:val
+		name: evt,
+		value: val
 	});
 };
 
@@ -611,6 +610,25 @@ Kloggr.prototype.getEvents = function() {
 
 	return tmp;
 };
+
+Kloggr.prototype.updateByScore = function(value) {
+	if (!this.gameobjects) {
+		return;
+	}
+
+	// Allow objects to change based on score
+	for (var i = 0; i < this.gameobjects.length; i++) {
+		if (this.gameobjects[i].updateState) {
+			this.gameobjects[i].updateState(value);
+		}
+	}
+
+	switch (value) {
+	case 10:
+		this.gameobjects.push(new Lazer());
+		break;
+	}
+}
 
 // Return the the number of enemies to create
 Kloggr.prototype.numberOfEnemies = function() {
@@ -633,22 +651,7 @@ Object.defineProperty(Kloggr.prototype, 'score', {
 		this._score = value;
 		this.newEvent(Kloggr.Events.ScoreChanged, value);
 
-		// Allow objects to change state
-		if (!this.gameobjects) {
-			return;
-		}
-
-		for (var i = 0; i < this.gameobjects.length; i++) {
-			if (this.gameobjects[i].updateState) {
-				this.gameobjects[i].updateState(value);
-			}
-		}
-
-		switch (value) {
-		case 10:
-			this.gameobjects.push(new Lazer());
-			break;
-		}
+		this.updateByScore(value);
 	}
 });
 
