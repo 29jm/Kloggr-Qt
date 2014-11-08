@@ -17,11 +17,22 @@ Window {
 
 			onPlayClicked: parent.state = "Playing"
 			onSettingsClicked: parent.state = "Settings"
-			onInfosClicked: parent.state = "Infos"
+			onInfoClicked: parent.state = "Info"
 		}
 
 		GameArea {
-			id: gamearea
+			id: gameArea
+			visible: false
+			anchors.fill: parent
+
+			onMainMenuClicked: {
+				// Set the MainMenu as visible
+				parent.state = "";
+			}
+		}
+
+		Info {
+			id: infoPage
 			visible: false
 			anchors.fill: parent
 
@@ -34,15 +45,18 @@ Window {
 		states: [
 			State {
 				name: "Playing"
-				PropertyChanges { target: mainmenu; visible: false }
-				PropertyChanges { target: gamearea; visible: true }
-				PropertyChanges { target: gamearea; state: "" }
+				PropertyChanges { target: mainmenu; visible: false}
+				PropertyChanges { target: gameArea; visible: true }
+				PropertyChanges { target: gameArea; state: "" }
 			},
 			State {
 				name: "Settings"
 			},
 			State {
-				name: "Infos"
+				name: "Info"
+				PropertyChanges { target: mainmenu; visible: false }
+				PropertyChanges { target: gameArea; visible: false }
+				PropertyChanges { target: infoPage; visible: true }
 			}
 		]
 	}

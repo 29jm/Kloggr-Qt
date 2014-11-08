@@ -124,7 +124,7 @@ Enemy.prototype = Object.create(Square.prototype);
  *	Drawn using color-filled rectangles
  */
 function BasicEnemy() {
-	Square.call(this, 15, 15, '#ffffff');
+	Square.call(this, 15, 15, '#e51c23');
 	this.to_update = false;
 }
 
@@ -324,7 +324,7 @@ Target.prototype.updateState = function(score) {
  * Its behavior is controlled through the State enumeration.
  */
 function Lazer() {
-	Square.call(this, 15, 120, "../assets/lazer.png");
+	Square.call(this, 15, kloggr.height, "../assets/lazer.png");
 
 	this.State = {
 		Inactive:"Inactive",

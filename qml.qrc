@@ -3,21 +3,27 @@
         <file>main.qml</file>
         <file>MainMenu.qml</file>
         <file>GameArea.qml</file>
-        <file>GameButton.qml</file>
         <file>main.cpp</file>
         <file>js/kloggr.js</file>
         <file>Kloggr.qml</file>
         <file>assets/deadPlayer.png</file>
         <file>assets/player.png</file>
-        <file>assets/target.png</file>
         <file>assets/lazer.png</file>
         <file>assets/info.png</file>
-        <file>assets/play.png</file>
         <file>assets/settings.png</file>
         <file>assets/logo.png</file>
         <file>assets/pause.png</file>
         <file>assets/gamePlay.png</file>
         <file>assets/exit.png</file>
         <file>assets/replay.png</file>
+        <file>RoundButton.qml</file>
+        <file>assets/play.png</file>
+        <file>assets/ttf</file>
+        <file>Info.qml</file>
+        <file>assets/devs.png</file>
+        <file>assets/twitter.png</file>
+        <file>assets/gplus.png</file>
+        <file>assets/github.png</file>
+        <file>assets/facebook.png</file>
     </qresource>
 </RCC>

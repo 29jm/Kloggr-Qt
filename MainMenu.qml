@@ -1,145 +1,68 @@
 import QtQuick 2.3
 
 Rectangle {
-	color: "#1abc9c"
+	color: "#00bcd4"
 
 	signal playClicked
 	signal settingsClicked
-	signal infosClicked
+	signal infoClicked
 
-    Text {
-        text: "Kloggr"
-        font.pointSize: 65
-        font.family: "Open Sans"
-        color: "white"
+	Image {
+		id: logo
+		fillMode: Image.PreserveAspectFit
+		smooth: true
+		source: "assets/logo.png"
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 30
-    }
+		anchors.top: parent.top
+		anchors.topMargin: 20
+		anchors.left: parent.left
+		anchors.right: parent.right
+	}
 
-	Rectangle {
+	//play button
+	RoundButton {
 		id: playBtn
-		width: parent.height/4; height: width
-		radius: width*0.5
+		source: "assets/play.png"
+		angle: 360
+		btnWidth: parent.height/4
+		imgWidth: btnWidth
 		color: "#f1c40f"
 
 		anchors.horizontalCenter: parent.horizontalCenter
 		anchors.verticalCenter: parent.verticalCenter
 
-		MouseArea {
-			id: playArea
-			hoverEnabled: true
-			anchors.fill: parent
-
-			onClicked: playClicked()
-		}
-
-		Image {
-			id: playImg
-			fillMode: Image.PreserveAspectFit
-			smooth: true
-			width: parent.width
-			height: parent.height
-			source: "assets/play.png"
-		}
-
-		states: State {
-			name: "rotated"; when: playArea.containsMouse == true
-			PropertyChanges {
-				target: playImg; rotation: 360
-			}
-		}
-
-		transitions: Transition {
-			from: ""; to: "rotated"
-			reversible: true
-			NumberAnimation { property: "rotation"; duration: 500; easing.type: Easing.InOutQuad }
-		}
+		onClicked: playClicked()
 	}
 
 	// settings button
-	Rectangle {
-		id: optionBtn
-		width: playBtn.width/2; height: width
-		radius: width*0.5
-		color: parent.color
+	RoundButton {
+		id: settingsBtn
+		source: "assets/settings.png"
+		angle: 120
+		btnWidth: parent.height/8
+		imgWidth: 50
 
 		anchors.left: parent.left
 		anchors.leftMargin: parent.width/3-this.width
 		anchors.bottom: parent.bottom
 		anchors.bottomMargin: parent.height/4-this.width
 
-		MouseArea {
-			id: settingsArea
-			hoverEnabled: true
-			anchors.fill: parent
-
-			onClicked: settingsClicked()
-		}
-
-		Image {
-			id: settingsImg
-			fillMode: Image.PreserveAspectFit
-			smooth: true
-			width: parent.width
-			height: parent.height
-			source: "assets/settings.png"
-		}
-
-		states: State {
-			name: "rotated"; when: settingsArea.containsMouse == true
-			PropertyChanges {
-				target: settingsImg; rotation: 120
-			}
-		}
-
-		transitions: Transition {
-			from: ""; to: "rotated"
-			reversible: true
-			NumberAnimation { property: "rotation"; duration: 500; easing.type: Easing.InOutQuad }
-		}
+		onClicked: settingsClicked()
 	}
 
 	//info button
-	Rectangle {
+	RoundButton {
+		source: "assets/info.png"
 		id: infoBtn
-		width: playBtn.width/2; height: width
-		radius: width*0.5
-		color: parent.color
+		angle: 360
+		btnWidth: parent.height/8
+		imgWidth: 50
 
 		anchors.right: parent.right
 		anchors.rightMargin: parent.width/3-this.width
 		anchors.bottom: parent.bottom
 		anchors.bottomMargin: parent.height/4-this.width
 
-		MouseArea {
-			id: infoArea
-			hoverEnabled: true
-			anchors.fill: parent
-
-			onClicked: settingsClicked()
-		}
-
-		Image {
-			id: infoImg
-			fillMode: Image.PreserveAspectFit
-			smooth: true
-			width: parent.width
-			height: parent.height
-			source: "assets/info.png"
-		}
-		states: State {
-			name: "rotated"; when: infoArea.containsMouse == true
-			PropertyChanges {
-				target: infoImg; rotation: 360
-			}
-		}
-
-		transitions: Transition {
-			from: ""; to: "rotated"
-			reversible: true
-			NumberAnimation { property: "rotation"; duration: 500; easing.type: Easing.InOutQuad }
-		}
+		onClicked: infoClicked()
 	}
 }
