@@ -4,17 +4,19 @@ var kloggr;
 
 /*	Square base class.
  *	Used by BasicEnemy, Player and Target
+ *  The size of the square is expressed in millimeters
  */
 function Square(w, h, texture) {
 	this.m_x = 0;
 	this.m_y = 0;
-	this.m_width = w;
-	this.m_height = h;
+	this.m_width = w*kloggr.pixelDensity;
+	this.m_height = h*kloggr.pixelDensity;
 	this.m_visible = true;
 	this.texture = texture;
 	this.collidable = true;
 
-	this.object = Qt.createQmlObject(this.newQmlObject(w, h, texture), kloggr, "Square");
+	this.object = Qt.createQmlObject(
+		this.newQmlObject(this.m_width, this.m_height, texture), kloggr, "Square");
 }
 
 Object.defineProperty(Square.prototype, "x", {
@@ -124,7 +126,7 @@ Enemy.prototype = Object.create(Square.prototype);
  *	Drawn using color-filled rectangles
  */
 function BasicEnemy() {
-	Square.call(this, 15, 15, '#e51c23');
+	Square.call(this, 4.3, 4.3, '#e51c23');
 	this.to_update = false;
 }
 
@@ -162,7 +164,7 @@ BasicEnemy.prototype.update = function(delta_t) {
  *	Drawn using a texture, can move, etc...
  */
 function Player() {
-	Square.call(this, 40, 40, '../assets/player.png');
+	Square.call(this, 11.4, 11.4, '../assets/player.png');
 
 	this.speed_x = 0;
 	this.speed_y = 0;
@@ -219,7 +221,7 @@ Player.prototype.onCollide = function(gameobject) {
  *	Able to move, decelerate, change of behavior...
  */
 function Target() {
-	Square.call(this, 20, 20, '#2ecc71');
+	Square.call(this, 5.7, 5.7, '#2ecc71');
 
 	this.State = {
 		Fix:"Fix",
@@ -324,7 +326,7 @@ Target.prototype.updateState = function(score) {
  * Its behavior is controlled through the State enumeration.
  */
 function Lazer() {
-	Square.call(this, 15, kloggr.height, "../assets/lazer.png");
+	Square.call(this, 4.4, kloggr.height, "../assets/lazer.png");
 
 	this.State = {
 		Inactive:"Inactive",
@@ -332,6 +334,7 @@ function Lazer() {
 		Off:"Off"
 	};
 
+	this.height = kloggr.height;
 	this.accumulator = 0;
 	this.state = this.State.On;
 }
