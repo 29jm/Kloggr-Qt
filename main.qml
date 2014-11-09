@@ -22,8 +22,9 @@ Window {
 
 		GameArea {
 			id: gameArea
-			visible: false
-			anchors.fill: parent
+			anchors.top: parent.top
+			anchors.bottom: parent.bottom
+			anchors.left: parent.right
 
 			onMainMenuClicked: {
 				// Set the MainMenu as visible
@@ -33,8 +34,9 @@ Window {
 
 		Info {
 			id: infoPage
-			visible: false
-			anchors.fill: parent
+			anchors.top: parent.top
+			anchors.bottom: parent.bottom
+			anchors.left: parent.right
 
 			onMainMenuClicked: {
 				// Set the MainMenu as visible
@@ -45,8 +47,12 @@ Window {
 		states: [
 			State {
 				name: "Playing"
-				PropertyChanges { target: mainmenu; visible: false}
-				PropertyChanges { target: gameArea; visible: true }
+				AnchorChanges {
+					target: gameArea
+					anchors.left: parent.left
+					anchors.right: parent.right
+				}
+
 				PropertyChanges { target: gameArea; state: "" }
 			},
 			State {
@@ -54,10 +60,19 @@ Window {
 			},
 			State {
 				name: "Info"
-				PropertyChanges { target: mainmenu; visible: false }
-				PropertyChanges { target: gameArea; visible: false }
-				PropertyChanges { target: infoPage; visible: true }
+				AnchorChanges {
+					target: infoPage
+					anchors.left: parent.left
+					anchors.right: parent.right
+				}
 			}
 		]
+
+		transitions: Transition {
+			AnchorAnimation {
+				duration: 500
+				easing.type: Easing.InOutBack
+			}
+		}
 	}
 }

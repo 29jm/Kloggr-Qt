@@ -132,11 +132,11 @@ Rectangle {
 		State {
 			name: "Paused"
 			//Display restartBtn
-			PropertyChanges {target: restartBtn; visible: true}
+			PropertyChanges { target: restartBtn; visible: true}
 			//Display exitBtn
-			PropertyChanges {target: exitBtn; visible: true}
+			PropertyChanges { target: exitBtn; visible: true}
 			//change pauseBtn img
-			PropertyChanges {target: pauseImg; source: "assets/gamePlay.png"}
+			PropertyChanges { target: pauseImg; source: "assets/gamePlay.png"}
 		},
 		State {
 			name: "Dead"
