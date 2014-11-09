@@ -22,6 +22,8 @@ Window {
 
 		GameArea {
 			id: gameArea
+			visible: false
+
 			anchors.top: parent.top
 			anchors.bottom: parent.bottom
 			anchors.left: parent.right
@@ -34,6 +36,8 @@ Window {
 
 		Info {
 			id: infoPage
+			visible: false
+
 			anchors.top: parent.top
 			anchors.bottom: parent.bottom
 			anchors.left: parent.right
@@ -53,18 +57,21 @@ Window {
 					anchors.right: parent.right
 				}
 
-				PropertyChanges { target: gameArea; state: "" }
+				PropertyChanges { target: gameArea; visible: true; state: "" }
 			},
 			State {
 				name: "Settings"
 			},
 			State {
 				name: "Info"
+
 				AnchorChanges {
 					target: infoPage
 					anchors.left: parent.left
 					anchors.right: parent.right
 				}
+
+				PropertyChanges { target: infoPage; visible: true }
 			}
 		]
 
