@@ -1,7 +1,6 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 
-
 Rectangle {
 	color: "#34495e"
 
@@ -60,8 +59,8 @@ Rectangle {
 	//pause button
 	Rectangle {
 		id: pauseBtn
-		height: 40
-		width: 40
+		height: 6*kloggr.pixelDensity
+		width: height
 		color: "#00bcd4"
 		opacity: 0.8
 
