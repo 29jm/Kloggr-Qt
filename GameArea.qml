@@ -2,6 +2,7 @@ import QtQuick 2.3
 import QtQuick.Controls 1.2
 
 Rectangle {
+	id: gameArea
 	color: "#34495e"
 
 	property alias kloggr: kloggr
@@ -37,7 +38,6 @@ Rectangle {
 		}
 	}
 
-	//exit button
 	RoundButton {
 		id: exitBtn
 		source: "assets/exit.png"
@@ -56,7 +56,6 @@ Rectangle {
 		}
 	}
 
-	//pause button
 	Rectangle {
 		id: pauseBtn
 		height: 6*kloggr.pixelDensity

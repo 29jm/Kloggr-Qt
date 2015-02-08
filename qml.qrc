@@ -25,5 +25,6 @@
         <file>assets/gplus.png</file>
         <file>assets/github.png</file>
         <file>assets/facebook.png</file>
+        <file>assets/click.wav</file>
     </qresource>
 </RCC>
