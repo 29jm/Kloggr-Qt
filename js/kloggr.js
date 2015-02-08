@@ -126,7 +126,7 @@ Enemy.prototype = Object.create(Square.prototype);
  *	Drawn using color-filled rectangles
  */
 function BasicEnemy() {
-	Square.call(this, 4.3, 4.3, '#e51c23');
+	Square.call(this, 4, 4, '#e51c23');
 	this.to_update = false;
 }
 
@@ -164,7 +164,7 @@ BasicEnemy.prototype.update = function(delta_t) {
  *	Drawn using a texture, can move, etc...
  */
 function Player() {
-	Square.call(this, 11.4, 11.4, '../assets/player.png');
+	Square.call(this, 10, 10, '../assets/player.png');
 
 	this.speed_x = 0;
 	this.speed_y = 0;
@@ -221,7 +221,7 @@ Player.prototype.onCollide = function(gameobject) {
  *	Able to move, decelerate, change of behavior...
  */
 function Target() {
-	Square.call(this, 5.7, 5.7, '#2ecc71');
+	Square.call(this, 5, 5, '#2ecc71');
 
 	this.State = {
 		Fix:"Fix",
