@@ -47,6 +47,19 @@ Window {
 				parent.state = "";
 			}
 		}
+		Settings {
+			id: settingsPage
+			visible: false
+
+			anchors.top: parent.top
+			anchors.bottom: parent.bottom
+			anchors.left: parent.right
+
+			onMainMenuClicked: {
+				// Set the MainMenu as visible
+				parent.state = "";
+			}
+		}
 
 		states: [
 			State {
@@ -61,6 +74,14 @@ Window {
 			},
 			State {
 				name: "Settings"
+
+				AnchorChanges {
+					target: settingsPage
+					anchors.left: parent.left
+					anchors.right: parent.right
+				}
+
+				PropertyChanges { target: settingsPage; visible: true }
 			},
 			State {
 				name: "Info"
