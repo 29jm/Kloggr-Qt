@@ -9,77 +9,52 @@ Window {
 
 	Rectangle {
 		id: page
+
+		property var view
+
 		anchors.fill: parent
 
-		MainMenu {
-			id: mainmenu
+		function loadView(new_view) {
+			fadeIn.stop(); fadeOut.start();
+			view = new_view;
+		}
+
+		Loader {
+			id: pageLoader
+			source: "MainMenu.qml"
 			anchors.fill: parent
 
-			onPlayClicked: parent.state = "Playing"
-			onSettingsClicked: parent.state = "Settings"
-			onInfoClicked: parent.state = "Info"
-		}
-
-		GameArea {
-			id: gameArea
-			visible: false
-
-			anchors.top: parent.top
-			anchors.bottom: parent.bottom
-			anchors.left: parent.right
-
-			onMainMenuClicked: {
-				// Set the MainMenu as visible
-				parent.state = "";
+			onLoaded: {
+				fadeOut.stop(); fadeIn.start();
 			}
 		}
 
-		Info {
-			id: infoPage
-			visible: false
+		OpacityAnimator {
+			id: fadeIn
+			target: page
+			from: 0
+			to: 1
+			duration: 400
+		}
 
-			anchors.top: parent.top
-			anchors.bottom: parent.bottom
-			anchors.left: parent.right
+		OpacityAnimator {
+			id: fadeOut
+			target: page
+			from: 1
+			to: 0
+			duration: 200
 
-			onMainMenuClicked: {
-				// Set the MainMenu as visible
-				parent.state = "";
+			onStopped: {
+				pageLoader.source = page.view;
 			}
 		}
 
-		states: [
-			State {
-				name: "Playing"
-				AnchorChanges {
-					target: gameArea
-					anchors.left: parent.left
-					anchors.right: parent.right
-				}
+		Connections {
+			target: pageLoader.item
 
-				PropertyChanges { target: gameArea; visible: true; state: "" }
-			},
-			State {
-				name: "Settings"
-			},
-			State {
-				name: "Info"
-
-				AnchorChanges {
-					target: infoPage
-					anchors.left: parent.left
-					anchors.right: parent.right
-				}
-
-				PropertyChanges { target: infoPage; visible: true }
-			}
-		]
-
-		transitions: Transition {
-			AnchorAnimation {
-				duration: 500
-				easing.type: Easing.InOutBack
-			}
+			onMainMenuClicked: { page.loadView("MainMenu.qml"); }
+			onPlayClicked: { page.loadView("GameArea.qml"); }
+			onInfoClicked: { page.loadView("Info.qml"); }
 		}
 	}
 }
