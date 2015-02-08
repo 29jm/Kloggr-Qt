@@ -19,7 +19,6 @@ Rectangle {
 		anchors.right: parent.right
 	}
 
-	//play button
 	RoundButton {
 		id: playBtn
 		source: "assets/play.png"
@@ -34,7 +33,6 @@ Rectangle {
 		onClicked: playClicked()
 	}
 
-	// settings button
 	RoundButton {
 		id: settingsBtn
 		source: "assets/settings.png"
@@ -50,7 +48,6 @@ Rectangle {
 		onClicked: settingsClicked()
 	}
 
-	//info button
 	RoundButton {
 		source: "assets/info.png"
 		id: infoBtn
