@@ -51,6 +51,7 @@ Window {
 
 		Connections {
 			target: pageLoader.item
+			ignoreUnknownSignals: true
 
 			onMainMenuClicked: { page.loadView("MainMenu.qml"); }
 			onPlayClicked: { page.loadView("GameArea.qml"); }
