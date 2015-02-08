@@ -9,6 +9,10 @@ Rectangle {
 
 	signal mainMenuClicked
 
+	Component.onCompleted: {
+		info.forceActiveFocus();
+	}
+
 	Rectangle {
 		id: back
 		color: "white"
@@ -140,5 +144,12 @@ Rectangle {
 		samples: 16
 		color: "#00bcd4"
 		source: social_container
+	}
+
+	Keys.onReleased: {
+		if (event.key === Qt.Key_Back) {
+			mainMenuClicked();
+			event.accepted = true;
+		}
 	}
 }

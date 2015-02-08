@@ -22,6 +22,7 @@ Window {
 		Loader {
 			id: pageLoader
 			source: "MainMenu.qml"
+			focus: true
 			anchors.fill: parent
 
 			onLoaded: {
