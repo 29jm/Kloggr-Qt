@@ -3,13 +3,12 @@ import QtQuick 2.3
 
 Rectangle {
 	id: info
+	color: "#4dd0e1"
+
+	anchors.fill: parent
+
 	signal mainMenuClicked
 
-	color: "#4dd0e1"
-	width: parent.width
-	height: parent.width
-
-	//back button
 	Rectangle {
 		id: back
 		color: "white"
@@ -25,6 +24,7 @@ Rectangle {
 			anchors.fill: parent
 			onClicked: mainMenuClicked()
 		}
+
 		Image {
 			source: "assets/exit.png"
 			smooth: true
@@ -34,7 +34,6 @@ Rectangle {
 		}
 	}
 
-	//devs image
 	Image {
 		source: "assets/devs.png"
 		smooth: true
@@ -45,16 +44,13 @@ Rectangle {
 		z: 2
 	}
 
-	//ground
 	Rectangle {
-		id: ground
 		color: "#27ae60"
 		width: parent.width
 		height: parent.height/6
 		anchors.bottom: parent.bottom
 	}
 
-	//sun
 	Rectangle {
 		id: sun
 		width: parent.width/2
@@ -64,11 +60,10 @@ Rectangle {
 
 		anchors.left: parent.left
 		anchors.top: parent.top
-		anchors.topMargin: -sun.width/2
-		anchors.leftMargin: -sun.width/2
+		anchors.topMargin: -width/2
+		anchors.leftMargin: -width/2
 	}
 
-	//social media buttons
 	Grid {
 		id: social_container
 		columns: 2
@@ -82,6 +77,7 @@ Rectangle {
 			height: width
 			color: info.color
 			radius: width/2
+
 			Image {
 				id: google
 				width: info.height/8
@@ -90,11 +86,13 @@ Rectangle {
 				fillMode: Image.PreserveAspectFit
 			}
 		}
+
 		Rectangle {
 			width: github.width
 			height: width
 			color: info.color
 			radius: width/2
+
 			Image {
 				id: github
 				width: info.height/8
@@ -103,11 +101,13 @@ Rectangle {
 				fillMode: Image.PreserveAspectFit
 			}
 		}
+
 		Rectangle {
 			width: facebook.width
 			height: width
 			color: info.color
 			radius: width/2
+
 			Image {
 				id: facebook
 				width: info.height/8
@@ -116,11 +116,13 @@ Rectangle {
 				fillMode: Image.PreserveAspectFit
 			}
 		}
+
 		Rectangle {
 			width: twitter.width
 			height: width
 			color: info.color
 			radius: width/2
+
 			Image {
 				id: twitter
 				width: info.height/8
