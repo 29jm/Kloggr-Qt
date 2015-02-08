@@ -4,14 +4,19 @@ import QtQuick.Window 2.0
 import "js/kloggr.js" as Game
 
 Item {
+	focus: true
+
 	property var kloggr: undefined
 	property var pixelDensity: Screen.pixelDensity
-
-	focus: true
 
 	signal dead
 	signal timerChanged()
 	signal scoreChanged()
+
+	Component.onCompleted: {
+		Game.kloggr = this;
+		kloggr = new Game.Kloggr(width, height);
+	}
 
 	function play() {
 		console.log("play()");
@@ -91,29 +96,15 @@ Item {
 		}
 	}
 
-	onVisibleChanged: {
-		if (visible && kloggr === undefined) {
-			Game.kloggr = this;
-			kloggr = new Game.Kloggr(width, height);
-		}
-		else if (visible && kloggr.state == Game.Kloggr.Playing) {
-			// Resume after re-switching
-			play();
-		}
-		else if (!visible) {
-			// Pause when switching apps
-			pause();
-		}
-	}
-
 	Timer {
 		id: timer
 
 		interval: 1000/60 // in millisecond
-		running: false
+		running: true
 		repeat: true
+
 		onTriggered: {
-			if (kloggr.state == Game.Kloggr.State.Playing) {
+			if (kloggr.state === Game.Kloggr.State.Playing) {
 				kloggr.handleKeys();
 				kloggr.update(1/60); // in seconds
 				kloggr.collisionDetection();
