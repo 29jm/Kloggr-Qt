@@ -6,8 +6,6 @@ Rectangle {
 	id: gameArea
 	color: "#34495e"
 
-	property alias kloggr: kloggr
-
 	signal mainMenuClicked
 
 	Kloggr {
@@ -18,10 +16,14 @@ Rectangle {
 		anchors.right: parent.right
 		anchors.bottom: parent.bottom
 
-		onDead: parent.state = "Dead"
+		onDead: {
+			deadSound.play();
+			parent.state = "Dead";
+		}
+
 		onScoreChanged: {
 			if (new_score !== 0) {
-				oneUp.play();
+				oneUpSound.play();
 			}
 		}
 	}
@@ -56,10 +58,7 @@ Rectangle {
 		anchors.right: parent.right
 		anchors.rightMargin: parent.width/4
 
-		onClicked: {
-			kloggr.restart();
-			mainMenuClicked()
-		}
+		onClicked: mainMenuClicked()
 	}
 
 	Rectangle {
@@ -157,7 +156,12 @@ Rectangle {
 	]
 
 	SoundEffect {
-		id: oneUp
+		id: oneUpSound
 		source: "qrc:/assets/woosh.wav"
+	}
+
+	SoundEffect {
+		id: deadSound
+		source: "qrc:/assets/gameover.wav"
 	}
 }
