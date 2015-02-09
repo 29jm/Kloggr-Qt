@@ -126,7 +126,9 @@ Enemy.prototype = Object.create(Square.prototype);
  *	Drawn using color-filled rectangles
  */
 function BasicEnemy() {
-	Square.call(this, 4, 4, '#e51c23');
+	var width = (Math.random()-0.5) + 4;
+
+	Square.call(this, width, width, '#e51c23');
 	this.to_update = false;
 }
 
