@@ -11,7 +11,7 @@ ClickButton {
 
 	Image {
 		id: img
-		height: width
+		sourceSize.height: width
 		smooth: true
 		fillMode: Image.PreserveAspectFit
 
