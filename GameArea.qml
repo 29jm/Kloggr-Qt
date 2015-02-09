@@ -1,5 +1,6 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
+import QtMultimedia 5.0
 
 Rectangle {
 	id: gameArea
@@ -18,6 +19,11 @@ Rectangle {
 		anchors.bottom: parent.bottom
 
 		onDead: parent.state = "Dead"
+		onScoreChanged: {
+			if (new_score !== 0) {
+				oneUp.play();
+			}
+		}
 	}
 
 	RoundButton {
@@ -149,4 +155,9 @@ Rectangle {
 			PropertyChanges { target: pauseBtn; visible: false }
 		}
 	]
+
+	SoundEffect {
+		id: oneUp
+		source: "qrc:/assets/woosh.wav"
+	}
 }

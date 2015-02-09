@@ -27,5 +27,6 @@
         <file>assets/facebook.png</file>
         <file>assets/click.wav</file>
         <file>ClickButton.qml</file>
+        <file>assets/woosh.wav</file>
     </qresource>
 </RCC>

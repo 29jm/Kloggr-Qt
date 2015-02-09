@@ -7,11 +7,11 @@ Item {
 	focus: true
 
 	property var kloggr: undefined
-	property var pixelDensity: Screen.pixelDensity
+	property real pixelDensity: Screen.pixelDensity
 
 	signal dead
-	signal timerChanged()
-	signal scoreChanged()
+	signal timerChanged(int new_time)
+	signal scoreChanged(int new_score)
 
 	Component.onCompleted: {
 		Game.kloggr = this;
