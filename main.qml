@@ -28,6 +28,12 @@ Window {
 			onLoaded: {
 				fadeOut.stop(); fadeIn.start();
 			}
+
+			Keys.onReleased: {
+				if (event.key === Qt.Key_Back) {
+					event.accepted = true;
+				}
+			}
 		}
 
 		OpacityAnimator {
