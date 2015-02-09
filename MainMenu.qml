@@ -21,7 +21,7 @@ Rectangle {
 
 	RoundButton {
 		id: playBtn
-		image: "assets/play.png"
+		image: "assets/play-circle.svg"
 		angle: 360
 		width: parent.height/4
 		imageWidth: width
@@ -35,7 +35,7 @@ Rectangle {
 
 	RoundButton {
 		id: settingsBtn
-		image: "assets/settings.png"
+		image: "assets/settings.svg"
 		angle: 120
 		width: parent.height/8
 		imageWidth: 50
@@ -49,7 +49,7 @@ Rectangle {
 	}
 
 	RoundButton {
-		image: "assets/info.png"
+		image: "assets/info.svg"
 		id: infoBtn
 		angle: 360
 		width: parent.height/8
