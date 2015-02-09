@@ -13,7 +13,7 @@ Rectangle {
 		info.forceActiveFocus();
 	}
 
-	Rectangle {
+	ClickButton {
 		id: back
 		color: "white"
 		width: parent.height/6
@@ -24,10 +24,7 @@ Rectangle {
 		anchors.bottomMargin: parent.height/10
 		anchors.left: social_container.left
 
-		MouseArea {
-			anchors.fill: parent
-			onClicked: mainMenuClicked()
-		}
+		onClicked: mainMenuClicked()
 
 		Image {
 			source: "assets/exit.png"

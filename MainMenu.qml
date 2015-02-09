@@ -21,10 +21,10 @@ Rectangle {
 
 	RoundButton {
 		id: playBtn
-		source: "assets/play.png"
+		image: "assets/play.png"
 		angle: 360
-		btnWidth: parent.height/4
-		imgWidth: btnWidth
+		width: parent.height/4
+		imageWidth: width
 		color: "#f1c40f"
 
 		anchors.horizontalCenter: parent.horizontalCenter
@@ -35,10 +35,10 @@ Rectangle {
 
 	RoundButton {
 		id: settingsBtn
-		source: "assets/settings.png"
+		image: "assets/settings.png"
 		angle: 120
-		btnWidth: parent.height/8
-		imgWidth: 50
+		width: parent.height/8
+		imageWidth: 50
 
 		anchors.left: parent.left
 		anchors.leftMargin: parent.width/3-this.width
@@ -49,11 +49,11 @@ Rectangle {
 	}
 
 	RoundButton {
-		source: "assets/info.png"
+		image: "assets/info.png"
 		id: infoBtn
 		angle: 360
-		btnWidth: parent.height/8
-		imgWidth: 50
+		width: parent.height/8
+		imageWidth: 50
 
 		anchors.right: parent.right
 		anchors.rightMargin: parent.width/3-this.width

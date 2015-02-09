@@ -26,5 +26,6 @@
         <file>assets/github.png</file>
         <file>assets/facebook.png</file>
         <file>assets/click.wav</file>
+        <file>ClickButton.qml</file>
     </qresource>
 </RCC>
