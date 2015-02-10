@@ -29,5 +29,6 @@
         <file>assets/info.svg</file>
         <file>assets/play-circle.svg</file>
         <file>assets/gameover.wav</file>
+        <file>assets/highscore.wav</file>
     </qresource>
 </RCC>

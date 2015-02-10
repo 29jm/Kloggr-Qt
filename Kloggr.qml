@@ -1,17 +1,22 @@
 import QtQuick 2.3
 import QtQuick.Window 2.0
+import Qt.labs.settings 1.0
 
 import "js/kloggr.js" as Game
 
 Item {
+	id: kloggrItem
 	focus: true
 
 	property var kloggr: undefined
 	property real pixelDensity: Screen.pixelDensity
+	property int highscore: 0
+	property bool hasBeatenHighscore: false
 
 	signal dead
 	signal timerChanged(int new_time)
 	signal scoreChanged(int new_score)
+	signal newHighscore(int new_highscore)
 
 	Component.onCompleted: {
 		Game.kloggr = this;
@@ -44,6 +49,8 @@ Item {
 			updateState();
 			break;
 		case Game.Kloggr.Events.NewHighscore:
+			highscore = event.value;
+			newHighscore(event.value);
 			break;
 		case Game.Kloggr.Events.ScoreChanged:
 		   scoreChanged(event.value); // TODO: missing handler
@@ -115,5 +122,10 @@ Item {
 				handleEvents(events[i]);
 			}
 		}
+	}
+
+	Settings  {
+		category: "InGame"
+		property alias highscore: kloggrItem.highscore
 	}
 }

@@ -26,6 +26,10 @@ Rectangle {
 				oneUpSound.play();
 			}
 		}
+
+		onNewHighscore: {
+			highscoreSound.play();
+		}
 	}
 
 	RoundButton {
@@ -163,5 +167,10 @@ Rectangle {
 	SoundEffect {
 		id: deadSound
 		source: "qrc:/assets/gameover.wav"
+	}
+
+	SoundEffect {
+		id: highscoreSound
+		source: "qrc:/assets/highscore.wav"
 	}
 }
