@@ -14,32 +14,15 @@ ClickButton {
 		sourceSize.height: width
 		smooth: true
 		fillMode: Image.PreserveAspectFit
+		rotation: mouseArea.containsMouse ? angle : 0
 
 		anchors.centerIn: parent
-	}
 
-	states: [
-		State {
-			name: "rotated"
-			when: mouseArea.containsMouse === true
-
-			PropertyChanges {
-				target: img
-				rotation: angle
-			}
-		}
-	]
-
-	transitions: [
-		Transition {
-			from: ""; to: "rotated"
-			reversible: true
-
+		Behavior on rotation {
 			NumberAnimation {
-				property: "rotation"
 				duration: 500
 				easing.type: Easing.InOutQuad
 			}
 		}
-	]
+	}
 }
