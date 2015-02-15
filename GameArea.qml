@@ -34,10 +34,10 @@ Rectangle {
 
 	RoundButton {
 		id: restartBtn
-		image: "assets/replay.png"
-		angle: -360
+		image: "assets/reload.svg"
+		angle: 360
 		width: parent.height/8
-		imageWidth: 50
+		imageWidth: restartBtn.width/2
 		visible: false
 
 		anchors.verticalCenter: parent.verticalCenter
@@ -52,10 +52,10 @@ Rectangle {
 
 	RoundButton {
 		id: exitBtn
-		image: "assets/exit.png"
+		image: "assets/exit.svg"
 		angle: 180
 		width: parent.height/8
-		imageWidth: 50
+		imageWidth: exitBtn.width/2
 		visible: false
 
 		anchors.verticalCenter: parent.verticalCenter

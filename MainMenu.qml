@@ -38,7 +38,7 @@ Rectangle {
 		image: "assets/settings.svg"
 		angle: 120
 		width: parent.height/8
-		imageWidth: 50
+		imageWidth: settingsBtn.width/2
 
 		anchors.left: parent.left
 		anchors.leftMargin: parent.width/3-this.width
@@ -49,11 +49,11 @@ Rectangle {
 	}
 
 	RoundButton {
-		image: "assets/info.svg"
 		id: infoBtn
+		image: "assets/info.svg"
 		angle: 360
 		width: parent.height/8
-		imageWidth: 50
+		imageWidth: infoBtn.width/2
 
 		anchors.right: parent.right
 		anchors.rightMargin: parent.width/3-this.width

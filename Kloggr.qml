@@ -40,7 +40,7 @@ Item {
 	}
 
 	function getScore() {
-		return kloggr.score;
+		return Math.round((kloggr.score*kloggr.score)-Math.sqrt(kloggr.counter)*10);
 	}
 
 	function handleEvents(event) {

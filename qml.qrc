@@ -12,8 +12,6 @@
         <file>assets/logo.png</file>
         <file>assets/pause.png</file>
         <file>assets/gamePlay.png</file>
-        <file>assets/exit.png</file>
-        <file>assets/replay.png</file>
         <file>RoundButton.qml</file>
         <file>assets/ttf</file>
         <file>Info.qml</file>
@@ -29,6 +27,10 @@
         <file>assets/info.svg</file>
         <file>assets/play-circle.svg</file>
         <file>assets/gameover.wav</file>
-        <file>assets/highscore.wav</file>
+        <file>Settings.qml</file>
+        <file>assets/music.svg</file>
+        <file>assets/music-box.svg</file>
+        <file>assets/reload.svg</file>
+        <file>assets/exit.svg</file>
     </qresource>
 </RCC>
