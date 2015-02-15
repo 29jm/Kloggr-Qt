@@ -43,6 +43,12 @@ Rectangle {
 				soundOn = true;
 			}
 		}
+
+		Behavior on opacity {
+			NumberAnimation {
+				duration: 200
+			}
+		}
 	}
 
 	RoundButton {
@@ -65,6 +71,12 @@ Rectangle {
 			}
 			else {
 				musicOn = true;
+			}
+		}
+
+		Behavior on opacity {
+			NumberAnimation {
+				duration: 200
 			}
 		}
 	}
