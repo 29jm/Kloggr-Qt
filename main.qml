@@ -63,7 +63,7 @@ Window {
 			onMainMenuClicked: { page.loadView("MainMenu.qml"); }
 			onPlayClicked: { page.loadView("GameArea.qml"); }
 			onInfoClicked: { page.loadView("Info.qml"); }
-			onSettingsClicked: { page.loadView("Settings.qml"); }
+			onSettingsClicked: { page.loadView("SettingsMenu.qml"); }
 		}
 	}
 }

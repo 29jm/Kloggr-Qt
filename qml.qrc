@@ -27,7 +27,7 @@
         <file>assets/info.svg</file>
         <file>assets/play-circle.svg</file>
         <file>assets/gameover.wav</file>
-        <file>Settings.qml</file>
+        <file>SettingsMenu.qml</file>
         <file>assets/music.svg</file>
         <file>assets/music-box.svg</file>
         <file>assets/reload.svg</file>

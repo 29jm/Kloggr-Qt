@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import Qt.labs.settings 1.0
 
 Rectangle {
 	id: settings
@@ -13,6 +14,13 @@ Rectangle {
 	Component.onCompleted: {
 		settings.forceActiveFocus();
 	}
+
+	Settings {
+		category: "InMenu"
+		property alias musicOn: settings.musicOn
+		property alias soundOn: settings.soundOn
+	}
+
 	RoundButton {
 		id: soundBtn
 		image: "assets/music.svg"
@@ -25,14 +33,14 @@ Rectangle {
 		anchors.bottom: parent.bottom
 		anchors.bottomMargin: parent.height/2-this.width/2
 
+		opacity: soundOn ? 1 : 0.5
+
 		onClicked: {
 			if(soundOn) {
 				soundOn = false;
-				soundBtn.opacity = 0.5;
 			}
 			else {
 				soundOn = true;
-				soundBtn.opacity = 1;
 			}
 		}
 	}
@@ -49,14 +57,14 @@ Rectangle {
 		anchors.bottom: parent.bottom
 		anchors.bottomMargin: parent.height/2-this.width/2
 
+		opacity: musicOn ? 1 : 0.5
+
 		onClicked: {
 			if(musicOn) {
 				musicOn = false;
-				musicBtn.opacity = 0.5;
 			}
 			else {
 				musicOn = true;
-				musicBtn.opacity = 1;
 			}
 		}
 	}
