@@ -26,7 +26,9 @@ Window {
 			anchors.fill: parent
 
 			onLoaded: {
-				fadeOut.stop(); fadeIn.start();
+				if (page.view !== "MainMenu.qml") {
+					fadeIn.start();
+				}
 			}
 
 			Keys.onReleased: {
@@ -36,19 +38,21 @@ Window {
 			}
 		}
 
-		OpacityAnimator {
+		NumberAnimation {
 			id: fadeIn
-			target: page
-			from: 0
-			to: 1
+			target: pageLoader.item
+			property: "y"
+			from: -page.height
+			to: 0
 			duration: 400
 		}
 
-		OpacityAnimator {
+		NumberAnimation {
 			id: fadeOut
-			target: page
-			from: 1
-			to: 0
+			target: pageLoader.item
+			property: "y"
+			from: 0
+			to: page.height
 			duration: 200
 
 			onStopped: {
