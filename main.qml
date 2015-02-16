@@ -9,6 +9,7 @@ Window {
 
 	Rectangle {
 		id: page
+		color: "#4dd0e1"
 
 		property var view
 
@@ -26,9 +27,9 @@ Window {
 			anchors.fill: parent
 
 			onLoaded: {
-				if (page.view !== "MainMenu.qml") {
-					fadeIn.start();
-				}
+			//	if (page.view !== "MainMenu.qml") {
+					fadeOut.stop(); fadeIn.start();
+			//	}
 			}
 
 			Keys.onReleased: {
@@ -42,9 +43,9 @@ Window {
 			id: fadeIn
 			target: pageLoader.item
 			property: "y"
-			from: -page.height
+			from: page.height
 			to: 0
-			duration: 400
+			duration: 250
 		}
 
 		NumberAnimation {
@@ -52,8 +53,8 @@ Window {
 			target: pageLoader.item
 			property: "y"
 			from: 0
-			to: page.height
-			duration: 200
+			to: -page.height
+			duration: 250
 
 			onStopped: {
 				pageLoader.source = page.view;

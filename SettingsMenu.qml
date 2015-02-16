@@ -5,11 +5,10 @@ Rectangle {
 	id: settings
 	color: "#4dd0e1"
 
-	anchors.fill: parent
-
-	signal mainMenuClicked
 	property bool musicOn: true
 	property bool soundOn: true
+
+	signal mainMenuClicked
 
 	Component.onCompleted: {
 		settings.forceActiveFocus();

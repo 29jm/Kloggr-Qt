@@ -5,8 +5,6 @@ Rectangle {
 	id: info
 	color: "#4dd0e1"
 
-	anchors.fill: parent
-
 	signal mainMenuClicked
 
 	Component.onCompleted: {
