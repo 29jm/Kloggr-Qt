@@ -8,6 +8,8 @@ Rectangle {
 
 	signal mainMenuClicked
 
+
+
 	Kloggr {
 		id: kloggr
 
@@ -24,6 +26,7 @@ Rectangle {
 		onScoreChanged: {
 			if (new_score !== 0) {
 				oneUpSound.play();
+				console.log(SettingsMenu.soundOn);
 			}
 		}
 
@@ -99,33 +102,64 @@ Rectangle {
 
 	Rectangle {
 		id: score_container
-		width: parent.height/4
-		height: width
+		width: parent.width*0.90
+		height: parent.height/2
 		color: "#00bcd4"
-		radius: width/2
+		anchors.centerIn: parent
 		visible: false
 
-		anchors.centerIn: parent
+		Grid {
+			id: score_grid
+			columns: 2
+			rows: 2
+			anchors.fill: parent
+
+			Text {
+				id: current_score
+				color: "white"
+				text: "0"
+				font.pixelSize: 20
+				smooth: true
+				font.family: roboto.name
+			}
+			Text {
+				id: current_time
+				color: "white"
+				text: "0"
+				font.pixelSize: 20
+				smooth: true
+				font.family: roboto.name
+			}
+			Text {
+				id: highscore_score
+				color: "white"
+				text: "0"
+				font.pixelSize: 20
+				smooth: true
+				font.family: roboto.name
+			}
+			Text {
+				id: highscore_time
+				color: "white"
+				text: "0"
+				font.pixelSize: 20
+				smooth: true
+				font.family: roboto.name
+			}
+		}
 
 		onVisibleChanged: {
 			if (visible) {
-				score.text = kloggr.getScore();
+				current_score.text = kloggr.getScore();
+				current_time.text = kloggr.counter;
+				highscore_score.text = kloggr.getScore();
+				highscore.text = kloggr.counter;
 			}
 		}
 
 		FontLoader {
 			id: roboto;
 			source: "assets/ttf"
-		}
-
-		Text {
-			id: score
-			color: "white"
-			text: "0"
-			anchors.centerIn: parent
-			font.pixelSize: 50
-			smooth: true
-			font.family: roboto.name
 		}
 	}
 

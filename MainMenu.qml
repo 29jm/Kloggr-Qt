@@ -1,7 +1,7 @@
 import QtQuick 2.3
 
 Rectangle {
-	color: "#00bcd4"
+	color: "#4dd0e1"
 
 	signal playClicked
 	signal settingsClicked

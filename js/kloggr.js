@@ -128,7 +128,7 @@ Enemy.prototype = Object.create(Square.prototype);
 function BasicEnemy() {
 	var width = (Math.random()-0.5) + 4;
 
-	Square.call(this, width, width, '#e51c23');
+	Square.call(this, width, width, '#f04155');
 	this.to_update = false;
 }
 
