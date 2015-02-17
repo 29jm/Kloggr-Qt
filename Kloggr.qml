@@ -11,6 +11,7 @@ Item {
 	property var kloggr: undefined
 	property real pixelDensity: Screen.pixelDensity
 	property int highscore: 0
+	property real highscore_time: 0
 	property bool hasBeatenHighscore: false
 
 	signal dead
@@ -40,11 +41,19 @@ Item {
 	}
 
 	function getScore() {
-		return kloggr.score;
+		return kloggr._score;
 	}
 
 	function getTime() {
 		return Math.round(kloggr.counter);
+	}
+
+	function getHighscore() {
+		return highscore;
+	}
+
+	function getHighscoreTime() {
+		return Math.round(highscore_time);
 	}
 
 	function handleEvents(event) {
@@ -54,7 +63,11 @@ Item {
 			break;
 		case Game.Kloggr.Events.NewHighscore:
 			highscore = event.value;
-			newHighscore(event.value);
+			highscore_time = kloggr.counter;
+			if (!hasBeatenHighscore) {
+				hasBeatenHighscore = true;
+				newHighscore(event.value);
+			}
 			break;
 		case Game.Kloggr.Events.ScoreChanged:
 		   scoreChanged(event.value); // TODO: missing handler
@@ -131,5 +144,6 @@ Item {
 	Settings  {
 		category: "InGame"
 		property alias highscore: kloggrItem.highscore
+		property alias highscore_time: kloggrItem.highscore_time
 	}
 }

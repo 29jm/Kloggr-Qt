@@ -8,8 +8,6 @@ Rectangle {
 
 	signal mainMenuClicked
 
-
-
 	Kloggr {
 		id: kloggr
 
@@ -130,6 +128,7 @@ Rectangle {
 		anchors.centerIn: parent
 		visible: false
 		opacity: 0
+
 		Rectangle {
 			width: 2
 			height: parent.height*0.90
@@ -141,6 +140,7 @@ Rectangle {
 			height: parent.height*0.60
 			anchors.top: parent.top
 			anchors.left: parent.left
+
 			Text {
 				id: current_score
 				color: "white"
@@ -151,11 +151,13 @@ Rectangle {
 				anchors.centerIn: parent
 			}
 		}
+
 		Item {
 			width: parent.width/2
 			height: parent.height*0.60
 			anchors.top: parent.top
 			anchors.right: parent.right
+
 			Text {
 				id: current_time
 				color: "white"
@@ -172,6 +174,7 @@ Rectangle {
 			height: parent.height*0.40
 			anchors.left: parent.left
 			anchors.bottom: parent.bottom
+
 			Image {
 				id: crown
 				smooth: true
@@ -187,6 +190,7 @@ Rectangle {
 			height: parent.height*0.40
 			anchors.bottom: parent.bottom
 			anchors.left: crown_container.right
+
 			Text {
 				id: highscore_score
 				color: "white"
@@ -204,6 +208,7 @@ Rectangle {
 			height: parent.height*0.40
 			anchors.bottom: parent.bottom
 			anchors.left: highscore_container.right
+
 			Text {
 				id: highscore_time
 				color: "white"
@@ -215,12 +220,13 @@ Rectangle {
 				anchors.centerIn: parent
 			}
 		}
+
 		onVisibleChanged: {
 			if (visible) {
 				current_score.text = kloggr.getScore() + "pts";
 				current_time.text = kloggr.getTime() + "s";
-				highscore_score.text = kloggr.getScore()+ "pts";
-				highscore_time.text = kloggr.getTime() + "s";
+				highscore_score.text = kloggr.getHighscore()+ "pts";
+				highscore_time.text = kloggr.getHighscoreTime() + "s";
 			}
 		}
 

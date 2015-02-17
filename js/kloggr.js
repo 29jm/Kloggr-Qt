@@ -576,8 +576,7 @@ Kloggr.prototype.collisionDetection = function() {
 		// Kloggr.newEvents, so no need for it here
 		this.newEvent(Kloggr.Events.TargetReached);
 
-		if (this.score > kloggr.highscore && !kloggr.hasBeatenHighscore) {
-			kloggr.hasBeatenHighscore = true;
+		if (this.score > kloggr.highscore) {
 			this.newEvent(Kloggr.Events.NewHighscore, this._score);
 		}
 	}
