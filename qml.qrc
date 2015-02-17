@@ -8,7 +8,6 @@
         <file>Kloggr.qml</file>
         <file>assets/deadPlayer.png</file>
         <file>assets/player.png</file>
-        <file>assets/lazer.png</file>
         <file>assets/logo.png</file>
         <file>RoundButton.qml</file>
         <file>assets/ttf</file>
@@ -33,5 +32,6 @@
         <file>assets/crown.svg</file>
         <file>assets/play.svg</file>
         <file>assets/pause.svg</file>
+        <file>assets/lazer.svg</file>
     </qresource>
 </RCC>
