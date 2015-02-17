@@ -40,11 +40,11 @@ Item {
 	}
 
 	function getScore() {
-		return kloggr.score+"pts";
+		return kloggr.score;
 	}
 
 	function getTime() {
-		return Math.round(kloggr.counter)+"s";
+		return Math.round(kloggr.counter);
 	}
 
 	function handleEvents(event) {
