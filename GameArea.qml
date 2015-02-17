@@ -142,7 +142,7 @@ Rectangle {
 				id: current_score
 				color: "white"
 				text: "0"
-				font.pixelSize: 40
+				font.pointSize: 40
 				smooth: true
 				font.family: roboto.name
 				anchors.centerIn: parent
@@ -157,7 +157,7 @@ Rectangle {
 				id: current_time
 				color: "white"
 				text: "0"
-				font.pixelSize: 40
+				font.pointSize: 40
 				smooth: true
 				font.family: roboto.name
 				anchors.centerIn: parent
@@ -188,7 +188,7 @@ Rectangle {
 				id: highscore_score
 				color: "white"
 				text: "0"
-				font.pixelSize: 20
+				font.pointSize: 20
 				smooth: true
 				font.family: roboto.name
 				font.bold: true
@@ -205,7 +205,7 @@ Rectangle {
 				id: highscore_time
 				color: "white"
 				text: "0"
-				font.pixelSize: 20
+				font.pointSize: 20
 				smooth: true
 				font.family: roboto.name
 				font.bold: true
