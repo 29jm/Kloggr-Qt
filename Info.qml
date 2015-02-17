@@ -25,7 +25,7 @@ Rectangle {
 		onClicked: mainMenuClicked()
 
 		Image {
-			source: "assets/exit.png"
+			source: "assets/exit.svg"
 			smooth: true
 			fillMode: Image.PreserveAspectFit
 			anchors.centerIn: parent
@@ -60,7 +60,33 @@ Rectangle {
 		anchors.left: parent.left
 		anchors.top: parent.top
 		anchors.topMargin: -width/2
+		anchors.rightMargin: -width/2
 		anchors.leftMargin: -width/2
+
+		states: [
+			State {
+				name: ""
+				AnchorChanges {
+					target: sun
+					anchors.left: info.left
+					anchors.right: undefined
+				}
+				onCompleted: sun.state = "right"
+			},
+			State {
+				name: "right"
+				AnchorChanges {
+					target: sun
+					anchors.right: info.right
+					anchors.left: undefined
+				}
+				onCompleted: sun.state = ""
+			}
+		]
+		transitions: Transition {
+			AnchorAnimation {duration: 20000;}
+		}
+		Component.onCompleted: sun.state = "right"
 	}
 
 	Grid {
