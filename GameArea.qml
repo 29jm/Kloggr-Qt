@@ -81,10 +81,11 @@ Rectangle {
 
 		Image {
 			id: pauseImg
+			sourceSize.width: parent.width*0.90
 			fillMode: Image.PreserveAspectFit
 			smooth: true
 			anchors.centerIn: parent
-			source: "assets/pause.png"
+			source: "assets/pause.svg"
 		}
 
 		MouseArea {
@@ -213,10 +214,10 @@ Rectangle {
 		}
 		onVisibleChanged: {
 			if (visible) {
-				current_score.text = kloggr.getScore();
-				current_time.text = kloggr.getTime();
-				highscore_score.text = kloggr.getScore();
-				highscore_time.text = kloggr.getTime();
+				current_score.text = kloggr.getScore() + "pts";
+				current_time.text = kloggr.getTime() + "s";
+				highscore_score.text = kloggr.getScore()+ "pts";
+				highscore_time.text = kloggr.getTime() + "s";
 			}
 		}
 
@@ -247,7 +248,7 @@ Rectangle {
 			AnchorChanges { target: exitBtn; anchors.top: pause_container.bottom; anchors.verticalCenter: undefined }
 
 			//change pauseBtn img
-			PropertyChanges { target: pauseImg; source: "assets/gamePlay.png"}
+			PropertyChanges { target: pauseImg; source: "assets/play.svg"}
 		},
 		State {
 			name: "Dead"
