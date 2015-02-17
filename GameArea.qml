@@ -102,6 +102,23 @@ Rectangle {
 	}
 
 	Rectangle {
+		id: pause_container
+		width: parent.width*0.7
+		height: parent.height/4
+		color: "#4dd0e1"
+		anchors.centerIn: parent
+		visible: false
+		Text {
+			color: "white"
+			text: "Pause"
+			font.pixelSize: 40
+			smooth: true
+			font.family: roboto.name
+			anchors.centerIn: parent
+		}
+	}
+
+	Rectangle {
 		id: score_container
 		width: parent.width*0.7
 		height: parent.height/4
@@ -218,10 +235,17 @@ Rectangle {
 	states: [
 		State {
 			name: "Paused"
+			//Display pause Container
+			PropertyChanges { target: pause_container; visible: true}
+
 			//Display restartBtn
 			PropertyChanges { target: restartBtn; visible: true}
+			AnchorChanges { target: restartBtn; anchors.top: pause_container.bottom; anchors.verticalCenter: undefined }
+
 			//Display exitBtn
 			PropertyChanges { target: exitBtn; visible: true}
+			AnchorChanges { target: exitBtn; anchors.top: pause_container.bottom; anchors.verticalCenter: undefined }
+
 			//change pauseBtn img
 			PropertyChanges { target: pauseImg; source: "assets/gamePlay.png"}
 		},
@@ -230,9 +254,11 @@ Rectangle {
 			//Display and move restart button onDead
 			PropertyChanges { target: restartBtn; visible: true; }
 			AnchorChanges { target: restartBtn; anchors.top: score_container.bottom; anchors.verticalCenter: undefined }
+
 			//Display and move exit button onDead
 			PropertyChanges { target: exitBtn; visible: true; }
 			AnchorChanges { target: exitBtn; anchors.top: score_container.bottom; anchors.verticalCenter: undefined }
+
 			//Display Score and hide pause button
 			PropertyChanges { target: score_container; visible: true; }
 			PropertyChanges { target: pauseBtn; visible: false }
