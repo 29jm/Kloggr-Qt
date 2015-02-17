@@ -41,9 +41,10 @@ Rectangle {
 		width: parent.height/8
 		imageWidth: restartBtn.width/2
 		visible: false
+		opacity: 0
 
-		anchors.top: score_container.top
-		anchors.right: score_container.right
+		anchors.left: parent.left
+		anchors.bottom: parent.bottom
 		anchors.rightMargin: 5
 		anchors.topMargin: -this.width/2
 		z: 10
@@ -61,6 +62,7 @@ Rectangle {
 		width: parent.height/12
 		imageWidth: exitBtn.width/2
 		visible: false
+		opacity: 0
 
 		anchors.top: restartBtn.top
 		anchors.topMargin: restartBtn.height/2+5
@@ -109,6 +111,7 @@ Rectangle {
 		color: "#4dd0e1"
 		anchors.centerIn: parent
 		visible: false
+		opacity: 0
 		Text {
 			color: "white"
 			text: "Pause"
@@ -126,7 +129,7 @@ Rectangle {
 		color: "#4dd0e1"
 		anchors.centerIn: parent
 		visible: false
-
+		opacity: 0
 		Rectangle {
 			width: 2
 			height: parent.height*0.90
@@ -142,7 +145,7 @@ Rectangle {
 				id: current_score
 				color: "white"
 				text: "0"
-				font.pointSize: 40
+				font.pixelSize: parent.width/3
 				smooth: true
 				font.family: roboto.name
 				anchors.centerIn: parent
@@ -157,7 +160,7 @@ Rectangle {
 				id: current_time
 				color: "white"
 				text: "0"
-				font.pointSize: 40
+				font.pixelSize: parent.width/3
 				smooth: true
 				font.family: roboto.name
 				anchors.centerIn: parent
@@ -188,7 +191,7 @@ Rectangle {
 				id: highscore_score
 				color: "white"
 				text: "0"
-				font.pointSize: 20
+				font.pixelSize: parent.width/3
 				smooth: true
 				font.family: roboto.name
 				font.bold: true
@@ -205,7 +208,7 @@ Rectangle {
 				id: highscore_time
 				color: "white"
 				text: "0"
-				font.pointSize: 20
+				font.pixelSize: parent.width/3
 				smooth: true
 				font.family: roboto.name
 				font.bold: true
@@ -236,33 +239,47 @@ Rectangle {
 	states: [
 		State {
 			name: "Paused"
-			//Display pause Container
-			PropertyChanges { target: pause_container; visible: true}
-
-			//Display restartBtn
-			PropertyChanges { target: restartBtn; visible: true}
-			AnchorChanges { target: restartBtn; anchors.top: pause_container.bottom; anchors.verticalCenter: undefined }
-
-			//Display exitBtn
-			PropertyChanges { target: exitBtn; visible: true}
+			PropertyChanges { target: pause_container; visible: true; opacity: 1}
+			PropertyChanges { target: restartBtn; visible: true; opacity: 1}
+			AnchorChanges {
+				target: restartBtn
+				anchors.top: pause_container.bottom
+				anchors.verticalCenter: undefined
+				anchors.right: pause_container.right
+				anchors.bottom: undefined
+				anchors.left: undefined
+			}
+			PropertyChanges { target: exitBtn; visible: true; opacity: 1}
 			AnchorChanges { target: exitBtn; anchors.top: pause_container.bottom; anchors.verticalCenter: undefined }
-
-			//change pauseBtn img
 			PropertyChanges { target: pauseImg; source: "assets/play.svg"}
 		},
 		State {
 			name: "Dead"
-			//Display and move restart button onDead
-			PropertyChanges { target: restartBtn; visible: true; }
-			AnchorChanges { target: restartBtn; anchors.top: score_container.bottom; anchors.verticalCenter: undefined }
-
-			//Display and move exit button onDead
-			PropertyChanges { target: exitBtn; visible: true; }
+			PropertyChanges { target: score_container; visible: true; opacity: 1}
+			PropertyChanges { target: restartBtn; visible: true; opacity: 1 }
+			AnchorChanges {
+				target: restartBtn
+				anchors.top: score_container.bottom
+				anchors.verticalCenter: undefined
+				anchors.right: score_container.right
+				anchors.bottom: undefined
+				anchors.left: undefined
+			}
+			PropertyChanges { target: exitBtn; visible: true; opacity: 1}
 			AnchorChanges { target: exitBtn; anchors.top: score_container.bottom; anchors.verticalCenter: undefined }
-
-			//Display Score and hide pause button
-			PropertyChanges { target: score_container; visible: true; }
 			PropertyChanges { target: pauseBtn; visible: false }
+		}
+	]
+	transitions: [
+		Transition {
+			from: ""; to: "Paused"
+			AnchorAnimation {  duration: 500; easing.type: Easing.OutCirc }
+			PropertyAnimation {property: "opacity";  duration: 1000; easing.type: Easing.OutCirc }
+		},
+		Transition {
+			from: ""; to: "Dead"
+			AnchorAnimation {  duration: 500; easing.type: Easing.OutCirc }
+			PropertyAnimation {property: "opacity";  duration: 1000; easing.type: Easing.OutCirc }
 		}
 	]
 
