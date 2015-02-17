@@ -32,5 +32,6 @@
         <file>assets/music-box.svg</file>
         <file>assets/reload.svg</file>
         <file>assets/exit.svg</file>
+        <file>assets/crown.svg</file>
     </qresource>
 </RCC>

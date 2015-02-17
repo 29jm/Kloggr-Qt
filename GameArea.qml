@@ -26,7 +26,6 @@ Rectangle {
 		onScoreChanged: {
 			if (new_score !== 0) {
 				oneUpSound.play();
-				console.log(SettingsMenu.soundOn);
 			}
 		}
 
@@ -43,9 +42,11 @@ Rectangle {
 		imageWidth: restartBtn.width/2
 		visible: false
 
-		anchors.verticalCenter: parent.verticalCenter
-		anchors.left: parent.left
-		anchors.leftMargin: parent.width/4
+		anchors.top: score_container.top
+		anchors.right: score_container.right
+		anchors.rightMargin: 5
+		anchors.topMargin: -this.width/2
+		z: 10
 
 		onClicked: {
 			kloggr.restart();
@@ -57,13 +58,13 @@ Rectangle {
 		id: exitBtn
 		image: "assets/exit.svg"
 		angle: 180
-		width: parent.height/8
+		width: parent.height/12
 		imageWidth: exitBtn.width/2
 		visible: false
 
-		anchors.verticalCenter: parent.verticalCenter
-		anchors.right: parent.right
-		anchors.rightMargin: parent.width/4
+		anchors.top: restartBtn.top
+		anchors.topMargin: restartBtn.height/2+5
+		anchors.horizontalCenter: restartBtn.horizontalCenter
 
 		onClicked: mainMenuClicked()
 	}
@@ -102,34 +103,69 @@ Rectangle {
 
 	Rectangle {
 		id: score_container
-		width: parent.width*0.90
-		height: parent.height/2
-		color: "#00bcd4"
+		width: parent.width*0.7
+		height: parent.height/4
+		color: "#4dd0e1"
 		anchors.centerIn: parent
 		visible: false
 
-		Grid {
-			id: score_grid
-			columns: 2
-			rows: 2
-			anchors.fill: parent
+		Rectangle {
+			width: 2
+			height: parent.height*0.90
+			anchors.centerIn: parent
+		}
 
+		Item {
+			width: parent.width/2
+			height: parent.height*0.60
+			anchors.top: parent.top
+			anchors.left: parent.left
 			Text {
 				id: current_score
 				color: "white"
 				text: "0"
-				font.pixelSize: 20
+				font.pixelSize: 40
 				smooth: true
 				font.family: roboto.name
+				anchors.centerIn: parent
 			}
+		}
+		Item {
+			width: parent.width/2
+			height: parent.height*0.60
+			anchors.top: parent.top
+			anchors.right: parent.right
 			Text {
 				id: current_time
 				color: "white"
 				text: "0"
-				font.pixelSize: 20
+				font.pixelSize: 40
 				smooth: true
 				font.family: roboto.name
+				anchors.centerIn: parent
 			}
+		}
+		Item {
+			id: crown_container
+			width: parent.width*0.25
+			height: parent.height*0.40
+			anchors.left: parent.left
+			anchors.bottom: parent.bottom
+			Image {
+				id: crown
+				smooth: true
+				fillMode: Image.PreserveAspectFit
+				anchors.centerIn: parent
+				source: "assets/crown.svg"
+			}
+		}
+
+		Item {
+			id: highscore_container
+			width: parent.width*0.25
+			height: parent.height*0.40
+			anchors.bottom: parent.bottom
+			anchors.left: crown_container.right
 			Text {
 				id: highscore_score
 				color: "white"
@@ -137,7 +173,16 @@ Rectangle {
 				font.pixelSize: 20
 				smooth: true
 				font.family: roboto.name
+				font.bold: true
+				anchors.centerIn: parent
 			}
+		}
+
+		Item {
+			width: parent.width*0.25
+			height: parent.height*0.40
+			anchors.bottom: parent.bottom
+			anchors.left: highscore_container.right
 			Text {
 				id: highscore_time
 				color: "white"
@@ -145,15 +190,16 @@ Rectangle {
 				font.pixelSize: 20
 				smooth: true
 				font.family: roboto.name
+				font.bold: true
+				anchors.centerIn: parent
 			}
 		}
-
 		onVisibleChanged: {
 			if (visible) {
 				current_score.text = kloggr.getScore();
-				current_time.text = kloggr.counter;
+				current_time.text = kloggr.getTime();
 				highscore_score.text = kloggr.getScore();
-				highscore.text = kloggr.counter;
+				highscore_time.text = kloggr.getTime();
 			}
 		}
 
