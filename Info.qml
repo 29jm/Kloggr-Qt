@@ -25,7 +25,7 @@ Rectangle {
 		onClicked: mainMenuClicked()
 
 		Image {
-			source: "assets/exit.png"
+			source: "assets/exit.svg"
 			smooth: true
 			fillMode: Image.PreserveAspectFit
 			anchors.centerIn: parent
