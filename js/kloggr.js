@@ -328,7 +328,7 @@ Target.prototype.updateState = function(score) {
  * Its behavior is controlled through the State enumeration.
  */
 function Lazer() {
-	Square.call(this, 4.4, kloggr.height, "../assets/lazer.png");
+	Square.call(this, 4.4, kloggr.height, "../assets/lazer.svg");
 
 	this.State = {
 		Inactive:"Inactive",
