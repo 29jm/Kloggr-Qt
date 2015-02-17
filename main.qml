@@ -20,9 +20,17 @@ Window {
 			view = new_view;
 		}
 
+		MainMenu {
+			anchors.fill: parent
+
+			onPlayClicked: { page.loadView("GameArea.qml"); }
+			onInfoClicked: { page.loadView("Info.qml"); }
+			onSettingsClicked: { page.loadView("SettingsMenu.qml"); }
+		}
+
 		Loader {
 			id: pageLoader
-			source: "MainMenu.qml"
+			source: ""
 			focus: true
 			anchors.fill: parent
 
@@ -65,10 +73,7 @@ Window {
 			target: pageLoader.item
 			ignoreUnknownSignals: true
 
-			onMainMenuClicked: { page.loadView("MainMenu.qml"); }
-			onPlayClicked: { page.loadView("GameArea.qml"); }
-			onInfoClicked: { page.loadView("Info.qml"); }
-			onSettingsClicked: { page.loadView("SettingsMenu.qml"); }
+			onMainMenuClicked: { page.loadView(""); }
 		}
 	}
 }
