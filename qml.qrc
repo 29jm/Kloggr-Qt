@@ -10,8 +10,6 @@
         <file>assets/player.png</file>
         <file>assets/lazer.png</file>
         <file>assets/logo.png</file>
-        <file>assets/pause.png</file>
-        <file>assets/gamePlay.png</file>
         <file>RoundButton.qml</file>
         <file>assets/ttf</file>
         <file>Info.qml</file>
