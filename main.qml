@@ -20,17 +20,9 @@ Window {
 			view = new_view;
 		}
 
-		MainMenu {
-			anchors.fill: parent
-
-			onPlayClicked: { page.loadView("GameArea.qml"); }
-			onInfoClicked: { page.loadView("Info.qml"); }
-			onSettingsClicked: { page.loadView("SettingsMenu.qml"); }
-		}
-
 		Loader {
 			id: pageLoader
-			source: ""
+			source: "MainMenu.qml"
 			focus: true
 			anchors.fill: parent
 
@@ -54,6 +46,7 @@ Window {
 			from: page.height
 			to: 0
 			duration: 250
+			easing.type: Easing.OutCirc
 		}
 
 		NumberAnimation {
@@ -73,7 +66,10 @@ Window {
 			target: pageLoader.item
 			ignoreUnknownSignals: true
 
-			onMainMenuClicked: { page.loadView(""); }
+			onMainMenuClicked: { page.loadView("MainMenu.qml"); }
+			onPlayClicked: { page.loadView("GameArea.qml"); }
+			onInfoClicked: { page.loadView("Info.qml"); }
+			onSettingsClicked: { page.loadView("SettingsMenu.qml"); }
 		}
 	}
 }
