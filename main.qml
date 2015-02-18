@@ -9,98 +9,67 @@ Window {
 
 	Rectangle {
 		id: page
+		color: "#4dd0e1"
+
+		property var view
+
 		anchors.fill: parent
 
-		MainMenu {
-			id: mainmenu
+		function loadView(new_view) {
+			fadeIn.stop(); fadeOut.start();
+			view = new_view;
+		}
+
+		Loader {
+			id: pageLoader
+			source: "MainMenu.qml"
+			focus: true
 			anchors.fill: parent
 
-			onPlayClicked: parent.state = "Playing"
-			onSettingsClicked: parent.state = "Settings"
-			onInfoClicked: parent.state = "Info"
-		}
-
-		GameArea {
-			id: gameArea
-			visible: false
-
-			anchors.top: parent.top
-			anchors.bottom: parent.bottom
-			anchors.left: parent.right
-
-			onMainMenuClicked: {
-				// Set the MainMenu as visible
-				parent.state = "";
+			onLoaded: {
+			//	if (page.view !== "MainMenu.qml") {
+					fadeOut.stop(); fadeIn.start();
+			//	}
 			}
-		}
 
-		Info {
-			id: infoPage
-			visible: false
-
-			anchors.top: parent.top
-			anchors.bottom: parent.bottom
-			anchors.left: parent.right
-
-			onMainMenuClicked: {
-				// Set the MainMenu as visible
-				parent.state = "";
-			}
-		}
-		Settings {
-			id: settingsPage
-			visible: false
-
-			anchors.top: parent.top
-			anchors.bottom: parent.bottom
-			anchors.left: parent.right
-
-			onMainMenuClicked: {
-				// Set the MainMenu as visible
-				parent.state = "";
-			}
-		}
-
-		states: [
-			State {
-				name: "Playing"
-				AnchorChanges {
-					target: gameArea
-					anchors.left: parent.left
-					anchors.right: parent.right
+			Keys.onReleased: {
+				if (event.key === Qt.Key_Back) {
+					event.accepted = true;
 				}
-
-				PropertyChanges { target: gameArea; visible: true; state: "" }
-			},
-			State {
-				name: "Settings"
-
-				AnchorChanges {
-					target: settingsPage
-					anchors.left: parent.left
-					anchors.right: parent.right
-				}
-
-				PropertyChanges { target: settingsPage; visible: true }
-			},
-			State {
-				name: "Info"
-
-				AnchorChanges {
-					target: infoPage
-					anchors.left: parent.left
-					anchors.right: parent.right
-				}
-
-				PropertyChanges { target: infoPage; visible: true }
 			}
-		]
+		}
 
-		transitions: Transition {
-			AnchorAnimation {
-				duration: 500
-				easing.type: Easing.InOutBack
+		NumberAnimation {
+			id: fadeIn
+			target: pageLoader.item
+			property: "y"
+			from: page.height
+			to: 0
+			duration: 250
+			easing.type: Easing.OutCirc
+		}
+
+		NumberAnimation {
+			id: fadeOut
+			target: pageLoader.item
+			property: "y"
+			from: 0
+			to: -page.height
+			duration: 250
+
+			onStopped: {
+				pageLoader.source = page.view;
 			}
+		}
+
+		Connections {
+			target: pageLoader.item
+			ignoreUnknownSignals: true
+
+			onMainMenuClicked: { page.loadView("MainMenu.qml"); }
+			onPlayClicked: { page.loadView("GameArea.qml"); }
+			onInfoClicked: { page.loadView("Info.qml"); }
+			onSettingsClicked: { page.loadView("SettingsMenu.qml"); }
 		}
 	}
 }

@@ -1,10 +1,14 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
+import QtMultimedia 5.0
+import Qt.labs.settings 1.0
+import QtQuick.Particles 2.0
 
 Rectangle {
+	id: gameArea
 	color: "#34495e"
 
-	property alias kloggr: kloggr
+	property bool soundOn: true
 
 	signal mainMenuClicked
 
@@ -16,20 +20,37 @@ Rectangle {
 		anchors.right: parent.right
 		anchors.bottom: parent.bottom
 
-		onDead: parent.state = "Dead"
+		onDead: {
+			deadSound.play();
+			parent.state = "Dead";
+		}
+
+		onScoreChanged: {
+			if (new_score !== 0) {
+				oneUpSound.play();
+			}
+		}
+
+		onNewHighscore: {
+			highscoreSound.play();
+			confettis.running = true;
+		}
 	}
 
 	RoundButton {
 		id: restartBtn
-		source: "assets/replay.png"
-		angle: -360
-		btnWidth: parent.height/8
-		imgWidth: 50
+		image: "assets/reload.svg"
+		angle: 360
+		width: parent.height/8
+		imageWidth: restartBtn.width/2
 		visible: false
+		opacity: 0
 
-		anchors.verticalCenter: parent.verticalCenter
 		anchors.left: parent.left
-		anchors.leftMargin: parent.width/4
+		anchors.bottom: parent.bottom
+		anchors.rightMargin: 5
+		anchors.topMargin: -this.width/2
+		z: 10
 
 		onClicked: {
 			kloggr.restart();
@@ -37,26 +58,22 @@ Rectangle {
 		}
 	}
 
-	//exit button
 	RoundButton {
 		id: exitBtn
-		source: "assets/exit.png"
+		image: "assets/exit.svg"
 		angle: 180
-		btnWidth: parent.height/8
-		imgWidth: 50
+		width: parent.height/12
+		imageWidth: exitBtn.width/2
 		visible: false
+		opacity: 0
 
-		anchors.verticalCenter: parent.verticalCenter
-		anchors.right: parent.right
-		anchors.rightMargin: parent.width/4
+		anchors.top: restartBtn.top
+		anchors.topMargin: restartBtn.height/2+5
+		anchors.horizontalCenter: restartBtn.horizontalCenter
 
-		onClicked: {
-			kloggr.restart();
-			mainMenuClicked()
-		}
+		onClicked: mainMenuClicked()
 	}
 
-	//pause button
 	Rectangle {
 		id: pauseBtn
 		height: 6*kloggr.pixelDensity
@@ -69,10 +86,11 @@ Rectangle {
 
 		Image {
 			id: pauseImg
+			sourceSize.width: parent.width*0.90
 			fillMode: Image.PreserveAspectFit
 			smooth: true
 			anchors.centerIn: parent
-			source: "assets/pause.png"
+			source: "assets/pause.svg"
 		}
 
 		MouseArea {
@@ -90,34 +108,136 @@ Rectangle {
 	}
 
 	Rectangle {
-		id: score_container
-		width: parent.height/4
-		height: width
-		color: "#00bcd4"
-		radius: width/2
-		visible: false
-
+		id: pause_container
+		width: parent.width*0.7
+		height: parent.height/4
+		color: "#4dd0e1"
 		anchors.centerIn: parent
+		visible: false
+		opacity: 0
+		Text {
+			color: "white"
+			text: "Pause"
+			font.pixelSize: 40
+			smooth: true
+			font.family: roboto.name
+			anchors.centerIn: parent
+		}
+	}
+
+	Rectangle {
+		id: score_container
+		width: parent.width*0.7
+		height: parent.height/4
+		color: "#4dd0e1"
+		anchors.centerIn: parent
+		visible: false
+		opacity: 0
+
+		Rectangle {
+			width: 2
+			height: parent.height*0.90
+			anchors.centerIn: parent
+		}
+
+		Item {
+			width: parent.width/2
+			height: parent.height*0.60
+			anchors.top: parent.top
+			anchors.left: parent.left
+
+			Text {
+				id: current_score
+				color: "white"
+				text: "0"
+				font.pixelSize: parent.width/3
+				smooth: true
+				font.family: roboto.name
+				anchors.centerIn: parent
+			}
+		}
+
+		Item {
+			width: parent.width/2
+			height: parent.height*0.60
+			anchors.top: parent.top
+			anchors.right: parent.right
+
+			Text {
+				id: current_time
+				color: "white"
+				text: "0"
+				font.pixelSize: parent.width/3
+				smooth: true
+				font.family: roboto.name
+				anchors.centerIn: parent
+			}
+		}
+		Item {
+			id: crown_container
+			width: parent.width*0.25
+			height: parent.height*0.40
+			anchors.left: parent.left
+			anchors.bottom: parent.bottom
+
+			Image {
+				id: crown
+				smooth: true
+				fillMode: Image.PreserveAspectFit
+				anchors.centerIn: parent
+				source: "assets/crown.svg"
+			}
+		}
+
+		Item {
+			id: highscore_container
+			width: parent.width*0.25
+			height: parent.height*0.40
+			anchors.bottom: parent.bottom
+			anchors.left: crown_container.right
+
+			Text {
+				id: highscore_score
+				color: "white"
+				text: "0"
+				font.pixelSize: parent.width/3
+				smooth: true
+				font.family: roboto.name
+				font.bold: true
+				anchors.centerIn: parent
+			}
+		}
+
+		Item {
+			width: parent.width*0.25
+			height: parent.height*0.40
+			anchors.bottom: parent.bottom
+			anchors.left: highscore_container.right
+
+			Text {
+				id: highscore_time
+				color: "white"
+				text: "0"
+				font.pixelSize: parent.width/3
+				smooth: true
+				font.family: roboto.name
+				font.bold: true
+				anchors.centerIn: parent
+			}
+		}
 
 		onVisibleChanged: {
 			if (visible) {
-				score.text = kloggr.getScore();
+				current_score.text = kloggr.getScore() + "pts";
+				current_time.text = kloggr.getTime() + "s";
+				highscore_score.text = kloggr.getHighscore()+ "pts";
+				highscore_time.text = kloggr.getHighscoreTime() + "s";
 			}
 		}
 
 		FontLoader {
 			id: roboto;
 			source: "assets/ttf"
-		}
-
-		Text {
-			id: score
-			color: "white"
-			text: "0"
-			anchors.centerIn: parent
-			font.pixelSize: 50
-			smooth: true
-			font.family: roboto.name
 		}
 	}
 
@@ -130,24 +250,134 @@ Rectangle {
 	states: [
 		State {
 			name: "Paused"
-			//Display restartBtn
-			PropertyChanges { target: restartBtn; visible: true}
-			//Display exitBtn
-			PropertyChanges { target: exitBtn; visible: true}
-			//change pauseBtn img
-			PropertyChanges { target: pauseImg; source: "assets/gamePlay.png"}
+			PropertyChanges { target: pause_container; visible: true; opacity: 1}
+			PropertyChanges { target: restartBtn; visible: true; opacity: 1}
+			AnchorChanges {
+				target: restartBtn
+				anchors.top: pause_container.bottom
+				anchors.verticalCenter: undefined
+				anchors.right: pause_container.right
+				anchors.bottom: undefined
+				anchors.left: undefined
+			}
+			PropertyChanges { target: exitBtn; visible: true; opacity: 1}
+			AnchorChanges { target: exitBtn; anchors.top: pause_container.bottom; anchors.verticalCenter: undefined }
+			PropertyChanges { target: pauseImg; source: "assets/play.svg"}
 		},
 		State {
 			name: "Dead"
-			//Display and move restart button onDead
-			PropertyChanges { target: restartBtn; visible: true; }
-			AnchorChanges { target: restartBtn; anchors.top: score_container.bottom; anchors.verticalCenter: undefined }
-			//Display and move exit button onDead
-			PropertyChanges { target: exitBtn; visible: true; }
+			PropertyChanges { target: score_container; visible: true; opacity: 1}
+			PropertyChanges { target: restartBtn; visible: true; opacity: 1 }
+			AnchorChanges {
+				target: restartBtn
+				anchors.top: score_container.bottom
+				anchors.verticalCenter: undefined
+				anchors.right: score_container.right
+				anchors.bottom: undefined
+				anchors.left: undefined
+			}
+			PropertyChanges { target: exitBtn; visible: true; opacity: 1}
 			AnchorChanges { target: exitBtn; anchors.top: score_container.bottom; anchors.verticalCenter: undefined }
-			//Display Score and hide pause button
-			PropertyChanges { target: score_container; visible: true; }
 			PropertyChanges { target: pauseBtn; visible: false }
 		}
 	]
+	transitions: [
+		Transition {
+			from: ""; to: "Paused"
+			AnchorAnimation {  duration: 500; easing.type: Easing.OutCirc }
+			PropertyAnimation {property: "opacity";  duration: 1000; easing.type: Easing.OutCirc }
+		},
+		Transition {
+			from: ""; to: "Dead"
+			AnchorAnimation {  duration: 500; easing.type: Easing.OutCirc }
+			PropertyAnimation {property: "opacity";  duration: 1000; easing.type: Easing.OutCirc }
+		}
+	]
+
+	ParticleSystem {
+		id: confettis
+		running: false
+
+		anchors.fill: parent
+
+		function stopEmition() {
+			emitter.enabled = false;
+		}
+
+		Emitter {
+			id: emitter
+			width: parent.width
+			height: 0
+			x: 0
+			y: 0
+			emitRate: 8
+			lifeSpan: 4000
+			lifeSpanVariation: 800
+			size: 8
+			endSize: -1 // constant
+			velocity: PointDirection {
+				x: 0
+				y: 150
+				xVariation: 10
+			}
+		}
+
+		ItemParticle {
+			delegate: particleDelegate
+		}
+
+		Wander {
+			anchors.fill: parent
+			affectedParameter: Wander.Velocity
+			pace: 100
+			xVariance: 100
+			yVariance: 130
+		}
+
+		onRunningChanged: {
+			confettis_timer.start();
+		}
+	}
+
+	Component {
+		id: particleDelegate
+
+		Rectangle {
+			property var colors: ["green", "red", "blue"]
+			width: 9; height: 6
+			color: colors[Math.round(Math.random()*2)]
+		}
+	}
+
+	Timer {
+		id: confettis_timer
+		interval: 3000
+		repeat: false
+		running: false
+
+		onTriggered: confettis.stopEmition()
+	}
+
+	SoundEffect {
+		id: oneUpSound
+		source: "qrc:/assets/woosh.wav"
+		muted: !soundOn
+	}
+
+	SoundEffect {
+		id: deadSound
+		source: "qrc:/assets/gameover.wav"
+		muted: !soundOn
+	}
+
+	SoundEffect {
+		id: highscoreSound
+		source: "qrc:/assets/highscore.wav"
+		muted: !soundOn
+	}
+
+	Settings {
+		id: settings
+		property alias soundOn: gameArea.soundOn
+	}
 }

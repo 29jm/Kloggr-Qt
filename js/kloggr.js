@@ -126,7 +126,9 @@ Enemy.prototype = Object.create(Square.prototype);
  *	Drawn using color-filled rectangles
  */
 function BasicEnemy() {
-	Square.call(this, 4.3, 4.3, '#e51c23');
+	var width = (Math.random()-0.5) + 4;
+
+	Square.call(this, width, width, '#f04155');
 	this.to_update = false;
 }
 
@@ -164,7 +166,7 @@ BasicEnemy.prototype.update = function(delta_t) {
  *	Drawn using a texture, can move, etc...
  */
 function Player() {
-	Square.call(this, 11.4, 11.4, '../assets/player.png');
+	Square.call(this, 10, 10, '../assets/player.png');
 
 	this.speed_x = 0;
 	this.speed_y = 0;
@@ -221,7 +223,7 @@ Player.prototype.onCollide = function(gameobject) {
  *	Able to move, decelerate, change of behavior...
  */
 function Target() {
-	Square.call(this, 5.7, 5.7, '#2ecc71');
+	Square.call(this, 5, 5, '#2ecc71');
 
 	this.State = {
 		Fix:"Fix",
@@ -326,7 +328,7 @@ Target.prototype.updateState = function(score) {
  * Its behavior is controlled through the State enumeration.
  */
 function Lazer() {
-	Square.call(this, 4.4, kloggr.height, "../assets/lazer.png");
+	Square.call(this, 4.4, kloggr.height, "../assets/lazer.svg");
 
 	this.State = {
 		Inactive:"Inactive",
@@ -573,6 +575,10 @@ Kloggr.prototype.collisionDetection = function() {
 		// Kloggr.score has its own setter that calls
 		// Kloggr.newEvents, so no need for it here
 		this.newEvent(Kloggr.Events.TargetReached);
+
+		if (this.score > kloggr.highscore) {
+			this.newEvent(Kloggr.Events.NewHighscore, this._score);
+		}
 	}
 
 	var len = this.gameobjects.length;

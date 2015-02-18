@@ -1,7 +1,7 @@
 import QtQuick 2.3
 
 Rectangle {
-	color: "#00bcd4"
+	color: "#4dd0e1"
 
 	signal playClicked
 	signal settingsClicked
@@ -19,13 +19,12 @@ Rectangle {
 		anchors.right: parent.right
 	}
 
-	//play button
 	RoundButton {
 		id: playBtn
-		source: "assets/play.png"
+		image: "assets/play-circle.svg"
 		angle: 360
-		btnWidth: parent.height/4
-		imgWidth: btnWidth
+		width: parent.height/4
+		imageWidth: width
 		color: "#f1c40f"
 
 		anchors.horizontalCenter: parent.horizontalCenter
@@ -34,13 +33,12 @@ Rectangle {
 		onClicked: playClicked()
 	}
 
-	// settings button
 	RoundButton {
 		id: settingsBtn
-		source: "assets/settings.png"
+		image: "assets/settings.svg"
 		angle: 120
-		btnWidth: parent.height/8
-		imgWidth: 50
+		width: parent.height/8
+		imageWidth: settingsBtn.width/2
 
 		anchors.left: parent.left
 		anchors.leftMargin: parent.width/3-this.width
@@ -50,13 +48,12 @@ Rectangle {
 		onClicked: settingsClicked()
 	}
 
-	//info button
 	RoundButton {
-		source: "assets/info.png"
 		id: infoBtn
+		image: "assets/info.svg"
 		angle: 360
-		btnWidth: parent.height/8
-		imgWidth: 50
+		width: parent.height/8
+		imageWidth: infoBtn.width/2
 
 		anchors.right: parent.right
 		anchors.rightMargin: parent.width/3-this.width

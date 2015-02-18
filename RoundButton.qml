@@ -1,48 +1,28 @@
 import QtQuick 2.3
 
-Rectangle {
-	id: btn
-	signal clicked
-
-	property alias source: img.source
-	property alias imgWidth: img.width
-	property alias btnWidth: btn.width
-	property int angle: 360
-
+ClickButton {
 	height: width
 	radius: width/2
 	color: "white"
 
+	property alias image: img.source
+	property alias imageWidth: img.width
+	property real angle: 360
+
 	Image {
 		id: img
-		height: width
+		sourceSize.height: width
 		smooth: true
 		fillMode: Image.PreserveAspectFit
+		rotation: mouseArea.containsMouse ? angle : 0
+
 		anchors.centerIn: parent
-	}
 
-	MouseArea {
-		id: hoverArea
-		anchors.fill: parent
-		hoverEnabled: true
-		onClicked: parent.clicked()
-	}
-
-	states: State {
-		name: "rotated"; when: hoverArea.containsMouse == true
-		PropertyChanges {
-			target: img
-			rotation: angle
-		}
-	}
-
-	transitions: Transition {
-		from: ""; to: "rotated"
-		reversible: true
-		NumberAnimation {
-			property: "rotation"
-			duration: 500
-			easing.type: Easing.InOutQuad
+		Behavior on rotation {
+			NumberAnimation {
+				duration: 500
+				easing.type: Easing.InOutQuad
+			}
 		}
 	}
 }

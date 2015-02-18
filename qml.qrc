@@ -8,16 +8,8 @@
         <file>Kloggr.qml</file>
         <file>assets/deadPlayer.png</file>
         <file>assets/player.png</file>
-        <file>assets/lazer.png</file>
-        <file>assets/info.png</file>
-        <file>assets/settings.png</file>
         <file>assets/logo.png</file>
-        <file>assets/pause.png</file>
-        <file>assets/gamePlay.png</file>
-        <file>assets/exit.png</file>
-        <file>assets/replay.png</file>
         <file>RoundButton.qml</file>
-        <file>assets/play.png</file>
         <file>assets/ttf</file>
         <file>Info.qml</file>
         <file>assets/devs.png</file>
@@ -25,6 +17,21 @@
         <file>assets/gplus.png</file>
         <file>assets/github.png</file>
         <file>assets/facebook.png</file>
-        <file>Settings.qml</file>
+        <file>assets/click.wav</file>
+        <file>ClickButton.qml</file>
+        <file>assets/woosh.wav</file>
+        <file>assets/settings.svg</file>
+        <file>assets/info.svg</file>
+        <file>assets/play-circle.svg</file>
+        <file>assets/gameover.wav</file>
+        <file>SettingsMenu.qml</file>
+        <file>assets/music.svg</file>
+        <file>assets/music-box.svg</file>
+        <file>assets/reload.svg</file>
+        <file>assets/exit.svg</file>
+        <file>assets/crown.svg</file>
+        <file>assets/play.svg</file>
+        <file>assets/pause.svg</file>
+        <file>assets/lazer.svg</file>
     </qresource>
 </RCC>

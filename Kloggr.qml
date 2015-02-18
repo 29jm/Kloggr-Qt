@@ -1,17 +1,28 @@
 import QtQuick 2.3
 import QtQuick.Window 2.0
+import Qt.labs.settings 1.0
 
 import "js/kloggr.js" as Game
 
 Item {
-	property var kloggr: undefined
-	property var pixelDensity: Screen.pixelDensity
-
+	id: kloggrItem
 	focus: true
 
+	property var kloggr: undefined
+	property real pixelDensity: Screen.pixelDensity
+	property int highscore: 0
+	property real highscore_time: 0
+	property bool hasBeatenHighscore: false
+
 	signal dead
-	signal timerChanged()
-	signal scoreChanged()
+	signal timerChanged(int new_time)
+	signal scoreChanged(int new_score)
+	signal newHighscore(int new_highscore)
+
+	Component.onCompleted: {
+		Game.kloggr = this;
+		kloggr = new Game.Kloggr(width, height);
+	}
 
 	function play() {
 		console.log("play()");
@@ -30,7 +41,19 @@ Item {
 	}
 
 	function getScore() {
-		return kloggr.score;
+		return kloggr._score;
+	}
+
+	function getTime() {
+		return Math.round(kloggr.counter);
+	}
+
+	function getHighscore() {
+		return highscore;
+	}
+
+	function getHighscoreTime() {
+		return Math.round(highscore_time);
 	}
 
 	function handleEvents(event) {
@@ -39,6 +62,12 @@ Item {
 			updateState();
 			break;
 		case Game.Kloggr.Events.NewHighscore:
+			highscore = event.value;
+			highscore_time = kloggr.counter;
+			if (!hasBeatenHighscore) {
+				hasBeatenHighscore = true;
+				newHighscore(event.value);
+			}
 			break;
 		case Game.Kloggr.Events.ScoreChanged:
 		   scoreChanged(event.value); // TODO: missing handler
@@ -91,29 +120,15 @@ Item {
 		}
 	}
 
-	onVisibleChanged: {
-		if (visible && kloggr === undefined) {
-			Game.kloggr = this;
-			kloggr = new Game.Kloggr(width, height);
-		}
-		else if (visible && kloggr.state == Game.Kloggr.Playing) {
-			// Resume after re-switching
-			play();
-		}
-		else if (!visible) {
-			// Pause when switching apps
-			pause();
-		}
-	}
-
 	Timer {
 		id: timer
 
 		interval: 1000/60 // in millisecond
-		running: false
+		running: true
 		repeat: true
+
 		onTriggered: {
-			if (kloggr.state == Game.Kloggr.State.Playing) {
+			if (kloggr.state === Game.Kloggr.State.Playing) {
 				kloggr.handleKeys();
 				kloggr.update(1/60); // in seconds
 				kloggr.collisionDetection();
@@ -124,5 +139,10 @@ Item {
 				handleEvents(events[i]);
 			}
 		}
+	}
+
+	Settings  {
+		property alias highscore: kloggrItem.highscore
+		property alias highscore_time: kloggrItem.highscore_time
 	}
 }

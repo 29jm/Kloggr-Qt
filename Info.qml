@@ -3,14 +3,15 @@ import QtQuick 2.3
 
 Rectangle {
 	id: info
+	color: "#4dd0e1"
+
 	signal mainMenuClicked
 
-	color: "#4dd0e1"
-	width: parent.width
-	height: parent.width
+	Component.onCompleted: {
+		info.forceActiveFocus();
+	}
 
-	//back button
-	Rectangle {
+	ClickButton {
 		id: back
 		color: "white"
 		width: parent.height/6
@@ -21,12 +22,10 @@ Rectangle {
 		anchors.bottomMargin: parent.height/10
 		anchors.left: social_container.left
 
-		MouseArea {
-			anchors.fill: parent
-			onClicked: mainMenuClicked()
-		}
+		onClicked: mainMenuClicked()
+
 		Image {
-			source: "assets/exit.png"
+			source: "assets/exit.svg"
 			smooth: true
 			fillMode: Image.PreserveAspectFit
 			anchors.centerIn: parent
@@ -34,7 +33,6 @@ Rectangle {
 		}
 	}
 
-	//devs image
 	Image {
 		source: "assets/devs.png"
 		smooth: true
@@ -45,16 +43,13 @@ Rectangle {
 		z: 2
 	}
 
-	//ground
 	Rectangle {
-		id: ground
 		color: "#27ae60"
 		width: parent.width
 		height: parent.height/6
 		anchors.bottom: parent.bottom
 	}
 
-	//sun
 	Rectangle {
 		id: sun
 		width: parent.width/2
@@ -64,11 +59,36 @@ Rectangle {
 
 		anchors.left: parent.left
 		anchors.top: parent.top
-		anchors.topMargin: -sun.width/2
-		anchors.leftMargin: -sun.width/2
+		anchors.topMargin: -width/2
+		anchors.rightMargin: -width/2
+		anchors.leftMargin: -width/2
+
+		states: [
+			State {
+				name: ""
+				AnchorChanges {
+					target: sun
+					anchors.left: info.left
+					anchors.right: undefined
+				}
+				onCompleted: sun.state = "right"
+			},
+			State {
+				name: "right"
+				AnchorChanges {
+					target: sun
+					anchors.right: info.right
+					anchors.left: undefined
+				}
+				onCompleted: sun.state = ""
+			}
+		]
+		transitions: Transition {
+			AnchorAnimation {duration: 20000;}
+		}
+		Component.onCompleted: sun.state = "right"
 	}
 
-	//social media buttons
 	Grid {
 		id: social_container
 		columns: 2
@@ -82,6 +102,7 @@ Rectangle {
 			height: width
 			color: info.color
 			radius: width/2
+
 			Image {
 				id: google
 				width: info.height/8
@@ -90,11 +111,13 @@ Rectangle {
 				fillMode: Image.PreserveAspectFit
 			}
 		}
+
 		Rectangle {
 			width: github.width
 			height: width
 			color: info.color
 			radius: width/2
+
 			Image {
 				id: github
 				width: info.height/8
@@ -103,11 +126,13 @@ Rectangle {
 				fillMode: Image.PreserveAspectFit
 			}
 		}
+
 		Rectangle {
 			width: facebook.width
 			height: width
 			color: info.color
 			radius: width/2
+
 			Image {
 				id: facebook
 				width: info.height/8
@@ -116,11 +141,13 @@ Rectangle {
 				fillMode: Image.PreserveAspectFit
 			}
 		}
+
 		Rectangle {
 			width: twitter.width
 			height: width
 			color: info.color
 			radius: width/2
+
 			Image {
 				id: twitter
 				width: info.height/8
@@ -138,5 +165,12 @@ Rectangle {
 		samples: 16
 		color: "#00bcd4"
 		source: social_container
+	}
+
+	Keys.onReleased: {
+		if (event.key === Qt.Key_Back) {
+			mainMenuClicked();
+			event.accepted = true;
+		}
 	}
 }
