@@ -2,6 +2,7 @@ import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtMultimedia 5.0
 import Qt.labs.settings 1.0
+import QtQuick.Particles 2.0
 
 Rectangle {
 	id: gameArea
@@ -32,6 +33,7 @@ Rectangle {
 
 		onNewHighscore: {
 			highscoreSound.play();
+			confettis.running = true;
 		}
 	}
 
@@ -291,6 +293,70 @@ Rectangle {
 			PropertyAnimation {property: "opacity";  duration: 1000; easing.type: Easing.OutCirc }
 		}
 	]
+
+	ParticleSystem {
+		id: confettis
+		running: false
+
+		anchors.fill: parent
+
+		function stopEmition() {
+			emitter.enabled = false;
+		}
+
+		Emitter {
+			id: emitter
+			width: parent.width
+			height: 0
+			x: 0
+			y: 0
+			emitRate: 8
+			lifeSpan: 4000
+			lifeSpanVariation: 800
+			size: 8
+			endSize: -1 // constant
+			velocity: PointDirection {
+				x: 0
+				y: 150
+				xVariation: 10
+			}
+		}
+
+		ItemParticle {
+			delegate: particleDelegate
+		}
+
+		Wander {
+			anchors.fill: parent
+			affectedParameter: Wander.Velocity
+			pace: 100
+			xVariance: 100
+			yVariance: 130
+		}
+
+		onRunningChanged: {
+			confettis_timer.start();
+		}
+	}
+
+	Component {
+		id: particleDelegate
+
+		Rectangle {
+			property var colors: ["green", "red", "blue"]
+			width: 9; height: 6
+			color: colors[Math.round(Math.random()*2)]
+		}
+	}
+
+	Timer {
+		id: confettis_timer
+		interval: 3000
+		repeat: false
+		running: false
+
+		onTriggered: confettis.stopEmition()
+	}
 
 	SoundEffect {
 		id: oneUpSound
