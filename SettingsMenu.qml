@@ -15,7 +15,6 @@ Rectangle {
 	}
 
 	Settings {
-		category: "InMenu"
 		property alias musicOn: settings.musicOn
 		property alias soundOn: settings.soundOn
 	}

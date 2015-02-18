@@ -142,7 +142,6 @@ Item {
 	}
 
 	Settings  {
-		category: "InGame"
 		property alias highscore: kloggrItem.highscore
 		property alias highscore_time: kloggrItem.highscore_time
 	}

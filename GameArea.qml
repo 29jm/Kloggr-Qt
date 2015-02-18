@@ -1,10 +1,13 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtMultimedia 5.0
+import Qt.labs.settings 1.0
 
 Rectangle {
 	id: gameArea
 	color: "#34495e"
+
+	property bool soundOn: true
 
 	signal mainMenuClicked
 
@@ -292,15 +295,23 @@ Rectangle {
 	SoundEffect {
 		id: oneUpSound
 		source: "qrc:/assets/woosh.wav"
+		muted: !soundOn
 	}
 
 	SoundEffect {
 		id: deadSound
 		source: "qrc:/assets/gameover.wav"
+		muted: !soundOn
 	}
 
 	SoundEffect {
 		id: highscoreSound
 		source: "qrc:/assets/highscore.wav"
+		muted: !soundOn
+	}
+
+	Settings {
+		id: settings
+		property alias soundOn: gameArea.soundOn
 	}
 }
