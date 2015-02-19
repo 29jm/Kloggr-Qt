@@ -15,9 +15,10 @@ function Square(w, h, texture) {
 	this.texture = texture;
 	this.collidable = true;
 
-	this.object = Qt.createQmlObject(
-		this.newQmlObject(this.m_width, this.m_height, texture), kloggr, "Square");
+	this.object = this.newQmlObject(this.m_width, this.m_height, texture);
 }
+
+Square.base_object = Qt.createComponent("../Square.qml");
 
 Object.defineProperty(Square.prototype, "x", {
 	get: function() { return this.m_x; },
@@ -44,23 +45,22 @@ Object.defineProperty(Square.prototype, "visible", {
 	set: function(val) { this.m_visible = val; this.object.visible = val; }
 });
 
+Object.defineProperty(Square.prototype, "opacity", {
+	get: function() { return this.m_opacity; },
+	set: function(val) { this.m_opacity = val; this.object.opacity = val; }
+});
+
 Square.prototype.newQmlObject = function(w, h, texture) {
+	var col;
+	var src;
+
 	if (/#[0-9a-zA-Z]{6}/.test(texture)) {
-		return "import QtQuick 2.3;\
-				Rectangle {\
-					width:"+w+";\
-					height:"+h+";\
-					color:\""+texture+"\";\
-				}";
+		col = texture;
+	} else {
+		src = texture;
 	}
-	else {
-		return "import QtQuick 2.3;\
-				Image {\
-					source:\""+texture+"\";\
-					width:"+w+";\
-					height:"+h+";\
-				}";
-	}
+
+	return Square.base_object.createObject(kloggr, {width: w, height: h, color: col, source: src});
 };
 
 Square.prototype.collideBox = function(box_x, box_y, box_w, box_h) {
@@ -112,6 +112,10 @@ Square.prototype.intersect = function(b, silent) {
 
 	return true;
 }
+
+Square.prototype.distanceTo = function(b) {
+	return Math.sqrt((this.x-b.x)*(this.x-b.x) + (this.y-b.y)*(this.y-b.y));
+};
 
 /*  Enemy abstract class. Used by everything that causes damage
  *  to the player.
@@ -271,9 +275,10 @@ Target.prototype.respawn = function(gameobjects, max_x, max_y) {
 
 Target.prototype.update = function(delta_t) {
 	var len = 0;
-
 	this.accumulator += delta_t;
-	if (this.accumulator > 2 && this.state == this.State.Bouncing) {
+
+	// Every 2 seconds, bounce
+	if (this.accumulator > 2 && this.state === this.State.Bouncing) {
 		this.accumulator = 0;
 
 		this.speed_x = ((Math.random()*this.max_speed*2)-this.max_speed);
@@ -282,9 +287,7 @@ Target.prototype.update = function(delta_t) {
 						+ (this.speed_y*this.speed_y));
 		this.speed_x = (this.speed_x/len)*this.max_speed;
 		this.speed_y = (this.speed_y/len)*this.max_speed;
-	}
-
-	if (len == 0) { // Don't recalculate twice
+	} else { // Don't move that
 		len = Math.sqrt((this.speed_x*this.speed_x)
 						+ (this.speed_y*this.speed_y));
 	}
@@ -295,6 +298,7 @@ Target.prototype.update = function(delta_t) {
 		return; // No movement needed
 	}
 
+	// Reduce the length of the direction vector by slowing_speed
 	this.speed_x = (this.speed_x / len)*(len-this.slowing_speed);
 	this.speed_y = (this.speed_y / len)*(len-this.slowing_speed);
 
@@ -310,10 +314,6 @@ Target.prototype.update = function(delta_t) {
 
 	this.x += this.speed_x*delta_t;
 	this.y += this.speed_y*delta_t;
-};
-
-Target.prototype.distanceTo = function(b) {
-	return Math.sqrt((this.x-b.x)*(this.x-b.x) + (this.y-b.y)*(this.y-b.y));
 };
 
 Target.prototype.updateState = function(score) {
@@ -374,7 +374,7 @@ Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 };
 
 Lazer.prototype.update = function(delta_t) {
-	if (this.state == this.State.Inactive) {
+	if (this.state === this.State.Inactive) {
 		return;
 	}
 
@@ -383,18 +383,22 @@ Lazer.prototype.update = function(delta_t) {
 		this.accumulator = 0;
 		if (this.state == this.State.On) {
 			this.state = this.State.Off;
-			this.visible = false;
+			this.opacity = 0;
 			this.collidable = false;
 		}
 		else {
 			this.state = this.State.On;
-			this.visible = true;
+			this.opacity = 1;
 			this.collidable = true;
 		}
 	}
 };
 
 Lazer.prototype.updateState = function(score) {
+	this.accumulator = 0;
+	this.state = this.State.On
+	this.opacity = 1;
+
 	switch (score) {
 	case 10:
 		this.state = this.State.On;

@@ -33,5 +33,6 @@
         <file>assets/play.svg</file>
         <file>assets/pause.svg</file>
         <file>assets/lazer.svg</file>
+        <file>Square.qml</file>
     </qresource>
 </RCC>
