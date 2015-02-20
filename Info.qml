@@ -34,6 +34,7 @@ Rectangle {
 	}
 
 	Image {
+		id: devs
 		source: "assets/devs.png"
 		smooth: true
 		height: back.height
@@ -41,6 +42,23 @@ Rectangle {
 		anchors.bottom: back.bottom
 		anchors.left: back.right
 		z: 2
+	}
+
+	FontLoader {
+		id: roboto;
+		source: "assets/ttf"
+	}
+
+	Text {
+		color: "white"
+		text: "this game is open-source!"
+		font.pixelSize: devs.height/4
+		smooth: true
+		font.family: roboto.name
+		anchors.bottom: parent.bottom
+		anchors.bottomMargin: this.height/2
+		anchors.horizontalCenter: parent.horizontalCenter
+		z: 4
 	}
 
 	Rectangle {
@@ -160,8 +178,8 @@ Rectangle {
 
 	DropShadow {
 		anchors.fill: social_container
-		horizontalOffset: (google.x-sun.x+sun.width/2)/(0.25*google.width)
-		verticalOffset: (google.y-sun.y+sun.width/2)/(0.25*google.width)
+		horizontalOffset: (google.x-sun.x+sun.width/2)/(0.10*google.width)
+		verticalOffset: (google.y-sun.y+sun.width/2)/(0.10*google.width)
 		samples: 16
 		color: "#00bcd4"
 		source: social_container
