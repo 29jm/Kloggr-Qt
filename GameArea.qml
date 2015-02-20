@@ -42,14 +42,14 @@ Rectangle {
 		image: "assets/reload.svg"
 		angle: 360
 		width: parent.height/8
-		imageWidth: restartBtn.width/2
+		imageWidth: restartBtn.height/2
 		visible: false
 		opacity: 0
 
 		anchors.left: parent.left
 		anchors.bottom: parent.bottom
-		anchors.rightMargin: 5
 		anchors.topMargin: -this.width/2
+		anchors.rightMargin: score_container.width*0.25-this.width/2
 		z: 10
 
 		onClicked: {
@@ -63,12 +63,12 @@ Rectangle {
 		image: "assets/exit.svg"
 		angle: 180
 		width: parent.height/12
-		imageWidth: exitBtn.width/2
+		imageWidth: exitBtn.height/2
 		visible: false
 		opacity: 0
 
 		anchors.top: restartBtn.top
-		anchors.topMargin: restartBtn.height/2+5
+		anchors.topMargin: restartBtn.height+5
 		anchors.horizontalCenter: restartBtn.horizontalCenter
 
 		onClicked: mainMenuClicked()
@@ -134,73 +134,36 @@ Rectangle {
 		visible: false
 		opacity: 0
 
-		Rectangle {
-			width: 2
-			height: parent.height*0.90
-			anchors.centerIn: parent
+		Item {
+			width: parent.width
+			height: parent.height*0.65
+			anchors.top: parent.top
+			anchors.left: parent.left
+
+			Text {
+				id: current_points
+				color: "white"
+				text: "0"
+				font.pixelSize: parent.height*0.60
+				smooth: true
+				font.family: roboto.name
+				font.bold: true
+				anchors.centerIn: parent
+			}
 		}
 
 		Item {
-			width: parent.width/2
-			height: parent.height*0.60
-			anchors.top: parent.top
+			id: currentScore_container
+			width: parent.width*0.25
+			height: parent.height*0.35
+			anchors.bottom: parent.bottom
 			anchors.left: parent.left
 
 			Text {
 				id: current_score
 				color: "white"
 				text: "0"
-				font.pixelSize: parent.width/3
-				smooth: true
-				font.family: roboto.name
-				anchors.centerIn: parent
-			}
-		}
-
-		Item {
-			width: parent.width/2
-			height: parent.height*0.60
-			anchors.top: parent.top
-			anchors.right: parent.right
-
-			Text {
-				id: current_time
-				color: "white"
-				text: "0"
-				font.pixelSize: parent.width/3
-				smooth: true
-				font.family: roboto.name
-				anchors.centerIn: parent
-			}
-		}
-		Item {
-			id: crown_container
-			width: parent.width*0.25
-			height: parent.height*0.40
-			anchors.left: parent.left
-			anchors.bottom: parent.bottom
-
-			Image {
-				id: crown
-				smooth: true
-				fillMode: Image.PreserveAspectFit
-				anchors.centerIn: parent
-				source: "assets/crown.svg"
-			}
-		}
-
-		Item {
-			id: highscore_container
-			width: parent.width*0.25
-			height: parent.height*0.40
-			anchors.bottom: parent.bottom
-			anchors.left: crown_container.right
-
-			Text {
-				id: highscore_score
-				color: "white"
-				text: "0"
-				font.pixelSize: parent.width/3
+				font.pixelSize: parent.height*0.50
 				smooth: true
 				font.family: roboto.name
 				font.bold: true
@@ -210,15 +173,15 @@ Rectangle {
 
 		Item {
 			width: parent.width*0.25
-			height: parent.height*0.40
+			height: parent.height*0.35
 			anchors.bottom: parent.bottom
-			anchors.left: highscore_container.right
+			anchors.left: currentScore_container.right
 
 			Text {
-				id: highscore_time
+				id: current_time
 				color: "white"
 				text: "0"
-				font.pixelSize: parent.width/3
+				font.pixelSize: parent.height*0.50
 				smooth: true
 				font.family: roboto.name
 				font.bold: true
@@ -228,10 +191,9 @@ Rectangle {
 
 		onVisibleChanged: {
 			if (visible) {
-				current_score.text = kloggr.getScore() + "pts";
+				current_points.text = kloggr.getPoints() + "pts";
+				current_score.text = kloggr.getScore() + "";
 				current_time.text = kloggr.getTime() + "s";
-				highscore_score.text = kloggr.getHighscore()+ "pts";
-				highscore_time.text = kloggr.getHighscoreTime() + "s";
 			}
 		}
 
@@ -261,7 +223,6 @@ Rectangle {
 				anchors.left: undefined
 			}
 			PropertyChanges { target: exitBtn; visible: true; opacity: 1}
-			AnchorChanges { target: exitBtn; anchors.top: pause_container.bottom; anchors.verticalCenter: undefined }
 			PropertyChanges { target: pauseImg; source: "assets/play.svg"}
 		},
 		State {
@@ -271,13 +232,11 @@ Rectangle {
 			AnchorChanges {
 				target: restartBtn
 				anchors.top: score_container.bottom
-				anchors.verticalCenter: undefined
 				anchors.right: score_container.right
 				anchors.bottom: undefined
 				anchors.left: undefined
 			}
 			PropertyChanges { target: exitBtn; visible: true; opacity: 1}
-			AnchorChanges { target: exitBtn; anchors.top: score_container.bottom; anchors.verticalCenter: undefined }
 			PropertyChanges { target: pauseBtn; visible: false }
 		}
 	]
