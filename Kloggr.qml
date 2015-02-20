@@ -48,12 +48,21 @@ Item {
 		return Math.round(kloggr.counter);
 	}
 
-	function getHighscore() {
-		return highscore;
+	function getPoints() {
+		var points = getScore()*getScore()-Math.sqrt(getTime());
+		if (kloggr._score<1) {
+			return 0
+		}
+		else if (points<0) {
+			return Math.round(Math.abs(points)/getTime())+1;
+		}
+		else {
+			return Math.round(points);
+		}
 	}
 
-	function getHighscoreTime() {
-		return Math.round(highscore_time);
+	function getHighscore() {
+		return highscore;
 	}
 
 	function handleEvents(event) {
@@ -63,7 +72,6 @@ Item {
 			break;
 		case Game.Kloggr.Events.NewHighscore:
 			highscore = event.value;
-			highscore_time = kloggr.counter;
 			if (!hasBeatenHighscore) {
 				hasBeatenHighscore = true;
 				newHighscore(event.value);
@@ -143,6 +151,5 @@ Item {
 
 	Settings  {
 		property alias highscore: kloggrItem.highscore
-		property alias highscore_time: kloggrItem.highscore_time
 	}
 }
