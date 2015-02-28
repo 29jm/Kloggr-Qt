@@ -82,10 +82,21 @@ Square.prototype.collideBox = function(box_x, box_y, box_w, box_h) {
 	}
 };
 
+Square.prototype.distanceTo = function(b) {
+	return Math.sqrt((this.x-b.x)*(this.x-b.x) + (this.y-b.y)*(this.y-b.y));
+};
+
 Square.prototype.respawn = function(gameobjects, max_x, max_y) {
 	this.x = Math.random()*(max_x-this.width);
 	this.y = Math.random()*(max_y-this.height);
 };
+
+Square.prototype.respawnFarFrom = function(gameobject, max_x, max_y, object, distance) {
+	do {
+		this.respawn(gameobjects, max_x, max_y);
+
+	} while (this.distanceTo(object) < distance);
+}
 
 Square.prototype.intersect = function(b, silent) {
 	var a = this;
@@ -360,17 +371,7 @@ Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 		}
 	}
 
-	while (true) {
-		Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
-		this.y = 0;
-
-		if (this.intersect(player) || this.intersect(target)) {
-			continue;
-		}
-		else {
-			break;
-		}
-	}
+	this.respawnFarFrom(gameobjects, max_x, max_y, player, player.width*3)
 };
 
 Lazer.prototype.update = function(delta_t) {
