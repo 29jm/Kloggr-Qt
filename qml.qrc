@@ -20,6 +20,7 @@
         <file>assets/click.wav</file>
         <file>ClickButton.qml</file>
         <file>assets/woosh.wav</file>
+        <file>assets/highscore.wav</file>
         <file>assets/settings.svg</file>
         <file>assets/info.svg</file>
         <file>assets/play-circle.svg</file>
