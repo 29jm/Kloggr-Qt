@@ -32,12 +32,12 @@ Object.defineProperty(Square.prototype, "y", {
 
 Object.defineProperty(Square.prototype, "width", {
 	get: function() { return this.m_width; },
-	set: function(val) { this.m_width = val; this.object.width = val; }
+	set: function(val) { this.m_width = val*kloggr.pixelDensity; this.object.width = val; }
 });
 
 Object.defineProperty(Square.prototype, "height", {
 	get: function() { return this.m_height; },
-	set: function(val) { this.m_height = val; this.object.height = val; }
+	set: function(val) { this.m_height = val*kloggr.pixelDensity; this.object.height = val; }
 });
 
 Object.defineProperty(Square.prototype, "visible", {
