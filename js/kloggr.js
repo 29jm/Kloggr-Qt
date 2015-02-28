@@ -287,30 +287,14 @@ function Target() {
 Target.prototype = Object.create(Square.prototype);
 
 Target.prototype.respawn = function(gameobjects, max_x, max_y) {
-	var location_found = false;
-
-	while (!location_found) {
-		Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
-
-		var len = gameobjects.length;
-		for (var i = 0; i < len; i++) {
-			if (this.intersect(gameobjects[i])) {
-				continue;
-			}
-
-			if (gameobjects[i] instanceof Player) {
-				var half = ((max_x+max_y)/2)/2;
-
-				if (this.distanceTo(gameobjects[i]) > half) {
-					location_found = true;
-				}
-			}
-
-			if (location_found) {
-				break;
-			}
+	var player;
+	for (var i = 0; i < gameobjects.length; i++) {
+		if (gameobjects[i] instanceof Player) {
+			player = gameobjects[i];
 		}
 	}
+
+	this.respawnFarFrom(gameobjects, max_x, max_y, player, max_x/2);
 };
 
 Target.prototype.update = function(delta_t) {
