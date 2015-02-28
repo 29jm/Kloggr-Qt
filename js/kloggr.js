@@ -3,7 +3,7 @@ var kloggr;
 /////////////////////////// entities.js /////////////////////////////
 
 /*	Square base class.
- *	Used by BasicEnemy, Player and Target
+ *	Used by every game object. Drawn using a QML object
  *  The size of the square is expressed in millimeters
  */
 function Square(w, h, texture) {
@@ -20,6 +20,8 @@ function Square(w, h, texture) {
 
 Square.base_object = Qt.createComponent("../Square.qml");
 
+// These things bind objects properties to the qml object's properties
+// so you can do obj.x = y; and have your QML object move on the screen
 Object.defineProperty(Square.prototype, "x", {
 	get: function() { return this.m_x; },
 	set: function(val) { this.m_x = val; this.object.x = val; }
@@ -50,6 +52,8 @@ Object.defineProperty(Square.prototype, "opacity", {
 	set: function(val) { this.m_opacity = val; this.object.opacity = val; }
 });
 
+// Returns a QML object. If texture is a color a Rectangle is created,
+// else the texture parameter is used as a path to an asset.
 Square.prototype.newQmlObject = function(w, h, texture) {
 	var col;
 	var src;
@@ -63,6 +67,7 @@ Square.prototype.newQmlObject = function(w, h, texture) {
 	return Square.base_object.createObject(kloggr, {width: w, height: h, color: col, source: src});
 };
 
+// Prevents the square from escaping a rectangle, usually the window
 Square.prototype.collideBox = function(box_x, box_y, box_w, box_h) {
 	if (this.x < box_x) {
 		this.x = box_x;
@@ -86,11 +91,13 @@ Square.prototype.distanceTo = function(b) {
 	return Math.sqrt((this.x-b.x)*(this.x-b.x) + (this.y-b.y)*(this.y-b.y));
 };
 
+// Respawns the square randomly within 0;max_x and 0;max_y
 Square.prototype.respawn = function(gameobjects, max_x, max_y) {
 	this.x = Math.random()*(max_x-this.width);
 	this.y = Math.random()*(max_y-this.height);
 };
 
+// Respawns the square at a minimum distance from another.
 Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, distance) {
 	while (true) {
 		Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
@@ -128,6 +135,8 @@ Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, di
 }
 
 Square.prototype.intersect = function(b, silent) {
+// Returns true if the square intersects another, else false
+Square.prototype.intersect = function(b) {
 	var a = this;
 	if (silent === undefined) {
 		silent = true;
@@ -153,12 +162,13 @@ Square.prototype.intersect = function(b, silent) {
 	return true;
 }
 
+// Returns the distance between the square's origin (x;y) and another point
+// Beware of edge cases
 Square.prototype.distanceTo = function(b) {
 	return Math.sqrt((this.x-b.x)*(this.x-b.x) + (this.y-b.y)*(this.y-b.y));
 };
 
-/*  Enemy abstract class. Used by everything that causes damage
- *  to the player.
+/*  Enemy abstract class. Base class of everything that can kill the player
  */
 function Enemy() {
 
@@ -166,8 +176,9 @@ function Enemy() {
 
 Enemy.prototype = Object.create(Square.prototype);
 
-/*	BasicEnemy class.
- *	Drawn using color-filled rectangles
+/*	BasicEnemy, the little red square that you must not touch.
+ *	Its size varies a bit.
+ *	More and more appear as the player reaches more targets
  */
 function BasicEnemy() {
 	var width = (Math.random()-0.5) + 4;
@@ -178,6 +189,7 @@ function BasicEnemy() {
 
 BasicEnemy.prototype = Object.create(Enemy.prototype);
 
+// Do not respawn neither on the player nor on the target
 BasicEnemy.prototype.respawn = function(gameobjects, max_x, max_y) {
 	var location_found = false;
 
@@ -202,6 +214,7 @@ BasicEnemy.prototype.respawn = function(gameobjects, max_x, max_y) {
 	}
 };
 
+// They never move, they just respawn
 BasicEnemy.prototype.update = function(delta_t) {
 
 };
@@ -222,6 +235,9 @@ function Player() {
 
 Player.prototype = Object.create(Square.prototype);
 
+// Kill the velocity when respawning
+// When the player just reached a target, it is reset to his previous position
+// but the respawn bit is needed when the game is started
 Player.prototype.respawn = function(gameobjects, max_x, max_y) {
 	Square.prototype.respawn.
 		call(this, gameobjects, max_x, max_y);
@@ -229,6 +245,9 @@ Player.prototype.respawn = function(gameobjects, max_x, max_y) {
 	this.speed_y = 0;
 }
 
+// Move the player according to his velocity and the time passed.
+// Ensure that it doesn't exceed speed limits and decrease his speed a bit
+// every frame so it eventually stops if the player doesn't make it move
 Player.prototype.update = function(delta_t) {
 	var len = Math.sqrt((this.speed_x*this.speed_x)
 						+ (this.speed_y*this.speed_y));
@@ -263,8 +282,11 @@ Player.prototype.onCollide = function(gameobject) {
 	}
 }
 
-/*	Target class. inherits Square.
+/*	Target class.
  *	Able to move, decelerate, change of behavior...
+ *	There are useless states in here, just Bouncing and Fix are used
+ *	Every frame a counter is increased by delta_t, and when delta_t > 2s
+ *	the target bounces then decelerates.
  */
 function Target() {
 	Square.call(this, 5, 5, '#2ecc71');
@@ -286,6 +308,7 @@ function Target() {
 
 Target.prototype = Object.create(Square.prototype);
 
+// Respawns far from the player (at least half the window width)
 Target.prototype.respawn = function(gameobjects, max_x, max_y) {
 	var player;
 	for (var i = 0; i < gameobjects.length; i++) {
@@ -297,6 +320,7 @@ Target.prototype.respawn = function(gameobjects, max_x, max_y) {
 	this.respawnFarFrom(gameobjects, max_x, max_y, player, max_x/2);
 };
 
+// Quite similar to Player.update but with the counter and bounce added
 Target.prototype.update = function(delta_t) {
 	var len = 0;
 	this.accumulator += delta_t;
@@ -340,6 +364,7 @@ Target.prototype.update = function(delta_t) {
 	this.y += this.speed_y*delta_t;
 };
 
+// Called whenever the score changes. It begins to bounce only at score=5
 Target.prototype.updateState = function(score) {
 	switch (score) {
 	case 5:
@@ -348,8 +373,10 @@ Target.prototype.updateState = function(score) {
 	}
 }
 
-/* The Lazer class is an Enemy, but it initializes from a Square.
- * Its behavior is controlled through the State enumeration.
+/* The Lazer class!
+ * Every 2s it appears or disappear, the same way Target can bounce
+ * It is the same height as the window, and a future update should
+ * make it horizontal randomly.
  */
 function Lazer() {
 	Square.call(this, 4.4, kloggr.height, "../assets/lazer.svg");
@@ -367,6 +394,7 @@ function Lazer() {
 
 Lazer.prototype = Object.create(Enemy.prototype);
 
+// Respawns far from the player
 Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 	this.height = max_y;
 	var player;
@@ -386,6 +414,7 @@ Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 	} while (this.intersect(player));
 };
 
+// Same as Target but the Lazer is static
 Lazer.prototype.update = function(delta_t) {
 	if (this.state === this.State.Inactive) {
 		return;
@@ -407,6 +436,7 @@ Lazer.prototype.update = function(delta_t) {
 	}
 };
 
+// Reset the Lazer's state to On when it respawns
 Lazer.prototype.updateState = function(score) {
 	this.accumulator = 0;
 	this.state = this.State.On
@@ -421,6 +451,20 @@ Lazer.prototype.updateState = function(score) {
 
 
 ////////////////////////// kloggr.js /////////////////////////////
+/* The class that handles the game's flow
+ * It initializes the game objects like Player, Target and enemies,
+ * it handles the inputs and updates the state of the game objects
+ * as the game progresses. It moves the objects according to their
+ * speed and the time passed.
+ * It has different states like Playing, Paused...
+ * It can communicate to the external loop with events via getEvents()
+ *
+ * A basic external loop would do:
+ *  - manage input and pass though handleTouchMove/setKeyState/...
+ *  - call Kloggr.collisionDetection()
+ *  - call Kloggr.update()
+ *  - handle events with getEvents and react accordingly
+ */
 function Kloggr(width, height) {
 	this.width = width;
 	this.height = height;
@@ -444,6 +488,8 @@ Kloggr.Events = {
 	TimeChanged:"TimeChanged"
 };
 
+// Reset default values.
+// Used when the player dies, or at the first launch
 Kloggr.prototype.restart = function() {
 	// Set default values
 	this.state = Kloggr.State.Playing;
@@ -458,6 +504,7 @@ Kloggr.prototype.restart = function() {
 	this.respawnAll(true);
 };
 
+// Either respawn only the necessary or regenerate every object
 Kloggr.prototype.respawnAll = function(full_restart) {
 	if (!full_restart) {
 		var player_x = this.player.x;
@@ -490,6 +537,7 @@ Kloggr.prototype.respawnAll = function(full_restart) {
 	this.respawnEnemies();
 };
 
+// Respawns enemies and generate more if needed
 Kloggr.prototype.respawnEnemies = function() {
 	console.log("Spawning "+this.numberOfEnemies()+" enemies");
 
@@ -516,6 +564,7 @@ Kloggr.prototype.respawnEnemies = function() {
 	}
 };
 
+// Set the state of a key in a dictionnay later used in handleKeys
 Kloggr.prototype.setKeyState = function(key, state) {
 	if (state) {
 		this.keys_pressed[key] = state;
@@ -525,6 +574,7 @@ Kloggr.prototype.setKeyState = function(key, state) {
 	}
 };
 
+// Modify the player's direction when a key (or more) is pressed
 Kloggr.prototype.handleKeys = function() {
 	if (Qt.Key_Left in this.keys_pressed) {
 		this.player.speed_x -= this.player.accel;
@@ -543,11 +593,14 @@ Kloggr.prototype.handleKeys = function() {
 	}
 };
 
+// Store the start of the touch to get the start of a vector
 Kloggr.prototype.handleTouchStart = function(mouse) {
 	this.touchmoves[0] = mouse.x;
 	this.touchmoves[1] = mouse.y;
 };
 
+// Use the starting point of touch and endpoint to get a direction vector.
+// Apply it to the player's direction.
 Kloggr.prototype.handleTouchMove = function(mouse) {
 	var move_x = mouse.x - this.touchmoves[0];
 	var move_y = mouse.y - this.touchmoves[1];
@@ -580,6 +633,9 @@ Kloggr.prototype.update = function(delta_t) {
 	}
 };
 
+// Blocks the moving objects from escpaing the window.
+// Check if the player reached a target, emits events...
+// Check if the player collides with an enemy -> state = Dead
 Kloggr.prototype.collisionDetection = function() {
 	// Wall collisions
 	this.player.collideBox(0, 0, this.width, this.height);
@@ -613,6 +669,7 @@ Kloggr.prototype.collisionDetection = function() {
 };
 
 // Draw objects
+// Totally unused because QML does the drawing
 Kloggr.prototype.draw = function(context) {
 	var len = this.gameobjects.length;
 	for (var i = 0; i < len; i++) {
@@ -620,9 +677,8 @@ Kloggr.prototype.draw = function(context) {
 	}
 };
 
-/* These 2 functions are used to transmit messages
- * to the external main loop.
- */
+// These 2 functions are used to transmit messages
+// to the external main loop.
 Kloggr.prototype.newEvent = function(evt, val) {
 	this.events.push({
 		name: evt,
@@ -630,6 +686,8 @@ Kloggr.prototype.newEvent = function(evt, val) {
 	});
 };
 
+// Returns the events and their values and clear the event
+// queue.
 Kloggr.prototype.getEvents = function() {
 	var tmp = this.events;
 	this.events = [];
@@ -637,6 +695,7 @@ Kloggr.prototype.getEvents = function() {
 	return tmp;
 };
 
+// Give the score to every object in case they want to change state, etc...
 Kloggr.prototype.updateByScore = function(value) {
 	if (!this.gameobjects) {
 		return;
