@@ -83,9 +83,6 @@ Item {
 		case Game.Kloggr.Events.TargetReached:
 			kloggr.respawnAll();
 			break;
-		case Game.Kloggr.Events.TimeChanged:
-			timerChanged(event.value); // TODO: missing handler
-			break;
 		}
 	}
 
@@ -94,16 +91,6 @@ Item {
 		case Game.Kloggr.State.Dead:
 			dead();
 		}
-	}
-
-	Keys.onPressed: {
-		kloggr.setKeyState(event.key, true);
-		event.accepted = true;
-	}
-
-	Keys.onReleased: {
-		kloggr.setKeyState(event.key, false);
-		event.accepted = true;
 	}
 
 	MouseArea {
@@ -137,7 +124,6 @@ Item {
 
 		onTriggered: {
 			if (kloggr.state === Game.Kloggr.State.Playing) {
-				kloggr.handleKeys();
 				kloggr.update(1/60); // in seconds
 				kloggr.collisionDetection();
 			}

@@ -87,10 +87,6 @@ Square.prototype.collideBox = function(box_x, box_y, box_w, box_h) {
 	}
 };
 
-Square.prototype.distanceTo = function(b) {
-	return Math.sqrt((this.x-b.x)*(this.x-b.x) + (this.y-b.y)*(this.y-b.y));
-};
-
 // Respawns the square randomly within 0;max_x and 0;max_y
 Square.prototype.respawn = function(gameobjects, max_x, max_y) {
 	this.x = Math.random()*(max_x-this.width);
@@ -134,29 +130,15 @@ Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, di
 	}
 }
 
-Square.prototype.intersect = function(b, silent) {
 // Returns true if the square intersects another, else false
 Square.prototype.intersect = function(b) {
 	var a = this;
-	if (silent === undefined) {
-		silent = true;
-	}
 
 	if (b.x >= a.x+a.width ||
 		b.x+b.width <= a.x ||
 		b.y >= a.y+a.height ||
 		b.y+b.height <= a.y) {
 		return false;
-	}
-
-	if (!silent) {
-		if (a.onCollide) {
-			a.onCollide(b);
-		}
-
-		if (b.onCollide) {
-			b.onCollide(a);
-		}
 	}
 
 	return true;
@@ -274,13 +256,6 @@ Player.prototype.update = function(delta_t) {
 	this.x += this.speed_x*delta_t;
 	this.y += this.speed_y*delta_t;
 };
-
-Player.prototype.onCollide = function(gameobject) {
-	if (gameobject instanceof Enemy) {
-		this.dead = true;
-		this.texture.src = '../assets/deadPlayer.png';
-	}
-}
 
 /*	Target class.
  *	Able to move, decelerate, change of behavior...
@@ -449,7 +424,6 @@ Lazer.prototype.updateState = function(score) {
 	}
 }
 
-
 ////////////////////////// kloggr.js /////////////////////////////
 /* The class that handles the game's flow
  * It initializes the game objects like Player, Target and enemies,
@@ -477,7 +451,6 @@ Kloggr.State = {
 	Playing:"Playing",
 	Paused:"Paused",
 	Dead:"Dead",
-	MainMenu:"MainMenu"
 };
 
 Kloggr.Events = {
@@ -485,7 +458,6 @@ Kloggr.Events = {
 	StateChanged:"StateChanged",
 	ScoreChanged:"ScoreChanged",
 	TargetReached:"TargetReached",
-	TimeChanged:"TimeChanged"
 };
 
 // Reset default values.
@@ -494,7 +466,6 @@ Kloggr.prototype.restart = function() {
 	// Set default values
 	this.state = Kloggr.State.Playing;
 	this.events = [];
-	this.keys_pressed = {};
 	this.touchmoves = [0, 0];
 	this.score = 0;
 	this.counter = 0;
@@ -564,35 +535,6 @@ Kloggr.prototype.respawnEnemies = function() {
 	}
 };
 
-// Set the state of a key in a dictionnay later used in handleKeys
-Kloggr.prototype.setKeyState = function(key, state) {
-	if (state) {
-		this.keys_pressed[key] = state;
-	}
-	else {
-		delete this.keys_pressed[key];
-	}
-};
-
-// Modify the player's direction when a key (or more) is pressed
-Kloggr.prototype.handleKeys = function() {
-	if (Qt.Key_Left in this.keys_pressed) {
-		this.player.speed_x -= this.player.accel;
-	}
-
-	if (Qt.Key_Right in this.keys_pressed) {
-		this.player.speed_x += this.player.accel;
-	}
-
-	if (Qt.Key_Up in this.keys_pressed) {
-		this.player.speed_y -= this.player.accel;
-	}
-
-	if (Qt.Key_Down in this.keys_pressed) {
-		this.player.speed_y += this.player.accel;
-	}
-};
-
 // Store the start of the touch to get the start of a vector
 Kloggr.prototype.handleTouchStart = function(mouse) {
 	this.touchmoves[0] = mouse.x;
@@ -615,12 +557,6 @@ Kloggr.prototype.handleTouchMove = function(mouse) {
 
 // Move objects
 Kloggr.prototype.update = function(delta_t) {
-	if (Math.floor(this.counter+delta_t)
-			> Math.floor(this.counter)) {
-		this.newEvent(Kloggr.Events.TimeChanged,
-				Math.floor(this.counter+delta_t));
-	}
-
 	this.counter += delta_t;
 
 	var len = this.gameobjects.length;
@@ -665,15 +601,6 @@ Kloggr.prototype.collisionDetection = function() {
 				}
 			}
 		}
-	}
-};
-
-// Draw objects
-// Totally unused because QML does the drawing
-Kloggr.prototype.draw = function(context) {
-	var len = this.gameobjects.length;
-	for (var i = 0; i < len; i++) {
-		this.gameobjects[i].draw(context);
 	}
 };
 
