@@ -91,11 +91,40 @@ Square.prototype.respawn = function(gameobjects, max_x, max_y) {
 	this.y = Math.random()*(max_y-this.height);
 };
 
-Square.prototype.respawnFarFrom = function(gameobject, max_x, max_y, object, distance) {
-	do {
-		this.respawn(gameobjects, max_x, max_y);
+Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, distance) {
+	while (true) {
+		Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
 
-	} while (this.distanceTo(object) < distance);
+		var points = [
+			{
+				x: this.x,
+				y: this.y
+			},
+			{
+				x: this.x+this.width,
+				y: this.y
+			},
+			{
+				x: this.x+this.width,
+				y: this.y+this.height
+			},
+			{
+				x: this.x,
+				y: this.y+this.height
+			}
+		];
+
+		var good_spawn = true;
+		for (var i = 0; i < points.length; i++) {
+			if (this.distanceTo.call(points[i], object) < distance) {
+				good_spawn = false;
+			}
+		}
+
+		if (good_spawn) {
+			break;
+		}
+	}
 }
 
 Square.prototype.intersect = function(b, silent) {
@@ -354,24 +383,23 @@ function Lazer() {
 
 Lazer.prototype = Object.create(Enemy.prototype);
 
-// The lazer spawns between the payer and the target
 Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 	this.height = max_y;
-
 	var player;
-	var target;
 
 	var len = gameobjects.length;
 	for (var i = 0; i < len; i++) {
 		if (gameobjects[i] instanceof Player) {
 			player = gameobjects[i];
 		}
-		else if (gameobjects[i] instanceof Target) {
-			target = gameobjects[i];
-		}
 	}
 
-	this.respawnFarFrom(gameobjects, max_x, max_y, player, player.width*3)
+	do {
+		Square.prototype.respawnFarFrom
+			.call(this, gameobjects, max_x, max_y, player, player.width*3);
+		this.y = 0;
+
+	} while (this.intersect(player));
 };
 
 Lazer.prototype.update = function(delta_t) {
