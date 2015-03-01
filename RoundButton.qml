@@ -9,12 +9,13 @@ ClickButton {
 	property alias imageWidth: img.width
 	property real angle: 360
 
+	onClicked: img.rotation = (img.rotation ? 0 : angle)
+
 	Image {
 		id: img
 		sourceSize.height: width
 		smooth: true
 		fillMode: Image.PreserveAspectFit
-		rotation: mouseArea.containsMouse ? angle : 0
 
 		anchors.centerIn: parent
 
