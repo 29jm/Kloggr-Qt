@@ -1,4 +1,5 @@
 var kloggr;
+var pixelDensity;
 
 /////////////////////////// entities.js /////////////////////////////
 
@@ -9,8 +10,8 @@ var kloggr;
 function Square(w, h, texture) {
 	this.m_x = 0;
 	this.m_y = 0;
-	this.m_width = w*kloggr.pixelDensity;
-	this.m_height = h*kloggr.pixelDensity;
+	this.m_width = w*pixelDensity;
+	this.m_height = h*pixelDensity;
 	this.m_visible = true;
 	this.texture = texture;
 	this.collidable = true;
@@ -34,12 +35,12 @@ Object.defineProperty(Square.prototype, "y", {
 
 Object.defineProperty(Square.prototype, "width", {
 	get: function() { return this.m_width; },
-	set: function(val) { this.m_width = val*kloggr.pixelDensity; this.object.width = val; }
+	set: function(val) { this.m_width = val*pixelDensity; this.object.width = val; }
 });
 
 Object.defineProperty(Square.prototype, "height", {
 	get: function() { return this.m_height; },
-	set: function(val) { this.m_height = val*kloggr.pixelDensity; this.object.height = val; }
+	set: function(val) { this.m_height = val*pixelDensity; this.object.height = val; }
 });
 
 Object.defineProperty(Square.prototype, "visible", {
@@ -207,11 +208,12 @@ BasicEnemy.prototype.update = function(delta_t) {
 function Player() {
 	Square.call(this, 10, 10, '../assets/player.png');
 
+	// Everything should be in mm/s
 	this.speed_x = 0;
 	this.speed_y = 0;
-	this.max_speed = 300;
-	this.slowing_speed = 0.7;
-	this.accel = 7;
+	this.max_speed = 90;
+	this.slowing_speed = 0.21;
+	this.accel = 10;
 	this.dead = false;
 }
 
@@ -253,8 +255,8 @@ Player.prototype.update = function(delta_t) {
 			this.max_speed : -this.max_speed);
 	}
 
-	this.x += this.speed_x*delta_t;
-	this.y += this.speed_y*delta_t;
+	this.x += this.speed_x*pixelDensity*delta_t;
+	this.y += this.speed_y*pixelDensity*delta_t;
 };
 
 /*	Target class.
@@ -274,8 +276,8 @@ function Target() {
 
 	this.speed_x = 0;
 	this.speed_y = 0;
-	this.max_speed = 200;
-	this.slowing_speed = 0.7;
+	this.max_speed = 60;
+	this.slowing_speed = 0.21;
 
 	this.state = this.State.Fix;
 	this.accumulator = 0;
@@ -335,8 +337,8 @@ Target.prototype.update = function(delta_t) {
 			this.max_speed : -this.max_speed);
 	}
 
-	this.x += this.speed_x*delta_t;
-	this.y += this.speed_y*delta_t;
+	this.x += this.speed_x*pixelDensity*delta_t;
+	this.y += this.speed_y*pixelDensity*delta_t;
 };
 
 // Called whenever the score changes. It begins to bounce only at score=5
@@ -548,8 +550,8 @@ Kloggr.prototype.handleTouchMove = function(mouse) {
 	var move_y = mouse.y - this.touchmoves[1];
 
 	// Should be done during update(), but hey, lack of funding
-	this.player.speed_x += move_x;
-	this.player.speed_y += move_y;
+	this.player.speed_x += move_x/pixelDensity;
+	this.player.speed_y += move_y/pixelDensity;
 
 	this.touchmoves[0] = mouse.x;
 	this.touchmoves[1] = mouse.y;
@@ -644,8 +646,8 @@ Kloggr.prototype.updateByScore = function(value) {
 
 // Return the the number of enemies to create
 Kloggr.prototype.numberOfEnemies = function() {
-	var screen_w = (this.width/kloggr.pixelDensity)/10;
-	var screen_h = (this.height/kloggr.pixelDensity)/10;
+	var screen_w = (this.width/pixelDensity)/10;
+	var screen_h = (this.height/pixelDensity)/10;
 
 	var enemy_ratio = this.enemy_density/100;
 	var screen_area = screen_w*screen_h;

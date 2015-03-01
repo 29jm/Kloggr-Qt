@@ -20,6 +20,7 @@ Item {
 	signal newHighscore(int new_highscore)
 
 	Component.onCompleted: {
+		Game.pixelDensity = pixelDensity;
 		Game.kloggr = this;
 		kloggr = new Game.Kloggr(width, height);
 	}
