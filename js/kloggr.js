@@ -1,6 +1,73 @@
 var kloggr;
 var pixelDensity;
 
+// Math helper functions
+
+// Returns true if the square intersects another, else false
+function intersect(a, b) {
+	if (b.x >= a.x+a.width  ||
+		b.x+b.width <= a.x  ||
+		b.y >= a.y+a.height ||
+		b.y+b.height <= a.y) {
+		return false;
+	}
+
+	return true;
+}
+
+// Check if two lines intersect. 4 points as input, 2 = 1 line
+function lineIntersect(p1, p2, p3, p4) {
+	var x = ((p1.x*p2.y-p1.y*p2.x)*(p3.x-p4.x)-(p1.x-p2.x)*(p3.x*p4.y-p3.y*p4.x))
+			/ ((p1.x-p2.x)*(p3.y-p4.y)-(p1.y-p2.y)*(p3.x-p4.x));
+	var y = ((p1.x*p2.y-p1.y*p2.x)*(p3.y-p4.y)-(p1.y-p2.y)*(p3.x*p4.y-p3.y*p4.x))
+			/ ((p1.x-p2.x)*(p3.y-p4.y)-(p1.y-p2.y)*(p3.x-p4.x));
+
+	if (isNaN(x) || isNaN(y)) {
+		return false;
+	} else {
+		if (p1.x >= p2.x) {
+			if (!(p2.x <= x && x <= p1.x)) return false;
+		} else {
+			if (!(p1.x <= x && x <= p2.x)) return false;
+		}
+		if (p1.y >= p2.y) {
+			if (!(p2.y <= y && y <= p1.y)) return false;
+		} else {
+			if (!(p1.y <= y && y <= p2.y)) return false;
+		}
+		if (p3.x >= p4.x) {
+			if (!(p4.x <= x && x <= p3.x)) return false;
+		} else {
+			if (!(p3.x <= x && x <= p4.x)) return false;
+		}
+		if (p3.y >= p4.y) {
+			if (!(p4.y <= y && y <= p3.y)) return false;
+		} else {
+			if (!(p3.y <= y && y <= p4.y)) return false;
+		}
+	}
+
+	return true;
+}
+
+// Check whether a line crosses a rectangle
+function lineIntersectRectangle(p1, p2, rect) {
+	if (lineIntersect(p1, p2, {x:rect.x,y:rect.y}, {x:rect.x+rect.width,y:rect.y}) ||
+		lineIntersect(p1, p2, {x:rect.x+rect.width,y:rect.y}, {x:rect.x+rect.width,y:rect.y+rect.height}) ||
+		lineIntersect(p1, p2, {x:rect.x+rect.width,y:rect.y+rect.height}, {x:rect.x,y:rect.y+rect.height}) ||
+		lineIntersect(p1, p2, {x:rect.x,y:rect.y+rect.height}, {x:rect.x,y:rect.y}) ) {
+		return true;
+	}
+
+	return false;
+}
+
+// Returns the distance between a point and another
+// Beware of edge cases
+function distanceBetween(a, b) {
+	return Math.sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y));
+};
+
 /////////////////////////// entities.js /////////////////////////////
 
 /*	Square base class.
@@ -120,7 +187,7 @@ Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, di
 
 		var good_spawn = true;
 		for (var i = 0; i < points.length; i++) {
-			if (this.distanceTo.call(points[i], object) < distance) {
+			if (distanceBetween(points[i], object) < distance) {
 				good_spawn = false;
 			}
 		}
@@ -130,26 +197,6 @@ Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, di
 		}
 	}
 }
-
-// Returns true if the square intersects another, else false
-Square.prototype.intersect = function(b) {
-	var a = this;
-
-	if (b.x >= a.x+a.width ||
-		b.x+b.width <= a.x ||
-		b.y >= a.y+a.height ||
-		b.y+b.height <= a.y) {
-		return false;
-	}
-
-	return true;
-}
-
-// Returns the distance between the square's origin (x;y) and another point
-// Beware of edge cases
-Square.prototype.distanceTo = function(b) {
-	return Math.sqrt((this.x-b.x)*(this.x-b.x) + (this.y-b.y)*(this.y-b.y));
-};
 
 /*  Enemy abstract class. Base class of everything that can kill the player
  */
@@ -388,7 +435,7 @@ Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 			.call(this, gameobjects, max_x, max_y, player, player.width*3);
 		this.y = 0;
 
-	} while (this.intersect(player));
+	} while (intersect(this, player));
 };
 
 // Same as Target but the Lazer is static
@@ -579,24 +626,15 @@ Kloggr.prototype.collisionDetection = function() {
 	this.player.collideBox(0, 0, this.width, this.height);
 	this.target.collideBox(0, 0, this.width, this.height);
 
-	if (Square.prototype.intersect.call(this.player, this.target)) {
+	if (intersect(this.player, this.target)) {
 		this.score += 1;
-		this.enemy_density += 0.5;
-
-		// Kloggr.score has its own setter that calls
-		// Kloggr.newEvents, so no need for it here
-		this.newEvent(Kloggr.Events.TargetReached);
-
-		if (this.score > kloggr.highscore) {
-			this.newEvent(Kloggr.Events.NewHighscore, this._score);
-		}
 	}
 
 	var len = this.gameobjects.length;
 	for (var i = 0; i < len; i++) {
 		if (this.gameobjects[i] instanceof Enemy) {
 			if (this.gameobjects[i].collidable) {
-				if (Square.prototype.intersect.call(this.player, this.gameobjects[i])) {
+				if (intersect(this.player, this.gameobjects[i])) {
 					console.log("Dead");
 					this.state = Kloggr.State.Dead;
 					this.newEvent(Kloggr.Events.StateChanged, this.state);
