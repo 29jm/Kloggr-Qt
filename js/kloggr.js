@@ -334,15 +334,46 @@ Target.prototype = Object.create(Square.prototype);
 
 // Respawns far from the player (at least half the window width)
 Target.prototype.respawn = function(gameobjects, max_x, max_y) {
-	var player;
 	for (var i = 0; i < gameobjects.length; i++) {
 		if (gameobjects[i] instanceof Player) {
-			player = gameobjects[i];
+			this.player = gameobjects[i];
 		}
 	}
 
-	this.respawnFarFrom(gameobjects, max_x, max_y, player, max_x/2);
+	this.respawnFarFrom(gameobjects, max_x, max_y, this.player, max_x/2);
 };
+
+// Returns a vector which is guaranteed not to point toward object
+Target.prototype.getRandomDirectionAvoiding = function(object) {
+	var points = [
+		{ x: this.x, y: this.y },
+		{ x: this.x+this.width, y: this.y },
+		{ x: this.x+this.width, y: this.y+this.height },
+		{ x: this.x, y: this.y+this.height },
+	]
+
+	while (true) {
+		// x10000 because the end of the line m ust be far away, i.e not stop before rect
+		var vector = {
+			x: ((Math.random()*this.max_speed*2)-this.max_speed)*10000,
+			y: ((Math.random()*this.max_speed*2)-this.max_speed)*10000
+		}
+
+		var good_direction = true;
+
+		for (var i = 0; i < points.length; i++) {
+			var end = { x:points[i].x+vector.x,y:points[i].y+vector.y };
+			if (lineIntersectRectangle(points[i], end, object)) {
+				good_direction = false;
+				break;
+			}
+		}
+
+		if (good_direction) {
+			return vector;
+		}
+	}
+}
 
 // Quite similar to Player.update but with the counter and bounce added
 Target.prototype.update = function(delta_t) {
@@ -353,8 +384,9 @@ Target.prototype.update = function(delta_t) {
 	if (this.accumulator > 2 && this.state === this.State.Bouncing) {
 		this.accumulator = 0;
 
-		this.speed_x = ((Math.random()*this.max_speed*2)-this.max_speed);
-		this.speed_y = ((Math.random()*this.max_speed*2)-this.max_speed);
+		var vec = this.getRandomDirectionAvoiding(this.player);
+		this.speed_x = vec.x;
+		this.speed_y = vec.y;
 		len = Math.sqrt((this.speed_x*this.speed_x)
 						+ (this.speed_y*this.speed_y));
 		this.speed_x = (this.speed_x/len)*this.max_speed;
