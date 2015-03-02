@@ -22,7 +22,7 @@ Rectangle {
 		anchors.bottomMargin: parent.height/10
 		anchors.left: social_container.left
 
-		onClicked: mainMenuClicked()
+		onClicked:  mainMenuClicked()
 
 		Image {
 			source: "assets/exit.svg"
@@ -121,6 +121,13 @@ Rectangle {
 			color: info.color
 			radius: width/2
 
+			MouseArea {
+				anchors.fill: parent
+				onClicked: {
+					Qt.openUrlExternally("https://plus.google.com/u/0/114056733775000645504/posts");
+				}
+			}
+
 			Image {
 				id: google
 				width: info.height/8
@@ -135,6 +142,13 @@ Rectangle {
 			height: width
 			color: info.color
 			radius: width/2
+
+			MouseArea {
+				anchors.fill: parent
+				onClicked: {
+					Qt.openUrlExternally("https://github.com/29jm/Kloggr-Qt");
+				}
+			}
 
 			Image {
 				id: github
@@ -151,6 +165,13 @@ Rectangle {
 			color: info.color
 			radius: width/2
 
+			MouseArea {
+				anchors.fill: parent
+				onClicked: {
+					Qt.openUrlExternally("https://www.facebook.com/kloggr");
+				}
+			}
+
 			Image {
 				id: facebook
 				width: info.height/8
@@ -165,6 +186,13 @@ Rectangle {
 			height: width
 			color: info.color
 			radius: width/2
+
+			MouseArea {
+				anchors.fill: parent
+				onClicked: {
+					Qt.openUrlExternally("https://twitter.com/Creahoof");
+				}
+			}
 
 			Image {
 				id: twitter
