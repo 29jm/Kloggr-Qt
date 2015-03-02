@@ -221,27 +221,17 @@ BasicEnemy.prototype = Object.create(Enemy.prototype);
 
 // Do not respawn neither on the player nor on the target
 BasicEnemy.prototype.respawn = function(gameobjects, max_x, max_y) {
-	var location_found = false;
-
-	while (!location_found) {
-		Square.prototype.respawn.
-			call(this, gameobjects, max_x, max_y);
-		var good_location = true;
-
-		var len = gameobjects.length;
-		for (var i = 0; i < len; i++) {
-			if (gameobjects[i] instanceof Player ||
-				gameobjects[i] instanceof Target) {
-				if (this.intersect(gameobjects[i])) {
-					good_location = false;
-				}
-			}
-		}
-
-		if (good_location) {
-			location_found = true;
+	var player;
+	for (var i = 0; i < gameobjects.length; i++) {
+		if (gameobjects[i] instanceof Player) {
+			player = gameobjects[i];
 		}
 	}
+
+	do {
+		this.respawnFarFrom(gameobjects, max_x, max_y, player, player.width);
+
+	} while (intersect(this, player));
 };
 
 // They never move, they just respawn
@@ -705,6 +695,16 @@ Kloggr.prototype.updateByScore = function(value) {
 		if (this.gameobjects[i].updateState) {
 			this.gameobjects[i].updateState(value);
 		}
+	}
+
+	this.enemy_density += 0.5;
+
+	// Kloggr.score has its own setter that calls
+	// Kloggr.newEvents, so no need for it here
+	this.newEvent(Kloggr.Events.TargetReached);
+
+	if (this.score > kloggr.highscore) {
+		this.newEvent(Kloggr.Events.NewHighscore, this._score);
 	}
 
 	switch (value) {
