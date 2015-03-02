@@ -302,7 +302,7 @@ Rectangle {
 		id: particleDelegate
 
 		Rectangle {
-			property var colors: ["green", "red", "blue"]
+			property var colors: ["#00BCD4","#FFEB3B", "#FF5722"]
 			width: 9; height: 6
 			color: colors[Math.round(Math.random()*2)]
 		}
