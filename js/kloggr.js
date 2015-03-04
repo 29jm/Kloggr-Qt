@@ -258,7 +258,7 @@ function Player() {
 	this.speed_y = 0;
 	this.max_speed = 90;
 	this.slowing_speed = 0.21;
-	this.accel = 10;
+	this.accel = 1.5;
 	this.dead = false;
 }
 
@@ -640,8 +640,8 @@ Kloggr.prototype.handleTouchMove = function(mouse) {
 	var move_y = mouse.y - this.touchmoves[1];
 
 	// Should be done during update(), but hey, lack of funding
-	this.player.speed_x += move_x/pixelDensity;
-	this.player.speed_y += move_y/pixelDensity;
+	this.player.speed_x += (move_x/pixelDensity)*this.player.accel;
+	this.player.speed_y += (move_y/pixelDensity)*this.player.accel;
 
 	this.touchmoves[0] = mouse.x;
 	this.touchmoves[1] = mouse.y;
