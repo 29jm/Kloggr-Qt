@@ -338,7 +338,20 @@ Target.prototype.respawn = function(gameobjects, max_x, max_y) {
 		}
 	}
 
-	this.respawnFarFrom(gameobjects, max_x, max_y, this.player, max_x/2);
+	while (true) {
+		this.respawnFarFrom(gameobjects, max_x, max_y, this.player, max_x/2);
+		var good_spawn = true;
+
+		for (var i = 0; i < gameobjects; i++) {
+			if (intersect(this, gameobjects[i])) {
+				good_spawn = false;
+			}
+		}
+
+		if (good_spawn) {
+			break;
+		}
+	}
 };
 
 // Returns a vector which is guaranteed not to point toward object
