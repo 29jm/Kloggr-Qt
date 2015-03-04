@@ -332,6 +332,10 @@ Target.prototype = Object.create(Square.prototype);
 
 // Respawns far from the player (at least half the window width)
 Target.prototype.respawn = function(gameobjects, max_x, max_y) {
+	this.accumulator = 1.3;
+	this.speed_x = 0;
+	this.speed_y = 0;
+
 	for (var i = 0; i < gameobjects.length; i++) {
 		if (gameobjects[i] instanceof Player) {
 			this.player = gameobjects[i];
@@ -343,8 +347,10 @@ Target.prototype.respawn = function(gameobjects, max_x, max_y) {
 		var good_spawn = true;
 
 		for (var i = 0; i < gameobjects; i++) {
-			if (intersect(this, gameobjects[i])) {
-				good_spawn = false;
+			if (gameobjects[i] instanceof Enemy) {
+				if (intersect(this, gameobjects[i])) {
+					good_spawn = false;
+				}
 			}
 		}
 
