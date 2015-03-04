@@ -70,6 +70,13 @@ function distanceBetween(a, b) {
 
 /////////////////////////// entities.js /////////////////////////////
 
+// Some constants
+var BASIC_ENEMY_SIZE = 2.4;
+var BASIC_ENEMY_VARIATION = 0.3;
+var PLAYER_SIZE = 6;
+var TARGET_SIZE = 3;
+var LAZER_SIZE = 2.64
+
 /*	Square base class.
  *	Used by every game object. Drawn using a QML object
  *  The size of the square is expressed in millimeters
@@ -211,7 +218,8 @@ Enemy.prototype = Object.create(Square.prototype);
  *	More and more appear as the player reaches more targets
  */
 function BasicEnemy() {
-	var width = (Math.random()-0.5) + 4;
+	var width = (Math.random()*BASIC_ENEMY_VARIATION*2-BASIC_ENEMY_VARIATION)
+		+ BASIC_ENEMY_SIZE;
 
 	Square.call(this, width, width, '#f04155');
 	this.to_update = false;
@@ -243,7 +251,7 @@ BasicEnemy.prototype.update = function(delta_t) {
  *	Drawn using a texture, can move, etc...
  */
 function Player() {
-	Square.call(this, 10, 10, '../assets/player.png');
+	Square.call(this, PLAYER_SIZE, PLAYER_SIZE, '../assets/player.png');
 
 	// Everything should be in mm/s
 	this.speed_x = 0;
@@ -303,7 +311,7 @@ Player.prototype.update = function(delta_t) {
  *	the target bounces then decelerates.
  */
 function Target() {
-	Square.call(this, 5, 5, '#2ecc71');
+	Square.call(this, TARGET_SIZE, TARGET_SIZE, '#2ecc71');
 
 	this.State = {
 		Fix:"Fix",
@@ -425,7 +433,7 @@ Target.prototype.updateState = function(score) {
  * make it horizontal randomly.
  */
 function Lazer() {
-	Square.call(this, 4.4, kloggr.height, "../assets/lazer.svg");
+	Square.call(this, LAZER_SIZE, kloggr.height, "../assets/lazer.svg");
 
 	this.State = {
 		Inactive:"Inactive",
@@ -540,7 +548,7 @@ Kloggr.prototype.restart = function() {
 	this.touchmoves = [0, 0];
 	this.score = 0;
 	this.counter = 0;
-	this.enemy_density = 3;
+	this.enemy_density = 5;
 
 	// Spawn gameobjects
 	this.respawnAll(true);
