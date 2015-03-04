@@ -22,7 +22,6 @@ Rectangle {
 
 		onDead: {
 			deadSound.play();
-			getHighscore();
 			parent.state = "Dead";
 		}
 

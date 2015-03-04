@@ -23,6 +23,13 @@ Item {
 		kloggr = new Game.Kloggr(width, height);
 	}
 
+	onDead: {
+		if (getPoints() > highscore) {
+			highscore = getPoints();
+			newHighscore();
+		}
+	}
+
 	function play() {
 		console.log("play()");
 		timer.start();
@@ -40,7 +47,7 @@ Item {
 	}
 
 	function getScore() {
-		return kloggr._score;
+		return kloggr.score;
 	}
 
 	function getTime() {
@@ -48,12 +55,15 @@ Item {
 	}
 
 	function getPoints() {
-		var points = getScore()*getScore()-Math.sqrt(getTime());
-		if (kloggr._score<1) {
-			return 0
+		var score = getScore();
+		if (score < 1) {
+			return 0;
 		}
-		else if (points<0) {
-			return Math.round(Math.abs(points)/getTime())+1;
+
+		var points = score*score-Math.sqrt(getTime());
+
+		if (points < 0) {
+			return 0;
 		}
 		else {
 			return Math.round(points);
@@ -61,10 +71,7 @@ Item {
 	}
 
 	function getHighscore() {
-		if (getPoints()>highscore) {
-			highscore = getPoints();
-			newHighscore();
-		}
+		return highscore;
 	}
 
 	function handleEvents(event) {
