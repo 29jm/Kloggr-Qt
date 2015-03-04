@@ -22,6 +22,7 @@ Rectangle {
 
 		onDead: {
 			deadSound.play();
+			getHighscore();
 			parent.state = "Dead";
 		}
 
@@ -34,6 +35,7 @@ Rectangle {
 		onNewHighscore: {
 			highscoreSound.play();
 			confettis.running = true;
+			emitter.enabled = true;
 		}
 	}
 
@@ -259,12 +261,9 @@ Rectangle {
 
 		anchors.fill: parent
 
-		function stopEmition() {
-			emitter.enabled = false;
-		}
-
 		Emitter {
 			id: emitter
+			enabled: false
 			width: parent.width
 			height: 0
 			x: 0
@@ -279,6 +278,9 @@ Rectangle {
 				y: 150
 				xVariation: 10
 			}
+			onEnabledChanged: {
+				confettis_timer.start();
+			}
 		}
 
 		ItemParticle {
@@ -291,10 +293,6 @@ Rectangle {
 			pace: 100
 			xVariance: 100
 			yVariance: 130
-		}
-
-		onRunningChanged: {
-			confettis_timer.start();
 		}
 	}
 
@@ -314,7 +312,7 @@ Rectangle {
 		repeat: false
 		running: false
 
-		onTriggered: confettis.stopEmition()
+		onTriggered: emitter.enabled = false;
 	}
 
 	SoundEffect {

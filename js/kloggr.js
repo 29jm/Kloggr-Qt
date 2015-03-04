@@ -730,10 +730,6 @@ Kloggr.prototype.updateByScore = function(value) {
 	// Kloggr.newEvents, so no need for it here
 	this.newEvent(Kloggr.Events.TargetReached);
 
-	if (this.score > kloggr.highscore) {
-		this.newEvent(Kloggr.Events.NewHighscore, this._score);
-	}
-
 	switch (value) {
 	case 10:
 		this.gameobjects.push(new Lazer());

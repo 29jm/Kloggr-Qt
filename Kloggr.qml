@@ -11,13 +11,11 @@ Item {
 	property var kloggr: undefined
 	property real pixelDensity: Screen.pixelDensity
 	property int highscore: 0
-	property real highscore_time: 0
-	property bool hasBeatenHighscore: false
 
 	signal dead
 	signal timerChanged(int new_time)
 	signal scoreChanged(int new_score)
-	signal newHighscore(int new_highscore)
+	signal newHighscore()
 
 	Component.onCompleted: {
 		Game.pixelDensity = pixelDensity;
@@ -63,20 +61,16 @@ Item {
 	}
 
 	function getHighscore() {
-		return highscore;
+		if (getPoints()>highscore) {
+			highscore = getPoints();
+			newHighscore();
+		}
 	}
 
 	function handleEvents(event) {
 		switch (event.name) {
 		case Game.Kloggr.Events.StateChanged:
 			updateState();
-			break;
-		case Game.Kloggr.Events.NewHighscore:
-			highscore = event.value;
-			if (!hasBeatenHighscore) {
-				hasBeatenHighscore = true;
-				newHighscore(event.value);
-			}
 			break;
 		case Game.Kloggr.Events.ScoreChanged:
 		   scoreChanged(event.value); // TODO: missing handler
