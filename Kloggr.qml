@@ -11,17 +11,25 @@ Item {
 	property var kloggr: undefined
 	property real pixelDensity: Screen.pixelDensity
 	property int highscore: 0
-	property real highscore_time: 0
-	property bool hasBeatenHighscore: false
+	property int score: 0
 
 	signal dead
+	signal targetReached
 	signal timerChanged(int new_time)
-	signal scoreChanged(int new_score)
-	signal newHighscore(int new_highscore)
+	signal newHighscore()
 
 	Component.onCompleted: {
+		Game.pixelDensity = pixelDensity;
 		Game.kloggr = this;
 		kloggr = new Game.Kloggr(width, height);
+	}
+
+	onDead: {
+		score = getPoints();
+		if (score > highscore) {
+			highscore = score;
+			newHighscore();
+		}
 	}
 
 	function play() {
@@ -41,19 +49,31 @@ Item {
 	}
 
 	function getScore() {
-		return kloggr._score;
+		return kloggr.score;
 	}
 
 	function getTime() {
 		return Math.round(kloggr.counter);
 	}
 
-	function getHighscore() {
-		return highscore;
+	function getPoints() {
+		var score = getScore();
+		if (score < 1) {
+			return 0;
+		}
+
+		var points = score*score-Math.sqrt(getTime());
+
+		if (points < 0) {
+			return 0;
+		}
+		else {
+			return Math.round(points);
+		}
 	}
 
-	function getHighscoreTime() {
-		return Math.round(highscore_time);
+	function getHighscore() {
+		return highscore;
 	}
 
 	function handleEvents(event) {
@@ -61,22 +81,9 @@ Item {
 		case Game.Kloggr.Events.StateChanged:
 			updateState();
 			break;
-		case Game.Kloggr.Events.NewHighscore:
-			highscore = event.value;
-			highscore_time = kloggr.counter;
-			if (!hasBeatenHighscore) {
-				hasBeatenHighscore = true;
-				newHighscore(event.value);
-			}
-			break;
-		case Game.Kloggr.Events.ScoreChanged:
-		   scoreChanged(event.value); // TODO: missing handler
-			break;
 		case Game.Kloggr.Events.TargetReached:
+			targetReached();
 			kloggr.respawnAll();
-			break;
-		case Game.Kloggr.Events.TimeChanged:
-			timerChanged(event.value); // TODO: missing handler
 			break;
 		}
 	}
@@ -86,16 +93,6 @@ Item {
 		case Game.Kloggr.State.Dead:
 			dead();
 		}
-	}
-
-	Keys.onPressed: {
-		kloggr.setKeyState(event.key, true);
-		event.accepted = true;
-	}
-
-	Keys.onReleased: {
-		kloggr.setKeyState(event.key, false);
-		event.accepted = true;
 	}
 
 	MouseArea {
@@ -122,14 +119,12 @@ Item {
 
 	Timer {
 		id: timer
-
 		interval: 1000/60 // in millisecond
 		running: true
 		repeat: true
 
 		onTriggered: {
 			if (kloggr.state === Game.Kloggr.State.Playing) {
-				kloggr.handleKeys();
 				kloggr.update(1/60); // in seconds
 				kloggr.collisionDetection();
 			}
@@ -139,10 +134,28 @@ Item {
 				handleEvents(events[i]);
 			}
 		}
+
+		onRunningChanged: {
+			if (running) {
+				score_timer.start();
+			} else {
+				score_timer.stop();
+			}
+		}
+	}
+
+	Timer {
+		id: score_timer
+		interval: 1000
+		running: true
+		repeat: true
+
+		onTriggered: {
+			score = getPoints();
+		}
 	}
 
 	Settings  {
 		property alias highscore: kloggrItem.highscore
-		property alias highscore_time: kloggrItem.highscore_time
 	}
 }

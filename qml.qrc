@@ -7,7 +7,6 @@
         <file>js/kloggr.js</file>
         <file>Kloggr.qml</file>
         <file>assets/deadPlayer.png</file>
-        <file>assets/player.png</file>
         <file>assets/logo.png</file>
         <file>RoundButton.qml</file>
         <file>assets/ttf</file>
@@ -20,6 +19,7 @@
         <file>assets/click.wav</file>
         <file>ClickButton.qml</file>
         <file>assets/woosh.wav</file>
+        <file>assets/highscore.wav</file>
         <file>assets/settings.svg</file>
         <file>assets/info.svg</file>
         <file>assets/play-circle.svg</file>
@@ -33,5 +33,7 @@
         <file>assets/play.svg</file>
         <file>assets/pause.svg</file>
         <file>assets/lazer.svg</file>
+        <file>Square.qml</file>
+        <file>assets/player.png</file>
     </qresource>
 </RCC>

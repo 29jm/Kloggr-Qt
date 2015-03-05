@@ -10,6 +10,8 @@ Rectangle {
 	property bool soundOn: true
 
 	signal clicked
+	signal pressed
+	signal exited
 
 	MouseArea {
 		id: mouseArea
@@ -21,6 +23,9 @@ Rectangle {
 			click.play();
 			parent.clicked();
 		}
+
+		onPressed: parent.pressed()
+		onExited: parent.exited()
 	}
 
 	SoundEffect {

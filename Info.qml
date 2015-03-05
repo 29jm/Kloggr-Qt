@@ -22,7 +22,7 @@ Rectangle {
 		anchors.bottomMargin: parent.height/10
 		anchors.left: social_container.left
 
-		onClicked: mainMenuClicked()
+		onClicked:  mainMenuClicked()
 
 		Image {
 			source: "assets/exit.svg"
@@ -34,6 +34,7 @@ Rectangle {
 	}
 
 	Image {
+		id: devs
 		source: "assets/devs.png"
 		smooth: true
 		height: back.height
@@ -41,6 +42,23 @@ Rectangle {
 		anchors.bottom: back.bottom
 		anchors.left: back.right
 		z: 2
+	}
+
+	FontLoader {
+		id: roboto;
+		source: "assets/ttf"
+	}
+
+	Text {
+		color: "white"
+		text: "this game is open-source!"
+		font.pixelSize: devs.height/4
+		smooth: true
+		font.family: roboto.name
+		anchors.bottom: parent.bottom
+		anchors.bottomMargin: this.height/2
+		anchors.horizontalCenter: parent.horizontalCenter
+		z: 4
 	}
 
 	Rectangle {
@@ -103,6 +121,13 @@ Rectangle {
 			color: info.color
 			radius: width/2
 
+			MouseArea {
+				anchors.fill: parent
+				onClicked: {
+					Qt.openUrlExternally("https://plus.google.com/u/0/114056733775000645504/posts");
+				}
+			}
+
 			Image {
 				id: google
 				width: info.height/8
@@ -117,6 +142,13 @@ Rectangle {
 			height: width
 			color: info.color
 			radius: width/2
+
+			MouseArea {
+				anchors.fill: parent
+				onClicked: {
+					Qt.openUrlExternally("https://github.com/29jm/Kloggr-Qt");
+				}
+			}
 
 			Image {
 				id: github
@@ -133,6 +165,13 @@ Rectangle {
 			color: info.color
 			radius: width/2
 
+			MouseArea {
+				anchors.fill: parent
+				onClicked: {
+					Qt.openUrlExternally("https://www.facebook.com/kloggr");
+				}
+			}
+
 			Image {
 				id: facebook
 				width: info.height/8
@@ -148,6 +187,13 @@ Rectangle {
 			color: info.color
 			radius: width/2
 
+			MouseArea {
+				anchors.fill: parent
+				onClicked: {
+					Qt.openUrlExternally("https://twitter.com/Creahoof");
+				}
+			}
+
 			Image {
 				id: twitter
 				width: info.height/8
@@ -160,8 +206,8 @@ Rectangle {
 
 	DropShadow {
 		anchors.fill: social_container
-		horizontalOffset: (google.x-sun.x+sun.width/2)/(0.25*google.width)
-		verticalOffset: (google.y-sun.y+sun.width/2)/(0.25*google.width)
+		horizontalOffset: (google.x-sun.x+sun.width/2)/(0.10*google.width)
+		verticalOffset: (google.y-sun.y+sun.width/2)/(0.10*google.width)
 		samples: 16
 		color: "#00bcd4"
 		source: social_container
