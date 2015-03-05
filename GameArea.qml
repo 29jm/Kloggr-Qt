@@ -25,10 +25,8 @@ Rectangle {
 			parent.state = "Dead";
 		}
 
-		onScoreChanged: {
-			if (new_score !== 0) {
-				oneUpSound.play();
-			}
+		onTargetReached: {
+			oneUpSound.play();
 		}
 
 		onNewHighscore: {

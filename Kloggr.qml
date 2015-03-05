@@ -11,10 +11,11 @@ Item {
 	property var kloggr: undefined
 	property real pixelDensity: Screen.pixelDensity
 	property int highscore: 0
+	property int score: 0
 
 	signal dead
+	signal targetReached
 	signal timerChanged(int new_time)
-	signal scoreChanged(int new_score)
 	signal newHighscore()
 
 	Component.onCompleted: {
@@ -24,8 +25,9 @@ Item {
 	}
 
 	onDead: {
-		if (getPoints() > highscore) {
-			highscore = getPoints();
+		score = getPoints();
+		if (score > highscore) {
+			highscore = score;
 			newHighscore();
 		}
 	}
@@ -79,10 +81,8 @@ Item {
 		case Game.Kloggr.Events.StateChanged:
 			updateState();
 			break;
-		case Game.Kloggr.Events.ScoreChanged:
-		   scoreChanged(event.value); // TODO: missing handler
-			break;
 		case Game.Kloggr.Events.TargetReached:
+			targetReached();
 			kloggr.respawnAll();
 			break;
 		}
@@ -119,7 +119,6 @@ Item {
 
 	Timer {
 		id: timer
-
 		interval: 1000/60 // in millisecond
 		running: true
 		repeat: true
@@ -134,6 +133,25 @@ Item {
 			for (var i = 0; i < events.length; i++) {
 				handleEvents(events[i]);
 			}
+		}
+
+		onRunningChanged: {
+			if (running) {
+				score_timer.start();
+			} else {
+				score_timer.stop();
+			}
+		}
+	}
+
+	Timer {
+		id: score_timer
+		interval: 1000
+		running: true
+		repeat: true
+
+		onTriggered: {
+			score = getPoints();
 		}
 	}
 
