@@ -38,6 +38,7 @@ Rectangle {
 
 	RoundButton {
 		id: restartBtn
+		color: "#00bcd4"
 		image: "assets/reload.svg"
 		angle: 360
 		width: parent.height/8
@@ -48,7 +49,7 @@ Rectangle {
 		anchors.left: parent.left
 		anchors.bottom: parent.bottom
 		anchors.topMargin: -this.width/2
-		anchors.rightMargin: score_container.width*0.25-this.width/2
+		anchors.rightMargin: score_container.width*0.25-this.width
 		z: 10
 
 		onClicked: {
@@ -59,6 +60,7 @@ Rectangle {
 
 	RoundButton {
 		id: exitBtn
+		color: "#00bcd4"
 		image: "assets/exit.svg"
 		angle: 180
 		width: parent.height/12
@@ -126,16 +128,18 @@ Rectangle {
 
 	Rectangle {
 		id: score_container
-		width: parent.width*0.7
-		height: parent.height/4
-		color: "#4dd0e1"
+		width: parent.width*0.8
+		height: parent.height/2.5
+		color: "#00bcd4"
 		anchors.centerIn: parent
 		visible: false
 		opacity: 0
 
-		Item {
+		Rectangle {
+			id: current_points_container
+			color: "#00bcd4"
 			width: parent.width
-			height: parent.height*0.65
+			height: parent.height*0.60
 			anchors.top: parent.top
 			anchors.left: parent.left
 
@@ -143,56 +147,93 @@ Rectangle {
 				id: current_points
 				color: "white"
 				text: "0"
+				font.pixelSize: parent.height*0.45
+				smooth: true
+				font.family: roboto.name
+				font.bold: true
+				anchors.top: parent.top
+				anchors.topMargin: parent.height*0.10
+				anchors.horizontalCenter: parent.horizontalCenter
+			}
+
+			Item {
+				id: highscore_container
+				width: parent.width*0.20
+				height: parent.height*0.20
+				anchors.horizontalCenter: parent.horizontalCenter
+				anchors.top: current_points.bottom
+				anchors.topMargin: parent.height*0.10
+				Image {
+					id: crown
+					source: "assets/crown.svg"
+					sourceSize.height: parent.height
+					fillMode: Image.PreserveAspectFit
+				}
+				Text {
+					id: highscore
+					color: "white"
+					text: "0"
+					font.pixelSize: parent.height*0.90
+					smooth: true
+					font.family: roboto.name
+					font.bold: true
+					anchors.left: crown.right
+					anchors.leftMargin: 3
+					anchors.verticalCenter: parent.verticalCenter
+				}
+			}
+		}
+
+		Rectangle {
+			id: description
+			width: parent.width
+			height: parent.height*0.20
+			anchors.top: current_points_container.bottom
+			anchors.left: parent.left
+			Text {
+				id: current_score
+				color: "black"
+				text: "0"
 				font.pixelSize: parent.height*0.60
 				smooth: true
 				font.family: roboto.name
-				font.bold: true
-				anchors.centerIn: parent
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.left: parent.left
+				anchors.leftMargin: parent.width*0.05
 			}
 		}
 
-		Item {
-			id: currentScore_container
-			width: parent.width*0.25
-			height: parent.height*0.35
-			anchors.bottom: parent.bottom
+		Rectangle {
+			width: parent.width
+			height: 1
+			color: "lightgrey"
+			anchors.top: description.bottom
 			anchors.left: parent.left
-
-			Text {
-				id: current_score
-				color: "white"
-				text: "0"
-				font.pixelSize: parent.height*0.50
-				smooth: true
-				font.family: roboto.name
-				font.bold: true
-				anchors.centerIn: parent
-			}
+			z: 10
 		}
 
-		Item {
-			width: parent.width*0.25
-			height: parent.height*0.35
-			anchors.bottom: parent.bottom
-			anchors.left: currentScore_container.right
-
+		Rectangle {
+			width: parent.width
+			height: parent.height*0.20
+			anchors.top: description.bottom
+			anchors.left: parent.left
 			Text {
-				id: current_time
-				color: "white"
-				text: "0"
+				color: "black"
+				text: "Try Again!"
 				font.pixelSize: parent.height*0.50
 				smooth: true
 				font.family: roboto.name
-				font.bold: true
-				anchors.centerIn: parent
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.left: parent.left
+				anchors.leftMargin: parent.width*0.05
 			}
 		}
 
 		onVisibleChanged: {
 			if (visible) {
 				current_points.text = kloggr.getPoints() + "pts";
-				current_score.text = kloggr.getScore() + "";
-				current_time.text = kloggr.getTime() + "s";
+				current_score.text = "You scored "+kloggr.getScore()+" in "+kloggr.getTime()+"s";
+				highscore.text = kloggr.highscore;
 			}
 		}
 
