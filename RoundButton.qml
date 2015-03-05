@@ -9,7 +9,8 @@ ClickButton {
 	property alias imageWidth: img.width
 	property real angle: 360
 
-	onClicked: img.rotation = (img.rotation ? 0 : angle)
+	onPressed: state = (state == "" ? "rotated" : "")
+	onExited: state = ""
 
 	Image {
 		id: img
@@ -18,12 +19,24 @@ ClickButton {
 		fillMode: Image.PreserveAspectFit
 
 		anchors.centerIn: parent
+	}
 
-		Behavior on rotation {
-			NumberAnimation {
-				duration: 500
-				easing.type: Easing.InOutQuad
+	states: [
+		State {
+			name: "rotated"
+			PropertyChanges {
+				target: img
+				rotation: angle
 			}
 		}
-	}
+	]
+
+	transitions: [
+		Transition {
+			NumberAnimation {
+				property: "rotation"
+				duration: 250
+			}
+		}
+	]
 }
