@@ -158,7 +158,7 @@ Rectangle {
 
 			Item {
 				id: highscore_container
-				width: parent.width*0.20
+				width: parent.width*0.30
 				height: parent.height*0.20
 				anchors.horizontalCenter: parent.horizontalCenter
 				anchors.top: current_points.bottom
