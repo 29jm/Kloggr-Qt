@@ -567,7 +567,7 @@ Kloggr.prototype.restart = function() {
 	this.touchmoves = [0, 0];
 	this.score = 0;
 	this.counter = 0;
-	this.enemy_density = 5;
+	this.enemy_density = 5; // Enemies per 10cm²
 
 	// Spawn gameobjects
 	this.respawnAll(true);
@@ -740,13 +740,13 @@ Kloggr.prototype.updateByScore = function(value) {
 
 // Return the the number of enemies to create
 Kloggr.prototype.numberOfEnemies = function() {
-	var screen_w = (this.width/pixelDensity)/10;
-	var screen_h = (this.height/pixelDensity)/10;
+	var d = this.enemy_density/(100*100) // enemy/cm²;
+	var screen_w = this.width/pixelDensity; // cm
+	var screen_h = this.height/pixelDensity; // cm
+	var screen_area = screen_w*screen_h; // cm²
 
-	var enemy_ratio = this.enemy_density/100;
-	var screen_area = screen_w*screen_h;
-
-	return Math.round(enemy_ratio*screen_area);
+	// then (enemy/cm²)*cm² = enemy
+	return Math.round(d*screen_area); // enemy
 };
 
 // Define getters/setters to automatize things
