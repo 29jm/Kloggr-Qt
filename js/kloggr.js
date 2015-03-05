@@ -732,7 +732,8 @@ Kloggr.prototype.updateByScore = function(value) {
 
 	switch (value) {
 	case 10:
-		this.gameobjects.push(new Lazer());
+		var n = this.gameobjects.push(new Lazer());
+		this.gameobjects[n-1].respawn(this.gameobjects, this.width, this.height);
 		break;
 	}
 }
