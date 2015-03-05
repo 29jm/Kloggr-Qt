@@ -485,6 +485,9 @@ Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 		this.y = 0;
 
 	} while (intersect(this, player));
+
+	this.accumulator = 0;
+	this.setState(this.State.On);
 };
 
 // Same as Target but the Lazer is static
@@ -496,28 +499,31 @@ Lazer.prototype.update = function(delta_t) {
 	this.accumulator += delta_t;
 	if (this.accumulator > 2.0) {
 		this.accumulator = 0;
-		if (this.state == this.State.On) {
-			this.state = this.State.Off;
-			this.opacity = 0;
-			this.collidable = false;
-		}
-		else {
-			this.state = this.State.On;
-			this.opacity = 1;
-			this.collidable = true;
-		}
+
+		if (this.state === this.State.On)
+			this.setState(this.State.Off);
+		else
+			this.setState(this.State.On);
 	}
 };
 
+Lazer.prototype.setState = function(st) {
+	this.state = st;
+
+	if (st === this.State.On) {
+		this.collidable = true;
+		this.opacity = 1;
+	} else if (st === this.State.Off) {
+		this.collidable = false;
+		this.opacity = 0;
+	}
+}
+
 // Reset the Lazer's state to On when it respawns
 Lazer.prototype.updateState = function(score) {
-	this.accumulator = 0;
-	this.state = this.State.On
-	this.opacity = 1;
-
 	switch (score) {
 	case 10:
-		this.state = this.State.On;
+		this.setState(this.State.On);
 		break;
 	}
 }
