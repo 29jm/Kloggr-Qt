@@ -35,7 +35,7 @@ ClickButton {
 		Transition {
 			NumberAnimation {
 				property: "rotation"
-				duration: 250
+				duration: 400
 			}
 		}
 	]
