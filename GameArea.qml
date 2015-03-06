@@ -22,7 +22,7 @@ Rectangle {
 
 		onDead: {
 			deadSound.play();
-			parent.state = "Dead";
+			gameArea.state = "Dead";
 		}
 
 		onTargetReached: {
@@ -33,6 +33,22 @@ Rectangle {
 			highscoreSound.play();
 			confettis.running = true;
 			emitter.enabled = true;
+		}
+
+		Keys.onReleased: {
+			if (event.key === Qt.Key_Back) {
+				event.accepted = true;
+
+				if (gameArea.state === "") {
+					gameArea.state = "Paused";
+					kloggr.pause();
+				} else if (gameArea.state === "Paused") {
+					gameArea.state = "";
+					kloggr.play();
+				} else if (gameArea.state === "Dead") {
+					mainMenuClicked();
+				}
+			}
 		}
 	}
 
@@ -73,39 +89,6 @@ Rectangle {
 		anchors.horizontalCenter: restartBtn.horizontalCenter
 
 		onClicked: mainMenuClicked()
-	}
-
-	Rectangle {
-		id: pauseBtn
-		height: 6*kloggr.pixelDensity
-		width: height
-		color: "#00bcd4"
-		opacity: 0.8
-
-		anchors.left: parent.left
-		anchors.bottom: parent.bottom
-
-		Image {
-			id: pauseImg
-			sourceSize.width: parent.width*0.90
-			fillMode: Image.PreserveAspectFit
-			smooth: true
-			anchors.centerIn: parent
-			source: "assets/pause.svg"
-		}
-
-		MouseArea {
-			anchors.fill: parent
-			onClicked: {
-				parent.parent.state = (parent.parent.state == "" ? "Paused" : "");
-				if (parent.parent.state == "Paused") {
-					kloggr.pause();
-				}
-				else {
-					kloggr.play();
-				}
-			}
-		}
 	}
 
 	Rectangle {
@@ -263,7 +246,6 @@ Rectangle {
 				anchors.left: undefined
 			}
 			PropertyChanges { target: exitBtn; visible: true; opacity: 1}
-			PropertyChanges { target: pauseImg; source: "assets/play.svg"}
 		},
 		State {
 			name: "Dead"
@@ -277,7 +259,6 @@ Rectangle {
 				anchors.left: undefined
 			}
 			PropertyChanges { target: exitBtn; visible: true; opacity: 1}
-			PropertyChanges { target: pauseBtn; visible: false }
 		}
 	]
 	transitions: [

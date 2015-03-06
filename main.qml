@@ -31,12 +31,6 @@ Window {
 					fadeOut.stop(); fadeIn.start();
 			//	}
 			}
-
-			Keys.onReleased: {
-				if (event.key === Qt.Key_Back) {
-					event.accepted = true;
-				}
-			}
 		}
 
 		NumberAnimation {
@@ -70,6 +64,17 @@ Window {
 			onPlayClicked: { page.loadView("GameArea.qml"); }
 			onInfoClicked: { page.loadView("Info.qml"); }
 			onSettingsClicked: { page.loadView("SettingsMenu.qml"); }
+		}
+
+		Component.onCompleted: {
+			page.forceActiveFocus();
+		}
+
+		Keys.onReleased: {
+			if (event.key === Qt.Key_Back) {
+				event.accepted = true;
+				window.close();
+			}
 		}
 	}
 }
