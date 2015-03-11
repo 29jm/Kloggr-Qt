@@ -16,8 +16,8 @@ Window {
 		anchors.fill: parent
 
 		function loadView(new_view) {
-			fadeIn.stop(); fadeOut.start();
 			view = new_view;
+			fadeIn.stop(); fadeOut.start();
 		}
 
 		Loader {
@@ -27,9 +27,7 @@ Window {
 			anchors.fill: parent
 
 			onLoaded: {
-			//	if (page.view !== "MainMenu.qml") {
-					fadeOut.stop(); fadeIn.start();
-			//	}
+				fadeOut.stop(); fadeIn.start();
 			}
 		}
 
@@ -37,7 +35,7 @@ Window {
 			id: fadeIn
 			target: pageLoader.item
 			property: "y"
-			from: page.height
+			from: page.view === "MainMenu.qml" ? page.height : -page.height
 			to: 0
 			duration: 250
 			easing.type: Easing.OutCirc
@@ -48,7 +46,7 @@ Window {
 			target: pageLoader.item
 			property: "y"
 			from: 0
-			to: -page.height
+			to: page.view === "MainMenu.qml" ? -page.height : page.height
 			duration: 250
 
 			onStopped: {
