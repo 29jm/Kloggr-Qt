@@ -452,7 +452,7 @@ Target.prototype.updateState = function(score) {
  * make it horizontal randomly.
  */
 function Lazer() {
-	Square.call(this, LAZER_SIZE, kloggr.height, "../assets/lazer.svg");
+	Square.call(this, LAZER_SIZE, kloggr.height/pixelDensity, "../assets/lazer.svg");
 
 	this.State = {
 		Inactive:"Inactive",
@@ -460,8 +460,8 @@ function Lazer() {
 		Off:"Off"
 	};
 
-	this.height = kloggr.height;
 	this.accumulator = 0;
+	this.switch_time = 2; // Time between 2 states
 	this.state = this.State.On;
 }
 
@@ -469,7 +469,6 @@ Lazer.prototype = Object.create(Enemy.prototype);
 
 // Respawns far from the player
 Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
-	this.height = max_y;
 	var player;
 
 	var len = gameobjects.length;
@@ -497,7 +496,7 @@ Lazer.prototype.update = function(delta_t) {
 	}
 
 	this.accumulator += delta_t;
-	if (this.accumulator > 2.0) {
+	if (this.accumulator > this.switch_time) {
 		this.accumulator = 0;
 
 		if (this.state === this.State.On)
@@ -738,8 +737,9 @@ Kloggr.prototype.updateByScore = function(value) {
 
 	switch (value) {
 	case 10:
-		var n = this.gameobjects.push(new Lazer());
-		this.gameobjects[n-1].respawn(this.gameobjects, this.width, this.height);
+		var lazer = new Lazer();
+		lazer.respawn(this.gameobjects, this.width, this.height);
+		this.gameobjects.push(lazer);
 		break;
 	}
 }
