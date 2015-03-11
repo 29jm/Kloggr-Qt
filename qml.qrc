@@ -35,5 +35,6 @@
         <file>assets/lazer.svg</file>
         <file>Square.qml</file>
         <file>assets/player.png</file>
+        <file>assets/lazer_horizontal.svg</file>
     </qresource>
 </RCC>
