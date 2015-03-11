@@ -527,6 +527,45 @@ Lazer.prototype.updateState = function(score) {
 	}
 }
 
+/* Horizontal Lazer! Green > all
+ */
+function HorizontalLazer() {
+	Square.call(this, kloggr.width/pixelDensity, LAZER_SIZE, "../assets/lazer_horizontal.svg");
+
+	this.State = {
+		Inactive:"Inactive",
+		On:"On",
+		Off:"Off"
+	};
+
+	this.accumulator = 0;
+	this.switch_time = 1.5;
+	this.state = this.State.On;
+}
+
+HorizontalLazer.prototype = Object.create(Lazer.prototype);
+
+HorizontalLazer.prototype.respawn = function(gameobjects, max_x, max_y) {
+	var player;
+
+	var len = gameobjects.length;
+	for (var i = 0; i < len; i++) {
+		if (gameobjects[i] instanceof Player) {
+			player = gameobjects[i];
+		}
+	}
+
+	do {
+		Square.prototype.respawnFarFrom
+			.call(this, gameobjects, max_x, max_y, player, player.width*3);
+		this.x = 0;
+
+	} while (intersect(this, player));
+
+	this.accumulator = 0;
+	this.setState(this.State.On);
+};
+
 ////////////////////////// kloggr.js /////////////////////////////
 /* The class that handles the game's flow
  * It initializes the game objects like Player, Target and enemies,
@@ -740,6 +779,11 @@ Kloggr.prototype.updateByScore = function(value) {
 		var lazer = new Lazer();
 		lazer.respawn(this.gameobjects, this.width, this.height);
 		this.gameobjects.push(lazer);
+		break;
+	case 15:
+		var h_lazer = new HorizontalLazer();
+		h_lazer.respawn(this.gameobjects, this.width, this.height);
+		this.gameobjects.push(h_lazer);
 		break;
 	}
 }
