@@ -4,12 +4,21 @@ var pixelDensity;
 // Math helper functions
 
 // Returns true if the square intersects another, else false
+// Also calls collision handlers (not very elegant, right)
 function intersect(a, b) {
 	if (b.x >= a.x+a.width  ||
 		b.x+b.width <= a.x  ||
 		b.y >= a.y+a.height ||
 		b.y+b.height <= a.y) {
 		return false;
+	}
+
+	if (a.onCollide) {
+		a.onCollide(b);
+	}
+
+	if (b.onCollide) {
+		b.onCollide(a);
 	}
 
 	return true;
@@ -125,6 +134,11 @@ Object.defineProperty(Square.prototype, "visible", {
 Object.defineProperty(Square.prototype, "opacity", {
 	get: function() { return this.m_opacity; },
 	set: function(val) { this.m_opacity = val; this.object.opacity = val; }
+});
+
+Object.defineProperty(Square.prototype, "source", {
+	get: function() { return this.m_source; },
+	set: function(val) { this.m_source = val; this.object.source = val; }
 });
 
 // Returns a QML object. If texture is a color a Rectangle is created,
@@ -303,6 +317,10 @@ Player.prototype.update = function(delta_t) {
 	this.x += this.speed_x*pixelDensity*delta_t;
 	this.y += this.speed_y*pixelDensity*delta_t;
 };
+
+Player.prototype.onCollide = function(b) {
+	this.source = "../assets/deadPlayer.png";
+}
 
 /*	Target class.
  *	Able to move, decelerate, change of behavior...
