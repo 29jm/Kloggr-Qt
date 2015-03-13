@@ -319,7 +319,9 @@ Player.prototype.update = function(delta_t) {
 };
 
 Player.prototype.onCollide = function(b) {
-	this.source = "../assets/deadPlayer.png";
+	if (b instanceof Enemy) {
+		this.source = "../assets/deadPlayer.png";
+	}
 }
 
 /*	Target class.
