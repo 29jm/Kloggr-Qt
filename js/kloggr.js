@@ -219,6 +219,16 @@ Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, di
 	}
 }
 
+Square.prototype.enable = function() {
+	this.opacity = 1;
+	this.collidable = true;
+}
+
+Square.prototype.disable = function() {
+	this.opacity = 0;
+	this.collidable = false;
+}
+
 /*  Enemy abstract class. Base class of everything that can kill the player
  */
 function Enemy() {
@@ -639,6 +649,9 @@ Kloggr.prototype.restart = function() {
 
 // Either respawn only the necessary or regenerate every object
 Kloggr.prototype.respawnAll = function(full_restart) {
+	if (this.gameobjects)
+		this.disableAll();
+
 	if (!full_restart) {
 		var player_x = this.player.x;
 		var player_y = this.player.y;
@@ -668,7 +681,23 @@ Kloggr.prototype.respawnAll = function(full_restart) {
 	}
 
 	this.respawnEnemies();
+
+	this.enableAll();
 };
+
+// These two functions make all objects invisible/non collidable
+// and vice versa. Used not to see things respawning.
+Kloggr.prototype.enableAll = function() {
+	for (var i = 0; i < this.gameobjects.length; i++) {
+		this.gameobjects[i].enable();
+	}
+}
+
+Kloggr.prototype.disableAll = function() {
+	for (var i = 0; i < this.gameobjects.length; i++) {
+		this.gameobjects[i].disable();
+	}
+}
 
 // Respawns enemies and generate more if needed
 Kloggr.prototype.respawnEnemies = function() {
