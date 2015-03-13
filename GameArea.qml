@@ -3,6 +3,7 @@ import QtQuick.Controls 1.2
 import QtMultimedia 5.0
 import Qt.labs.settings 1.0
 import QtQuick.Particles 2.0
+import QtQuick.Window 2.0
 
 Rectangle {
 	id: gameArea
@@ -35,6 +36,10 @@ Rectangle {
 			emitter.enabled = true;
 		}
 
+		onScoreChanged: {
+			score_text.text = qsTr("Score: %1").arg(score);
+		}
+
 		Keys.onReleased: {
 			if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
 				event.accepted = true;
@@ -49,6 +54,17 @@ Rectangle {
 					mainMenuClicked();
 				}
 			}
+		}
+	}
+
+	Text {
+		id: score_text
+		text: qsTr("Score: %1").arg(kloggr.score)
+
+		anchors {
+			margins: 2*Screen.pixelDensity
+			left: gameArea.left
+			top:  gameArea.top
 		}
 	}
 

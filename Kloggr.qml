@@ -82,6 +82,7 @@ Item {
 			updateState();
 			break;
 		case Game.Kloggr.Events.TargetReached:
+			score = getPoints();
 			targetReached();
 			kloggr.respawnAll();
 			break;
