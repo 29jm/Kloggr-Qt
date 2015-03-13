@@ -296,6 +296,7 @@ Player.prototype.respawn = function(gameobjects, max_x, max_y) {
 		call(this, gameobjects, max_x, max_y);
 	this.speed_x = 0;
 	this.speed_y = 0;
+	this.source = "../assets/player.png";
 }
 
 // Move the player according to his velocity and the time passed.
@@ -540,11 +541,9 @@ Lazer.prototype.setState = function(st) {
 	this.state = st;
 
 	if (st === this.State.On) {
-		this.collidable = true;
-		this.opacity = 1;
+		this.enable();
 	} else if (st === this.State.Off) {
-		this.collidable = false;
-		this.opacity = 0;
+		this.disable();
 	}
 }
 
@@ -770,6 +769,8 @@ Kloggr.prototype.collisionDetection = function() {
 
 	if (intersect(this.player, this.target)) {
 		this.score += 1;
+		// Other collisions are useless in this case
+		return;
 	}
 
 	var len = this.gameobjects.length;
