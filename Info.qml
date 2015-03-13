@@ -51,7 +51,7 @@ Rectangle {
 
 	Text {
 		color: "white"
-		text: "this game is open-source!"
+		text: qsTr("this game is open-source!")
 		font.pixelSize: devs.height/4
 		smooth: true
 		font.family: roboto.name

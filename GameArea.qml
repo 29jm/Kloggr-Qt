@@ -202,7 +202,7 @@ Rectangle {
 			anchors.left: parent.left
 			Text {
 				color: "black"
-				text: "Try Again!"
+				text: qsTr("Try Again!")
 				font.pixelSize: parent.height*0.50
 				smooth: true
 				font.family: roboto.name
@@ -214,8 +214,8 @@ Rectangle {
 
 		onVisibleChanged: {
 			if (visible) {
-				current_points.text = kloggr.getPoints() + "pts";
-				current_score.text = "You scored "+kloggr.getScore()+" in "+kloggr.getTime()+"s";
+				current_points.text = qsTr("%1pts").arg(kloggr.getPoints());
+				current_score.text = qsTr("You scored %1 in %2s").arg(kloggr.getScore()).arg(kloggr.getTime());
 				highscore.text = kloggr.highscore;
 			}
 		}
