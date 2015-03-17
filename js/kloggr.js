@@ -187,29 +187,26 @@ Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, di
 	while (true) {
 		Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
 
-		var points = [
-			{
-				x: this.x,
-				y: this.y
-			},
-			{
-				x: this.x+this.width,
-				y: this.y
-			},
-			{
-				x: this.x+this.width,
-				y: this.y+this.height
-			},
-			{
-				x: this.x,
-				y: this.y+this.height
-			}
+		var this_angles = [
+			{ x: this.x, y: this.y },
+			{ x: this.x+this.width, y: this.y },
+			{ x: this.x+this.width, y: this.y+this.height },
+			{ x: this.x, y: this.y+this.height }
+		];
+
+		var object_angles = [
+			{ x: object.x, y: object.y },
+			{ x: object.x+object.width, y: object.y },
+			{ x: object.x+object.width, y: object.y+object.height },
+			{ x: object.x, y: object.y+object.height }
 		];
 
 		var good_spawn = true;
-		for (var i = 0; i < points.length; i++) {
-			if (distanceBetween(points[i], object) < distance) {
-				good_spawn = false;
+		for (var i = 0; i < this_angles.length; i++) {
+			for (var j = 0; j < object_angles.length; j++) {
+				if (distanceBetween(this_angles[i], object_angles[j]) < distance) {
+					good_spawn = false;
+				}
 			}
 		}
 
