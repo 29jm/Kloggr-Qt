@@ -183,9 +183,14 @@ Square.prototype.respawn = function(gameobjects, max_x, max_y) {
 };
 
 // Respawns the square at a minimum distance from another.
-Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, distance) {
+// You can supply a custom respawn function
+Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, distance, func) {
 	while (true) {
-		Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
+		if (func) {
+			func.call(this, gameobjects, max_x, max_y);
+		} else {
+			Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
+		}
 
 		var this_angles = [
 			{ x: this.x, y: this.y },
@@ -495,6 +500,12 @@ function Lazer() {
 
 Lazer.prototype = Object.create(Enemy.prototype);
 
+Lazer.prototype.respawnHelper = function(gameobjects, max_x, max_y) {
+	Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
+	this.y = 0;
+}
+
+
 // Respawns far from the player
 Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 	var player;
@@ -508,9 +519,7 @@ Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 
 	do {
 		Square.prototype.respawnFarFrom
-			.call(this, gameobjects, max_x, max_y, player, player.width*3);
-		this.y = 0;
-
+			.call(this, gameobjects, max_x, max_y, player, player.width*3, this.respawnHelper);
 	} while (intersect(this, player));
 
 	this.accumulator = 0;
@@ -571,26 +580,10 @@ function HorizontalLazer() {
 
 HorizontalLazer.prototype = Object.create(Lazer.prototype);
 
-HorizontalLazer.prototype.respawn = function(gameobjects, max_x, max_y) {
-	var player;
-
-	var len = gameobjects.length;
-	for (var i = 0; i < len; i++) {
-		if (gameobjects[i] instanceof Player) {
-			player = gameobjects[i];
-		}
-	}
-
-	do {
-		Square.prototype.respawnFarFrom
-			.call(this, gameobjects, max_x, max_y, player, player.width*3);
-		this.x = 0;
-
-	} while (intersect(this, player));
-
-	this.accumulator = 0;
-	this.setState(this.State.On);
-};
+HorizontalLazer.prototype.respawnHelper = function(gameobjects, max_x, max_y) {
+	Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
+	this.x = 0;
+}
 
 ////////////////////////// kloggr.js /////////////////////////////
 /* The class that handles the game's flow
