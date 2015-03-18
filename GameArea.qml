@@ -13,6 +13,10 @@ Rectangle {
 
 	signal mainMenuClicked
 
+	Component.onCompleted: {
+		kloggr.forceActiveFocus();
+	}
+
 	Kloggr {
 		id: kloggr
 
