@@ -670,8 +670,9 @@ Kloggr.prototype.respawnAll = function(full_restart) {
 	}
 
 	this.respawnEnemies();
-
 	this.enableAll();
+
+	this.player.source = "../assets/player.png";
 };
 
 // These two functions make all objects invisible/non collidable
