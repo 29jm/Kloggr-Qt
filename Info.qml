@@ -13,7 +13,7 @@ Rectangle {
 
 	ClickButton {
 		id: back
-		color: "white"
+		color: "#00bcd4"
 		width: parent.height/6
 		height: width
 		z: 1

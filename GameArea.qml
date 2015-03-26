@@ -41,7 +41,7 @@ Rectangle {
 		}
 
 		onScoreChanged: {
-			score_text.text = qsTr("Score: %1").arg(score);
+			score_text.text = qsTr("%1").arg(kloggr.score);
 		}
 
 		Keys.onReleased: {
@@ -61,14 +61,18 @@ Rectangle {
 		}
 	}
 
-	Text {
-		id: score_text
-		text: qsTr("Score: %1").arg(kloggr.score)
-
-		anchors {
-			margins: 2*Screen.pixelDensity
-			left: gameArea.left
-			top:  gameArea.top
+	Rectangle {
+		width: 7*kloggr.pixelDensity
+		height: width
+		color: "#4dd0e1"
+		opacity: 0.7
+		anchors.top: parent.top
+		anchors.left: parent.left
+		Text {
+			id: score_text
+			color: "white"
+			text: qsTr("%1").arg(kloggr.score)
+			anchors.centerIn: parent
 		}
 	}
 
@@ -115,17 +119,39 @@ Rectangle {
 		id: pause_container
 		width: parent.width*0.7
 		height: parent.height/4
-		color: "#4dd0e1"
+		color: "#00bcd4"
 		anchors.centerIn: parent
 		visible: false
 		opacity: 0
-		Text {
-			color: "white"
-			text: "Pause"
-			font.pixelSize: 40
-			smooth: true
-			font.family: roboto.name
-			anchors.centerIn: parent
+		Item {
+			height: parent.height*0.60
+			width: parent.width
+			anchors.left: parent.left
+			anchors.top: parent.top
+			Image {
+				id: playbutton
+				source: "assets/play.svg"
+				sourceSize.height: parent*0.60
+				fillMode: Image.PreserveAspectFit
+				anchors.centerIn: parent
+			}
+		}
+
+		Rectangle {
+			width: parent.width
+			height: parent.height*0.40
+			anchors.bottom: parent.bottom
+			anchors.left: parent.left
+			Text {
+				color: "black"
+				text: "Pause"
+				font.pixelSize: parent.height*0.60
+				smooth: true
+				font.family: roboto.name
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.left: parent.left
+				anchors.leftMargin: parent.width*0.05
+			}
 		}
 	}
 
@@ -161,7 +187,7 @@ Rectangle {
 
 			Item {
 				id: highscore_container
-				width: parent.width*0.30
+				width: crown.width+highscore.width
 				height: parent.height*0.20
 				anchors.horizontalCenter: parent.horizontalCenter
 				anchors.top: current_points.bottom
