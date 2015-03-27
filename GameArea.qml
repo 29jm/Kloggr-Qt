@@ -124,14 +124,15 @@ Rectangle {
 		visible: false
 		opacity: 0
 		Item {
-			height: parent.height*0.60
+			id: playContainer
+			height: parent.height*0.70
 			width: parent.width
 			anchors.left: parent.left
 			anchors.top: parent.top
 			Image {
 				id: playbutton
 				source: "assets/play.svg"
-				sourceSize.height: parent*0.60
+				sourceSize.height: parent.height*0.60
 				fillMode: Image.PreserveAspectFit
 				anchors.centerIn: parent
 
@@ -147,7 +148,7 @@ Rectangle {
 
 		Rectangle {
 			width: parent.width
-			height: parent.height*0.40
+			anchors.top: playContainer.bottom
 			anchors.bottom: parent.bottom
 			anchors.left: parent.left
 			Text {
