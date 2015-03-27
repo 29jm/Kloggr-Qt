@@ -277,7 +277,7 @@ BasicEnemy.prototype.update = function(delta_t) {
  *	Drawn using a texture, can move, etc...
  */
 function Player() {
-	Square.call(this, PLAYER_SIZE, PLAYER_SIZE, '../assets/player.png');
+	Square.call(this, PLAYER_SIZE, PLAYER_SIZE, "../assets/player/player.svg");
 
 	// Everything should be in mm/s
 	this.speed_x = 0;
@@ -298,7 +298,7 @@ Player.prototype.respawn = function(gameobjects, max_x, max_y) {
 		call(this, gameobjects, max_x, max_y);
 	this.speed_x = 0;
 	this.speed_y = 0;
-	this.source = "../assets/player.png";
+	this.source = "../assets/player/player.svg";
 }
 
 // Move the player according to his velocity and the time passed.
@@ -333,7 +333,7 @@ Player.prototype.update = function(delta_t) {
 
 Player.prototype.onCollide = function(b) {
 	if (b instanceof Enemy) {
-		this.source = "../assets/deadPlayer.png";
+		this.source = "../assets/player/deadPlayer.svg";
 	}
 }
 
@@ -672,7 +672,7 @@ Kloggr.prototype.respawnAll = function(full_restart) {
 	this.respawnEnemies();
 	this.enableAll();
 
-	this.player.source = "../assets/player.png";
+	this.player.source = "../assets/player/player.svg";
 };
 
 // These two functions make all objects invisible/non collidable
