@@ -231,7 +231,7 @@ Rectangle {
 				id: current_score
 				color: "black"
 				text: "0"
-				font.pixelSize: parent.height*0.60
+				font.pixelSize: parent.height*0.30+parent.width*0.05
 				smooth: true
 				font.family: roboto.name
 				anchors.verticalCenter: parent.verticalCenter
