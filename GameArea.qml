@@ -134,6 +134,14 @@ Rectangle {
 				sourceSize.height: parent*0.60
 				fillMode: Image.PreserveAspectFit
 				anchors.centerIn: parent
+
+				MouseArea {
+					anchors.fill: parent
+					onClicked: {
+						gameArea.state = "";
+						kloggr.play();
+					}
+				}
 			}
 		}
 
