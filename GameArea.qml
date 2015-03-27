@@ -60,11 +60,9 @@ Rectangle {
 		}
 	}
 
-	Rectangle {
-		width: 7*kloggr.pixelDensity
+	Item {
+		width: 6*kloggr.pixelDensity
 		height: width
-		color: "#4dd0e1"
-		opacity: 0.7
 		anchors.top: parent.top
 		anchors.left: parent.left
 		Text {
