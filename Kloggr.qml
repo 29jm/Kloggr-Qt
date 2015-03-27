@@ -4,9 +4,10 @@ import Qt.labs.settings 1.0
 
 import "js/kloggr.js" as Game
 
-Item {
+Rectangle {
 	id: kloggrItem
 	focus: true
+	color: "#34495e"
 
 	property var kloggr: undefined
 	property real pixelDensity: Screen.pixelDensity
@@ -82,6 +83,7 @@ Item {
 			updateState();
 			break;
 		case Game.Kloggr.Events.TargetReached:
+			score = getPoints();
 			targetReached();
 			kloggr.respawnAll();
 			break;
@@ -103,6 +105,7 @@ Item {
 			inTouch = true;
 			mouse.accepted = true;
 			kloggr.handleTouchStart(mouse);
+			wave.popOpen(kloggr.player.x, kloggr.player.y);
 		}
 
 		onPositionChanged: {
@@ -114,6 +117,7 @@ Item {
 
 		onReleased: {
 			inTouch = false;
+			wave.close(0, 0);
 		}
 	}
 
@@ -152,6 +156,21 @@ Item {
 
 		onTriggered: {
 			score = getPoints();
+		}
+	}
+
+	Wave {
+		id: wave
+		color: "#3d566e"
+
+		function popOpen(x, y) {
+			wave.color = "#3d566e";
+			wave.open(x, y);
+		}
+
+		onFinished: {
+			wave.color = kloggrItem.color;
+			wave.close(0, 0);
 		}
 	}
 

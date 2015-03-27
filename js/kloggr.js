@@ -4,12 +4,21 @@ var pixelDensity;
 // Math helper functions
 
 // Returns true if the square intersects another, else false
+// Also calls collision handlers (not very elegant, right)
 function intersect(a, b) {
 	if (b.x >= a.x+a.width  ||
 		b.x+b.width <= a.x  ||
 		b.y >= a.y+a.height ||
 		b.y+b.height <= a.y) {
 		return false;
+	}
+
+	if (a.onCollide) {
+		a.onCollide(b);
+	}
+
+	if (b.onCollide) {
+		b.onCollide(a);
 	}
 
 	return true;
@@ -127,6 +136,11 @@ Object.defineProperty(Square.prototype, "opacity", {
 	set: function(val) { this.m_opacity = val; this.object.opacity = val; }
 });
 
+Object.defineProperty(Square.prototype, "source", {
+	get: function() { return this.m_source; },
+	set: function(val) { this.m_source = val; this.object.source = val; }
+});
+
 // Returns a QML object. If texture is a color a Rectangle is created,
 // else the texture parameter is used as a path to an asset.
 Square.prototype.newQmlObject = function(w, h, texture) {
@@ -169,33 +183,35 @@ Square.prototype.respawn = function(gameobjects, max_x, max_y) {
 };
 
 // Respawns the square at a minimum distance from another.
-Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, distance) {
+// You can supply a custom respawn function
+Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, distance, func) {
 	while (true) {
-		Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
+		if (func) {
+			func.call(this, gameobjects, max_x, max_y);
+		} else {
+			Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
+		}
 
-		var points = [
-			{
-				x: this.x,
-				y: this.y
-			},
-			{
-				x: this.x+this.width,
-				y: this.y
-			},
-			{
-				x: this.x+this.width,
-				y: this.y+this.height
-			},
-			{
-				x: this.x,
-				y: this.y+this.height
-			}
+		var this_angles = [
+			{ x: this.x, y: this.y },
+			{ x: this.x+this.width, y: this.y },
+			{ x: this.x+this.width, y: this.y+this.height },
+			{ x: this.x, y: this.y+this.height }
+		];
+
+		var object_angles = [
+			{ x: object.x, y: object.y },
+			{ x: object.x+object.width, y: object.y },
+			{ x: object.x+object.width, y: object.y+object.height },
+			{ x: object.x, y: object.y+object.height }
 		];
 
 		var good_spawn = true;
-		for (var i = 0; i < points.length; i++) {
-			if (distanceBetween(points[i], object) < distance) {
-				good_spawn = false;
+		for (var i = 0; i < this_angles.length; i++) {
+			for (var j = 0; j < object_angles.length; j++) {
+				if (distanceBetween(this_angles[i], object_angles[j]) < distance) {
+					good_spawn = false;
+				}
 			}
 		}
 
@@ -203,6 +219,16 @@ Square.prototype.respawnFarFrom = function(gameobjects, max_x, max_y, object, di
 			break;
 		}
 	}
+}
+
+Square.prototype.enable = function() {
+	this.opacity = 1;
+	this.collidable = true;
+}
+
+Square.prototype.disable = function() {
+	this.opacity = 0;
+	this.collidable = false;
 }
 
 /*  Enemy abstract class. Base class of everything that can kill the player
@@ -251,7 +277,7 @@ BasicEnemy.prototype.update = function(delta_t) {
  *	Drawn using a texture, can move, etc...
  */
 function Player() {
-	Square.call(this, PLAYER_SIZE, PLAYER_SIZE, '../assets/player.png');
+	Square.call(this, PLAYER_SIZE, PLAYER_SIZE, "../assets/player/player.svg");
 
 	// Everything should be in mm/s
 	this.speed_x = 0;
@@ -272,6 +298,7 @@ Player.prototype.respawn = function(gameobjects, max_x, max_y) {
 		call(this, gameobjects, max_x, max_y);
 	this.speed_x = 0;
 	this.speed_y = 0;
+	this.source = "../assets/player/player.svg";
 }
 
 // Move the player according to his velocity and the time passed.
@@ -303,6 +330,12 @@ Player.prototype.update = function(delta_t) {
 	this.x += this.speed_x*pixelDensity*delta_t;
 	this.y += this.speed_y*pixelDensity*delta_t;
 };
+
+Player.prototype.onCollide = function(b) {
+	if (b instanceof Enemy) {
+		this.source = "../assets/player/deadPlayer.svg";
+	}
+}
 
 /*	Target class.
  *	Able to move, decelerate, change of behavior...
@@ -452,7 +485,7 @@ Target.prototype.updateState = function(score) {
  * make it horizontal randomly.
  */
 function Lazer() {
-	Square.call(this, LAZER_SIZE, kloggr.height, "../assets/lazer.svg");
+	Square.call(this, LAZER_SIZE, kloggr.height/pixelDensity, "../assets/lazer.svg");
 
 	this.State = {
 		Inactive:"Inactive",
@@ -460,16 +493,21 @@ function Lazer() {
 		Off:"Off"
 	};
 
-	this.height = kloggr.height;
 	this.accumulator = 0;
+	this.switch_time = 2; // Time between 2 states
 	this.state = this.State.On;
 }
 
 Lazer.prototype = Object.create(Enemy.prototype);
 
+Lazer.prototype.respawnHelper = function(gameobjects, max_x, max_y) {
+	Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
+	this.y = 0;
+}
+
+
 // Respawns far from the player
 Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
-	this.height = max_y;
 	var player;
 
 	var len = gameobjects.length;
@@ -481,9 +519,7 @@ Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 
 	do {
 		Square.prototype.respawnFarFrom
-			.call(this, gameobjects, max_x, max_y, player, player.width*3);
-		this.y = 0;
-
+			.call(this, gameobjects, max_x, max_y, player, player.width*3, this.respawnHelper);
 	} while (intersect(this, player));
 
 	this.accumulator = 0;
@@ -497,7 +533,7 @@ Lazer.prototype.update = function(delta_t) {
 	}
 
 	this.accumulator += delta_t;
-	if (this.accumulator > 2.0) {
+	if (this.accumulator > this.switch_time) {
 		this.accumulator = 0;
 
 		if (this.state === this.State.On)
@@ -511,11 +547,9 @@ Lazer.prototype.setState = function(st) {
 	this.state = st;
 
 	if (st === this.State.On) {
-		this.collidable = true;
-		this.opacity = 1;
+		this.enable();
 	} else if (st === this.State.Off) {
-		this.collidable = false;
-		this.opacity = 0;
+		this.disable();
 	}
 }
 
@@ -526,6 +560,29 @@ Lazer.prototype.updateState = function(score) {
 		this.setState(this.State.On);
 		break;
 	}
+}
+
+/* Horizontal Lazer! Green > all
+ */
+function HorizontalLazer() {
+	Square.call(this, kloggr.width/pixelDensity, LAZER_SIZE, "../assets/lazer_horizontal.svg");
+
+	this.State = {
+		Inactive:"Inactive",
+		On:"On",
+		Off:"Off"
+	};
+
+	this.accumulator = 0;
+	this.switch_time = 1.5;
+	this.state = this.State.On;
+}
+
+HorizontalLazer.prototype = Object.create(Lazer.prototype);
+
+HorizontalLazer.prototype.respawnHelper = function(gameobjects, max_x, max_y) {
+	Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
+	this.x = 0;
 }
 
 ////////////////////////// kloggr.js /////////////////////////////
@@ -581,6 +638,9 @@ Kloggr.prototype.restart = function() {
 
 // Either respawn only the necessary or regenerate every object
 Kloggr.prototype.respawnAll = function(full_restart) {
+	if (this.gameobjects)
+		this.disableAll();
+
 	if (!full_restart) {
 		var player_x = this.player.x;
 		var player_y = this.player.y;
@@ -610,7 +670,24 @@ Kloggr.prototype.respawnAll = function(full_restart) {
 	}
 
 	this.respawnEnemies();
+	this.enableAll();
+
+	this.player.source = "../assets/player/player.svg";
 };
+
+// These two functions make all objects invisible/non collidable
+// and vice versa. Used not to see things respawning.
+Kloggr.prototype.enableAll = function() {
+	for (var i = 0; i < this.gameobjects.length; i++) {
+		this.gameobjects[i].enable();
+	}
+}
+
+Kloggr.prototype.disableAll = function() {
+	for (var i = 0; i < this.gameobjects.length; i++) {
+		this.gameobjects[i].disable();
+	}
+}
 
 // Respawns enemies and generate more if needed
 Kloggr.prototype.respawnEnemies = function() {
@@ -683,6 +760,8 @@ Kloggr.prototype.collisionDetection = function() {
 
 	if (intersect(this.player, this.target)) {
 		this.score += 1;
+		// Other collisions are useless in this case
+		return;
 	}
 
 	var len = this.gameobjects.length;
@@ -738,8 +817,14 @@ Kloggr.prototype.updateByScore = function(value) {
 
 	switch (value) {
 	case 10:
-		var n = this.gameobjects.push(new Lazer());
-		this.gameobjects[n-1].respawn(this.gameobjects, this.width, this.height);
+		var lazer = new Lazer();
+		lazer.respawn(this.gameobjects, this.width, this.height);
+		this.gameobjects.push(lazer);
+		break;
+	case 15:
+		var h_lazer = new HorizontalLazer();
+		h_lazer.respawn(this.gameobjects, this.width, this.height);
+		this.gameobjects.push(h_lazer);
 		break;
 	}
 }

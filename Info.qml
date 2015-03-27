@@ -13,7 +13,7 @@ Rectangle {
 
 	ClickButton {
 		id: back
-		color: "white"
+		color: "#00bcd4"
 		width: parent.height/6
 		height: width
 		z: 1
@@ -51,7 +51,7 @@ Rectangle {
 
 	Text {
 		color: "white"
-		text: "this game is open-source!"
+		text: qsTr("this game is open-source!")
 		font.pixelSize: devs.height/4
 		smooth: true
 		font.family: roboto.name

@@ -6,7 +6,6 @@
         <file>main.cpp</file>
         <file>js/kloggr.js</file>
         <file>Kloggr.qml</file>
-        <file>assets/deadPlayer.png</file>
         <file>assets/logo.png</file>
         <file>RoundButton.qml</file>
         <file>assets/ttf</file>
@@ -34,6 +33,9 @@
         <file>assets/pause.svg</file>
         <file>assets/lazer.svg</file>
         <file>Square.qml</file>
-        <file>assets/player.png</file>
+        <file>assets/lazer_horizontal.svg</file>
+        <file>assets/player/deadPlayer.svg</file>
+        <file>assets/player/player.svg</file>
+        <file>Wave.qml</file>
     </qresource>
 </RCC>

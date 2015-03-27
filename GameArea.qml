@@ -3,14 +3,18 @@ import QtQuick.Controls 1.2
 import QtMultimedia 5.0
 import Qt.labs.settings 1.0
 import QtQuick.Particles 2.0
+import QtQuick.Window 2.0
 
 Rectangle {
 	id: gameArea
-	color: "#34495e"
 
 	property bool soundOn: true
 
 	signal mainMenuClicked
+
+	Component.onCompleted: {
+		kloggr.forceActiveFocus();
+	}
 
 	Kloggr {
 		id: kloggr
@@ -35,8 +39,12 @@ Rectangle {
 			emitter.enabled = true;
 		}
 
+		onScoreChanged: {
+			score_text.text = qsTr("%1").arg(kloggr.score);
+		}
+
 		Keys.onReleased: {
-			if (event.key === Qt.Key_Back) {
+			if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
 				event.accepted = true;
 
 				if (gameArea.state === "") {
@@ -49,6 +57,19 @@ Rectangle {
 					mainMenuClicked();
 				}
 			}
+		}
+	}
+
+	Item {
+		width: 6*kloggr.pixelDensity
+		height: width
+		anchors.top: parent.top
+		anchors.left: parent.left
+		Text {
+			id: score_text
+			color: "white"
+			text: qsTr("%1").arg(kloggr.score)
+			anchors.centerIn: parent
 		}
 	}
 
@@ -95,17 +116,48 @@ Rectangle {
 		id: pause_container
 		width: parent.width*0.7
 		height: parent.height/4
-		color: "#4dd0e1"
+		color: "#00bcd4"
 		anchors.centerIn: parent
 		visible: false
 		opacity: 0
-		Text {
-			color: "white"
-			text: "Pause"
-			font.pixelSize: 40
-			smooth: true
-			font.family: roboto.name
-			anchors.centerIn: parent
+		Item {
+			id: playContainer
+			height: parent.height*0.70
+			width: parent.width
+			anchors.left: parent.left
+			anchors.top: parent.top
+			Image {
+				id: playbutton
+				source: "assets/play.svg"
+				sourceSize.height: parent.height*0.60
+				fillMode: Image.PreserveAspectFit
+				anchors.centerIn: parent
+
+				MouseArea {
+					anchors.fill: parent
+					onClicked: {
+						gameArea.state = "";
+						kloggr.play();
+					}
+				}
+			}
+		}
+
+		Rectangle {
+			width: parent.width
+			anchors.top: playContainer.bottom
+			anchors.bottom: parent.bottom
+			anchors.left: parent.left
+			Text {
+				color: "black"
+				text: "Pause"
+				font.pixelSize: parent.height*0.60
+				smooth: true
+				font.family: roboto.name
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.left: parent.left
+				anchors.leftMargin: parent.width*0.05
+			}
 		}
 	}
 
@@ -141,7 +193,7 @@ Rectangle {
 
 			Item {
 				id: highscore_container
-				width: parent.width*0.30
+				width: crown.width+highscore.width
 				height: parent.height*0.20
 				anchors.horizontalCenter: parent.horizontalCenter
 				anchors.top: current_points.bottom
@@ -177,7 +229,7 @@ Rectangle {
 				id: current_score
 				color: "black"
 				text: "0"
-				font.pixelSize: parent.height*0.60
+				font.pixelSize: parent.height*0.30+parent.width*0.05
 				smooth: true
 				font.family: roboto.name
 				anchors.verticalCenter: parent.verticalCenter
@@ -202,7 +254,7 @@ Rectangle {
 			anchors.left: parent.left
 			Text {
 				color: "black"
-				text: "Try Again!"
+				text: qsTr("Try Again!")
 				font.pixelSize: parent.height*0.50
 				smooth: true
 				font.family: roboto.name
@@ -214,8 +266,8 @@ Rectangle {
 
 		onVisibleChanged: {
 			if (visible) {
-				current_points.text = kloggr.getPoints() + "pts";
-				current_score.text = "You scored "+kloggr.getScore()+" in "+kloggr.getTime()+"s";
+				current_points.text = qsTr("%1pts").arg(kloggr.getPoints());
+				current_score.text = qsTr("You scored %1 in %2s").arg(kloggr.getScore()).arg(kloggr.getTime());
 				highscore.text = kloggr.highscore;
 			}
 		}

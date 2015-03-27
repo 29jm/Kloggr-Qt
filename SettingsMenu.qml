@@ -82,6 +82,7 @@ Rectangle {
 	RoundButton {
 		image: "assets/exit.svg"
 		id: exitBtn
+		color: "#00bcd4"
 		angle: 360
 		width: parent.height/8
 		imageWidth: musicBtn.width/2
