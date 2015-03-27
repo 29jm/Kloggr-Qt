@@ -27,7 +27,7 @@ Rectangle {
 	property real initialY
 	property real abstractWidth: parent.width
 	property real abstractHeight: parent.height
-	property real diameter: 2*Math.sqrt(Math.pow(Math.max(initialX, abstractWidth - initialX), 2) + Math.pow(Math.max(initialY, abstractHeight - initialY), 2))
+	property real diameter: Math.sqrt(Math.pow(Math.max(initialX, abstractWidth - initialX), 2) + Math.pow(Math.max(initialY, abstractHeight - initialY), 2))
 
 	signal finished(bool opened)
 

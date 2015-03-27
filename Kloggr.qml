@@ -105,8 +105,7 @@ Rectangle {
 			inTouch = true;
 			mouse.accepted = true;
 			kloggr.handleTouchStart(mouse);
-			wave.nextColor();
-			wave.open(mouse.x, mouse.y);
+			wave.open(kloggr.player.x, kloggr.player.y);
 		}
 
 		onPositionChanged: {
@@ -161,18 +160,10 @@ Rectangle {
 
 	Wave {
 		id: wave
-		property var colors: ["#4f6f8f", "#587c9f", "#6689ab", "#7795b4",
-							  "#3d566e", "#46637e", "#46627f"]
-		property int index: 0
-
-		function nextColor() {
-			if (++index >= colors.length)
-				index = 0;
-			color = colors[index];
-		}
+		color: "#3d566e"
 
 		onFinished: {
-			kloggrItem.color = wave.color;
+			wave.color = kloggrItem.color;
 			wave.close(0, 0);
 		}
 	}
