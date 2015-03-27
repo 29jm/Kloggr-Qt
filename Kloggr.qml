@@ -162,11 +162,14 @@ Rectangle {
 	Wave {
 		id: wave
 		color: "#3d566e"
+<<<<<<< HEAD
 
 		function popOpen(x, y) {
 			wave.color = "#3d566e";
 			wave.open(x, y);
 		}
+=======
+>>>>>>> 846163a801c88a5a412d2e857b837f62b39522f6
 
 		onFinished: {
 			wave.color = kloggrItem.color;
