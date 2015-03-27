@@ -36,5 +36,6 @@
         <file>assets/lazer_horizontal.svg</file>
         <file>assets/player/deadPlayer.svg</file>
         <file>assets/player/player.svg</file>
+        <file>Wave.qml</file>
     </qresource>
 </RCC>

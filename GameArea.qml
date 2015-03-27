@@ -7,7 +7,6 @@ import QtQuick.Window 2.0
 
 Rectangle {
 	id: gameArea
-	color: "#34495e"
 
 	property bool soundOn: true
 
