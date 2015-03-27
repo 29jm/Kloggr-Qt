@@ -7,16 +7,20 @@ Rectangle {
 	signal settingsClicked
 	signal infoClicked
 
-	Image {
-		id: logo
-		fillMode: Image.PreserveAspectFit
-		smooth: true
-		source: "assets/logo.png"
-
+	Item {
+		width: parent.width
 		anchors.top: parent.top
-		anchors.topMargin: 20
+		anchors.bottom: playBtn.top
 		anchors.left: parent.left
-		anchors.right: parent.right
+		Image {
+			id: logo
+			fillMode: Image.PreserveAspectFit
+			width: parent.width*0.90
+			smooth: true
+			source: "assets/logo.png"
+
+			anchors.centerIn: parent
+		}
 	}
 
 	RoundButton {
