@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>ViewManager.qml</file>
         <file>MainMenu.qml</file>
         <file>GameArea.qml</file>
         <file>main.cpp</file>
@@ -37,5 +38,6 @@
         <file>assets/player/deadPlayer.svg</file>
         <file>assets/player/player.svg</file>
         <file>Wave.qml</file>
+        <file>assets/splashscreen.svg</file>
     </qresource>
 </RCC>

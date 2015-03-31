@@ -1,5 +1,5 @@
-import QtQuick 2.3
 import QtQuick.Window 2.0
+import QtQuick 2.3
 
 Window {
 	id: window
@@ -7,71 +7,44 @@ Window {
 	minimumWidth: 420
 	minimumHeight: 590
 
+	property real minimumTime: 750
+
 	Rectangle {
-		id: page
-		color: "#4dd0e1"
-
-		property var view
-
+		id: splashscreen
 		anchors.fill: parent
 
-		function loadView(new_view) {
-			view = new_view;
-			fadeIn.stop(); fadeOut.start();
-		}
-
-		Loader {
-			id: pageLoader
-			source: "MainMenu.qml"
-			focus: true
+		Image {
+			source: "assets/splashscreen.svg"
 			anchors.fill: parent
-
-			onLoaded: {
-				fadeOut.stop(); fadeIn.start();
-			}
 		}
 
-		NumberAnimation {
-			id: fadeIn
-			target: pageLoader.item
-			property: "y"
-			from: page.view === "MainMenu.qml" ? page.height : -page.height
-			to: 0
-			duration: 250
-			easing.type: Easing.OutCirc
+		Component.onCompleted: mainloader.source = "ViewManager.qml"
+	}
+
+	Loader {
+		id: mainloader
+		asynchronous: true
+
+		function enable() {
+			anchors.fill = parent
 		}
+	}
 
-		NumberAnimation {
-			id: fadeOut
-			target: pageLoader.item
-			property: "y"
-			from: 0
-			to: page.view === "MainMenu.qml" ? -page.height : page.height
-			duration: 250
+	Timer {
+		id: timer
+		interval: 100
+		repeat: true
+		running: true
+		triggeredOnStart: true
 
-			onStopped: {
-				pageLoader.source = page.view;
-			}
-		}
+		property int now: 0
 
-		Connections {
-			target: pageLoader.item
-			ignoreUnknownSignals: true
+		onTriggered: {
+			now += 100
 
-			onMainMenuClicked: { page.loadView("MainMenu.qml"); }
-			onPlayClicked: { page.loadView("GameArea.qml"); }
-			onInfoClicked: { page.loadView("Info.qml"); }
-			onSettingsClicked: { page.loadView("SettingsMenu.qml"); }
-		}
-
-		Component.onCompleted: {
-			page.forceActiveFocus();
-		}
-
-		Keys.onReleased: {
-			if (event.key === Qt.Key_Back) {
-				event.accepted = true;
-				window.close();
+			if (mainloader.status === Loader.Ready && now > minimumTime) {
+				mainloader.enable();
+				repeat = false;
 			}
 		}
 	}
