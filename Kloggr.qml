@@ -67,8 +67,7 @@ Rectangle {
 
 		if (points < 0) {
 			return 0;
-		}
-		else {
+		} else {
 			return Math.round(points);
 		}
 	}

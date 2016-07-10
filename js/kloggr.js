@@ -27,9 +27,9 @@ function intersect(a, b) {
 // Check if two lines intersect. 4 points as input, 2 = 1 line
 function lineIntersect(p1, p2, p3, p4) {
 	var x = ((p1.x*p2.y-p1.y*p2.x)*(p3.x-p4.x)-(p1.x-p2.x)*(p3.x*p4.y-p3.y*p4.x))
-			/ ((p1.x-p2.x)*(p3.y-p4.y)-(p1.y-p2.y)*(p3.x-p4.x));
+	        / ((p1.x-p2.x)*(p3.y-p4.y)-(p1.y-p2.y)*(p3.x-p4.x));
 	var y = ((p1.x*p2.y-p1.y*p2.x)*(p3.y-p4.y)-(p1.y-p2.y)*(p3.x*p4.y-p3.y*p4.x))
-			/ ((p1.x-p2.x)*(p3.y-p4.y)-(p1.y-p2.y)*(p3.x-p4.x));
+	        / ((p1.x-p2.x)*(p3.y-p4.y)-(p1.y-p2.y)*(p3.x-p4.x));
 
 	if (isNaN(x) || isNaN(y)) {
 		return false;
@@ -245,7 +245,7 @@ Enemy.prototype = Object.create(Square.prototype);
  */
 function BasicEnemy() {
 	var width = (Math.random()*BASIC_ENEMY_VARIATION*2-BASIC_ENEMY_VARIATION)
-		+ BASIC_ENEMY_SIZE;
+	    + BASIC_ENEMY_SIZE;
 
 	Square.call(this, width, width, '#f04155');
 	this.to_update = false;
@@ -294,8 +294,7 @@ Player.prototype = Object.create(Square.prototype);
 // When the player just reached a target, it is reset to his previous position
 // but the respawn bit is needed when the game is started
 Player.prototype.respawn = function(gameobjects, max_x, max_y) {
-	Square.prototype.respawn.
-		call(this, gameobjects, max_x, max_y);
+	Square.prototype.respawn.call(this, gameobjects, max_x, max_y);
 	this.speed_x = 0;
 	this.speed_y = 0;
 	this.source = "../assets/player/player.svg";
@@ -305,8 +304,7 @@ Player.prototype.respawn = function(gameobjects, max_x, max_y) {
 // Ensure that it doesn't exceed speed limits and decrease his speed a bit
 // every frame so it eventually stops if the player doesn't make it move
 Player.prototype.update = function(delta_t) {
-	var len = Math.sqrt((this.speed_x*this.speed_x)
-						+ (this.speed_y*this.speed_y));
+	var len = Math.sqrt((this.speed_x*this.speed_x)+(this.speed_y*this.speed_y));
 
 	if (Math.round(len) == 0) {
 		this.speed_x = 0;
@@ -437,13 +435,11 @@ Target.prototype.update = function(delta_t) {
 		var vec = this.getRandomDirectionAvoiding(this.player);
 		this.speed_x = vec.x;
 		this.speed_y = vec.y;
-		len = Math.sqrt((this.speed_x*this.speed_x)
-						+ (this.speed_y*this.speed_y));
+		len = Math.sqrt((this.speed_x*this.speed_x)+(this.speed_y*this.speed_y));
 		this.speed_x = (this.speed_x/len)*this.max_speed;
 		this.speed_y = (this.speed_y/len)*this.max_speed;
 	} else { // Don't move that
-		len = Math.sqrt((this.speed_x*this.speed_x)
-						+ (this.speed_y*this.speed_y));
+		len = Math.sqrt((this.speed_x*this.speed_x)+(this.speed_y*this.speed_y));
 	}
 
 	if (Math.round(len) == 0) {
@@ -519,7 +515,7 @@ Lazer.prototype.respawn = function(gameobjects, max_x, max_y) {
 
 	do {
 		Square.prototype.respawnFarFrom
-			.call(this, gameobjects, max_x, max_y, player, player.width*3, this.respawnHelper);
+		    .call(this, gameobjects, max_x, max_y, player, player.width*3, this.respawnHelper);
 	} while (intersect(this, player));
 
 	this.accumulator = 0;
@@ -650,8 +646,7 @@ Kloggr.prototype.respawnAll = function(full_restart) {
 
 		this.player.x = player_x;
 		this.player.y = player_y;
-	}
-	else {
+	} else {
 		if (this.gameobjects) {
 			for (var i = 0; i < this.gameobjects.length; i++) {
 				this.gameobjects[i].object.destroy();
@@ -710,8 +705,7 @@ Kloggr.prototype.respawnEnemies = function() {
 
 	for (var i = 0; i < this.gameobjects.length; i++) {
 		if (this.gameobjects[i] instanceof Enemy) {
-			this.gameobjects[i].
-				respawn(this.gameobjects, this.width, this.height);
+			this.gameobjects[i].respawn(this.gameobjects, this.width, this.height);
 		}
 	}
 };

@@ -36,8 +36,7 @@ Rectangle {
 		onClicked: {
 			if(soundOn) {
 				soundOn = false;
-			}
-			else {
+			} else {
 				soundOn = true;
 			}
 		}
@@ -66,8 +65,7 @@ Rectangle {
 		onClicked: {
 			if(musicOn) {
 				musicOn = false;
-			}
-			else {
+			} else {
 				musicOn = true;
 			}
 		}
